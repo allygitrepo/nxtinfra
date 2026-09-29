@@ -1,0 +1,379 @@
+<?php  
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+/* include('../../common/conn.php');
+ ob_start();
+$sql=mysql_query("SELECT * FROM `order_master`  WHERE auto_orderid='".$_GET['id']."'");
+ $row=mysql_fetch_array($sql);
+ $date=date_create($row['date']);
+ $order_date=date_create($row['order_date']);
+ $order_total=$row['order_total'];
+ 
+ $sql_total=mysql_query("SELECT  SUM(discount) AS discount, c_form AS c_form, excise_duty AS excise_duty FROM `order`  WHERE auto_orderid='".$_GET['id']."'");
+$row_total=mysql_fetch_array($sql_total);
+ $discount=$row_total['discount'];
+ 
+ $sub_total=($order_total+$discount);
+ $percentage=(($discount/$order_total)*100);
+
+ $sql_user=mysql_query("SELECT * FROM user WHERE userId='".$row['user_id']."'");
+ $row_user=mysql_fetch_array($sql_user);*/
+//============================================================+
+// File name   : example_061.php
+// Begin       : 2010-05-24
+// Last Update : 2014-01-25
+//
+// Description : Example 061 for TCPDF class
+//               XHTML + CSS
+//
+// Author: Nicola Asuni
+//
+// (c) Copyright:
+//               Nicola Asuni
+//               Tecnick.com LTD
+//               www.tecnick.com
+//               info@tecnick.com
+//============================================================+
+
+/**
+ * Creates an example PDF TEST document using TCPDF
+ * @package com.tecnick.tcpdf
+ * @abstract TCPDF - Example: XHTML + CSS
+ * @author Nicola Asuni
+ * @since 2010-05-25
+ */
+
+// Include the main TCPDF library (search for installation path).
+require_once('tcpdf_include.php');
+
+// create new PDF document
+$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+//$pdf->SetPrintHeader(false);
+//define ('PDF_HEADER_LOGO', 'http://andamantrail.com/img/andaman-trail-logo.jpg');
+$pdf->SetPrintFooter(false);
+// set document information
+$pdf->SetCreator('Andaman Trail');
+$pdf->SetAuthor('Andaman Trail');
+$pdf->SetTitle('Estimate');
+$pdf->SetSubject('EST - 9151');
+$pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+
+// ITINERARY OVERVIEW
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 8);
+
+
+$overview = '<table width="680">
+  <tbody>
+    <tr>
+      <td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td>
+    </tr>
+    <tr>
+      <td><img src="http://andamantrail.com/images/logo.png" width="100" alt="" /></td>
+    </tr>
+    <tr>
+      <td><img src="http://andamantrail.com/images/invl.png" width="680" alt="" /></td>
+    </tr>
+  </tbody>
+</table>
+<table width="680">
+  <tbody>
+    <tr>
+      <td align="left"> Exotrail Destination Management Private Limited<br />
+        CIN: XXXXXXX<br />
+        PAN: XXXXXXX<br />
+        GSTIN: XXXXXXX<br />
+        PLACE OF SUPPLY: A&N ISLANDS - 35 </td>
+      <td align="right"> Total Cost: &#x20b9; 11,999<br />
+        Invoice#: INV-9151<br />
+        Ref#: EST-9151<br />
+        Date: 15 July, 2018 </td>
+    </tr>
+  </tbody>
+</table>
+<table width="680">
+  <tbody>
+    <tr>
+      <td><img src="http://andamantrail.com/images/invb.png" width="680" alt="" /></td>
+    </tr>
+  </tbody>
+</table>
+<table width="680">
+  <tbody>
+    <tr>
+      <td align="left"> CUSTOMER NAME<br />
+        Rahul Kumar<br />
+        GSTIN: NA<br /></td>
+      <td align="center"> BILLING ADDRESS<br />
+        <br />
+        No 3, Vivekananda Street<br />
+        Sector 9, Noida<br />
+        New Delhi - 100148<br />
+        Contact: +91-9933255885 </td>
+      <td align="center"> SHIPPING ADDRESS<br />
+        <br />
+        No 3, Vivekananda Street<br />
+        Sector 9, Noida<br />
+        New Delhi - 100148<br />
+        Contact: +91-9933255885 </td>
+    </tr>
+  </tbody>
+</table>
+<table width="680">
+  <tbody>
+    <tr>
+      <td><img src="http://andamantrail.com/images/invl.png" width="680" alt="" /></td>
+    </tr>
+  </tbody>
+</table>
+<table width="680">
+  <tbody>
+    <tr>
+      <td align="left"> COUNTRY OF SUPPLY:<br />
+        <br />
+        India - IN </td>
+      <td align="center"> PLACE OF SUPPLY:<br />
+        <br />
+        Andaman & Nicobar - (35) </td>
+      <td align="center"> DUE DATE<br />
+        <br />
+        15 July, 2018 </td>
+    </tr>
+  </tbody>
+</table>
+<table width="680">
+  <tbody>
+    <tr>
+      <td><img src="http://andamantrail.com/images/invl.png" width="680" alt="" /></td>
+    </tr>
+  </tbody>
+</table>
+<table width="680">
+  <tbody>
+    <tr>
+      <td> PARTICULARS </td>
+      <td> HSN / SAC </td>
+      <td> COST </td>
+      <td> IGST Rate </td>
+      <td> Taxable Value </td>
+      <td> CGST<br />
+        @ 2.5% </td>
+      <td> UTGST<br />
+        @ 2.5% </td>
+      <td> Total </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td> Hotels </td>
+      <td> 998552 </td>
+      <td>&#x20b9; 11,999 </td>
+      <td> 5% </td>
+      <td>&#x20b9; 11,999 </td>
+      <td>&#x20b9; 1,999 </td>
+      <td>&#x20b9; 1,999 </td>
+      <td>&#x20b9; 11,999 </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td> Vehicle </td>
+      <td> 998551 </td>
+      <td>&#x20b9; 11,999 </td>
+      <td> 5% </td>
+      <td>&#x20b9; 1,999 </td>
+      <td>&#x20b9; 1,999 </td>
+      <td>&#x20b9; 1,999 </td>
+      <td>&#x20b9; 11,999 </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td> Tickets, Permits and Fares </td>
+      <td> 998554 </td>
+      <td>&#x20b9; 11,999 </td>
+      <td> 5% </td>
+      <td>&#x20b9; 11,999 </td>
+      <td>&#x20b9; 1,999 </td>
+      <td>&#x20b9; 1,999 </td>
+      <td>&#x20b9; 11,999 </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td> Ferry Tickets </td>
+      <td> 998558 </td>
+      <td>&#x20b9; 11,999 </td>
+      <td> 5% </td>
+      <td>&#x20b9; 11,999 </td>
+      <td>&#x20b9; 1,999 </td>
+      <td>&#x20b9; 1,999 </td>
+      <td>&#x20b9; 11,999 </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td> Extra Activities </td>
+      <td> 998554 </td>
+      <td>&#x20b9; 11,999 </td>
+      <td> 5% </td>
+      <td>&#x20b9; 11,999 </td>
+      <td>&#x20b9; 1,999 </td>
+      <td>&#x20b9; 1,999 </td>
+      <td>&#x20b9; 11,999 </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td> Total: </td>
+      <td>&#x20b9; 11,999 </td>
+      <td>&#x20b9; 1,999 </td>
+      <td>&#x20b9; 1,999 </td>
+      <td>&#x20b9; 11,999 </td>
+    </tr>
+  </tbody>
+</table>
+<table width="680">
+  <tbody>
+    <tr>
+      <td><img src="http://andamantrail.com/images/invl.png" width="680" alt="" /></td>
+    </tr>
+  </tbody>
+</table>
+<table width="680">
+  <tbody>
+    <tr>
+      <td align="right"> Total Amount(+): &#x20b9; 11,999<br /></td>
+    </tr>
+    <tr>
+      <td align="right"> Discount(-): &#x20b9; 1,999<br /></td>
+    </tr>
+    <tr>
+      <td align="right"> Invoice Amount: &#x20b9; 11,999 </td>
+    </tr>
+    <tr>
+      <td><img src="http://andamantrail.com/images/invl.png" width="680" alt="" /></td>
+    </tr>
+  </tbody>
+</table>
+<table width="680">
+  <tbody>
+    <tr>
+      <td align="center">Amount Paid: &#x20b9; 5,999</td>
+      <td align="center">Amount Due: &#x20b9; 11,999</td>
+      <td align="center">Due Date: 11 July, 2018</td>
+    </tr>
+  </tbody>
+</table>
+<table width="680">
+  <tbody>
+    <tr>
+      <td><img src="http://andamantrail.com/images/invl.png" width="680" alt="" /></td>
+    </tr>
+  </tbody>
+</table>
+
+';
+echo $overview; die();
+// output the HTML content
+
+$pdf->writeHTML($overview, true, false, true, false, '');
+
+
+// reset pointer to the last page
+$pdf->lastPage();
+
+// ---------------------------------------------------------
+
+//Close and output PDF document
+$pdf->Output('invoice.pdf', 'D');
+
+//============================================================+
+// END OF FILE
+//============================================================+
+?>

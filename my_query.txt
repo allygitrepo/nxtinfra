@@ -1,0 +1,42 @@
+DMS Login
+
+Admin
+Husain   		/  12345
+Amit.malpani   /  12345
+ranganathan   /  12345
+
+Sumaira Sabirali
+
+SELECT approval_status, count(*) as cnt from payment_header DS INNER JOIN (SELECT doc_id FROM `workflow_history` where reviewed_by = '59' and doc_type = 'PY' and status in('Pending', 'Verified','Prepared','Submited') and id in (SELECT max(id) FROM `workflow_history` where doc_Type = 'PY' group by doc_id) ) DS1 ON DS1.doc_id = DS.id where DS.company_id in ( 8,3,9,0 ) and DS.approval_status in('Pending', 'Verified','Prepared','Submited') and DS.del!='Y'
+
+Budget Used Trans = Vendor Name and PO Number
+
+Inward => Mail sent to uers
+Here's the document that Narayanan S shared with you. 
+
+Outward -  Send to User / Vendor
+This would be only for Reference of Outward and no any action to Inward.
+Courier detail - New fields
+Radio - Internal / External
+From User 
+
+=====
+SELECT * FROM `workflow_history` where doc_Type = 'IN' and status = 'Shared' and reviewed_by ='64' and id in ( SELECT max(id) FROM `workflow_history` where doc_Type = 'IN' and status = 'Shared' group by reviewed_by)
+
+SELECT * FROM `workflow_history` where doc_Type = 'IN' and status = 'Forwarded' and reviewed_by ='64' and id in ( SELECT max(id) FROM `workflow_history` where doc_Type = 'IN' and status = 'Forwarded' group by reviewed_by)
+
+SELECT * FROM `workflow_history` where doc_Type = 'IN' and status = 'Accepted' and create_by ='64' and id in ( SELECT max(id) FROM `workflow_history` where doc_Type = 'IN' and status = 'Accepted' group by create_by)
+                                                         
+====================================
+ravindra.gandhile@gmail.com, ravindra_gandhile@yahoo.com
+
+SELECT c.*, a.*, b.* FROM `sma_product` a , sma_product_group b, sma_budget c where a.id = 261 and a.group = b.id and b.budget_name = c.budget_name and b.budget_head = c.budget_category 
+
+SELECT c.budget_name, c.budget_category as budget_head, c.total_budget, c.used_budget, c.balance_budget, a.name as material_name, b.description
+FROM `sma_product` a , sma_product_group b, sma_budget c where a.id = 261 and a.group = b.id and b.budget_name = c.budget_name and b.budget_head = c.budget_category 
+===========================================
+
+
+
+
+Payment  - manikandan

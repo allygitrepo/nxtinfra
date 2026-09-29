@@ -1,0 +1,38 @@
+PO:
+
+Line 1: Subject
+Line 2: Company / PO Number
+Line 3: Vendor Name
+Line 4: Amount
+Line 5: Created by / Last Approver Name
+
+AP:
+
+Line 1: Subject
+Line 2: Company / Number
+Line 3: Vendor Name
+Line 4: Amount
+Line 5: Created by / Last Approver Name
+
+GRN
+
+Line 1: Subject
+Line 2: Company / PO Number
+Line 3: Vendor Name
+Line 4: Total Value (QTY / Value)
+Line 5: Created by / Last Approver Name
+
+SI
+
+Line 1: Subject
+Line 2: Company / PO Number
+Line 3: Vendor Name
+Line 4: Total Value (QTY / Value)
+Line 5: Created by / Last Approver Name
+
+MRN :
+Line 1: Subject
+Line 2: Company / MRN Number
+Line 3: Created By
+Line 4: Last Approver Name
+

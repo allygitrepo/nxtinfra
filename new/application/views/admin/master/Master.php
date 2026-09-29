@@ -1,0 +1,653 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+require 'Admin.php';
+
+class Master extends Admin {
+
+	public $manage_master = 'master/manage_master';
+	public $states = 'master/states';
+	public $city = 'master/city';
+	public $products = 'master/products';
+	public $account = 'master/accounts';
+	public $gst = 'master/gst';
+	public $cost_add = 'master/cost_add';
+	public $cost = 'master/cost';
+	
+	
+	public function manage_master()
+	{
+		$this->load->model('MenuModel');
+		$data['sidemainmenu']=$this->MenuModel->getMenu();
+		$data['sidesubmenu']=$this->MenuModel->getSubMenu($data['sidemainmenu']);
+		$where['status'] = 1;
+		$w['1'] = 1;
+		$data['master_type'] = $this->MainModel->get_result('master_type',$w);
+		$data['master'] = $this->MainModel->get_result('master',$where);
+		$this->load->view('admin/master/manage_master',$data);
+	}
+	
+	public function ajax_master_list()
+	{
+		$this->load->model('SettingMasterModel');
+		$list = $this->SettingMasterModel->get_datatables();
+		$w['status'] = 1;/*List of staff*/
+		$data = array();$no=1;
+		foreach ($list as $r) {
+			$row = array();
+			$row[] = $no;
+			$row[] = $r->master_name;
+			$row[] = $r->master_type_name;
+			$action='
+			<input type="hidden" value="'.$r->master_name.'" id="master_name_'.$r->mid.'">
+			<input type="hidden" value="'.$r->master_type.'" id="master_type_'.$r->mid.'">
+			<a data-bs-toggle="modal" onclick="edit_fn('.$r->mid.')" data-bs-target="#editmodel" class="btn btn-primary px-4 radius-30"><i class="fa fa-edit"></i> Edit</a> <a href="'.site_url('master/delete_master/'.$r->mid).'" onclick="return confirm("Are you sure ?")" class="btn btn-danger px-4 radius-30"><i class="fa fa-times"></i> Delete</a>';
+			$row[] = $action;
+			$data[] = $row;
+			$no++;
+		}
+
+		$output = array(
+						"draw" => $_POST['draw'],
+						"recordsTotal" => $this->SettingMasterModel->count_all(),											                        "recordsFiltered" => $this->SettingMasterModel->count_filtered(),
+						"data" => $data,
+				);
+		//output to json format
+		echo json_encode($output);
+	}
+	
+	public function create_master()
+	{   
+		$data['master_type'] = $this->input->post('master_type');
+		$data['master_name'] = $this->input->post('master_name');
+		$sql="SELECT * FROM `master` WHERE (master_name='".$data['master_name']."' && master_type='".$data['master_type']."' && status='1')";
+		$query = $this->db->query($sql);
+		$count= $query->num_rows();
+		
+		if ($count>0)
+		{
+			return redirect($this->manage_master);
+		}
+		else
+		{
+		$insert = $this->MainModel->insert_row('master',$data);
+		if($insert){
+		$this->session->set_flashdata('success','Master Created Successfuly');
+		return redirect($this->manage_master);
+		}
+		}
+	}
+
+   public function delete_master($id)
+		{
+			$w['id'] = $id;	
+			$data['status']=0;
+			$query = $this->MainModel->update_row('master',$w,$data);
+		if($query)
+			{			
+				$this->session->set_flashdata('success','Master Deleted Successfuly');
+				return redirect($this->manage_master);
+			}
+			else
+			{
+				$this->session->set_flashdata('failure','Error. Try again.');
+				return redirect($this->manage_master);
+			}		
+		}
+		
+  public function ajax_update_master()
+	{   
+		$w['id'] = $this->input->post('edid_id');
+		$data['master_name'] = $this->input->post('edit_name');
+		$data['master_type'] = $this->input->post('mt');
+		$sql="SELECT * FROM `master` WHERE (master_name='".$data['master_name']."' && master_type='".$data['master_type']."')";
+		$query = $this->db->query($sql);
+		$count= $query->num_rows();
+		if ($count>0)
+		{
+			echo 0;
+		}
+		else
+		{	$query = $this->MainModel->update_row('master',$w,$data);
+		     echo 1;
+		}
+	}
+	
+	public function ajax_save_master()
+	{   
+	    $data['master_name'] = $this->input->post('name');
+		$data['master_type'] = $this->input->post('master_id');
+		$sql="SELECT * FROM `master` WHERE (master_name='".$data['master_name']."' && master_type='".$data['master_type']."')";
+		$query = $this->db->query($sql);
+		$count= $query->num_rows();
+		if ($count>0)
+		{
+			echo 0;
+		}
+		else
+		{	$insert = $this->MainModel->insert_row('master',$data);
+		     echo $insert;
+		}
+	}
+	
+	public function states()
+	{
+		$this->load->model('MenuModel');
+		$data['sidemainmenu']=$this->MenuModel->getMenu();
+		$data['sidesubmenu']=$this->MenuModel->getSubMenu($data['sidemainmenu']);
+		$where['status'] = 1;
+		$this->load->view('admin/master/states',$data);
+	}
+	public function ajax_states_list()
+	{
+		$this->load->model('StatesModel');
+		$list = $this->StatesModel->get_datatables();
+		$w['status'] = 1;/*List of staff*/
+		$data = array();$no=1;
+		foreach ($list as $r) {
+			$row = array();
+			$row[] = $no;
+			$row[] = $r->state_name;
+			$action='
+			<input type="hidden" value="'.$r->state_name.'" id="state_'.$r->id.'">
+			<a data-bs-toggle="modal" onclick="edit_fn('.$r->id.')" data-bs-target="#editmodel" class="btn btn-primary px-4 radius-30"><i class="fa fa-edit"></i> Edit</a> <a href="'.site_url('master/delete_states/'.$r->id).'" onclick="return confirm("Are you sure ?")" class="btn btn-danger px-4 radius-30"><i class="fa fa-times"></i> Delete</a>';
+			$row[] = $action;
+			$data[] = $row;
+			$no++;
+		}
+
+		$output = array(
+						"draw" => $_POST['draw'],
+						"recordsTotal" => $this->StatesModel->count_all(),											                        "recordsFiltered" => $this->StatesModel->count_filtered(),
+						"data" => $data,
+				);
+		//output to json format
+		echo json_encode($output);
+	}
+	public function create_state()
+	{   
+		$data['state_name'] = $this->input->post('state_name');
+		$sql="SELECT * FROM `states` WHERE (state_name='".$data['state_name']."')";
+		$query = $this->db->query($sql);
+		$count= $query->num_rows();
+		if ($count>0)
+		{
+			$this->session->set_flashdata('this_error','Duplicate State Not Allowed');
+			return redirect($this->states);
+		}
+		else
+		{
+		$insert = $this->MainModel->insert_row('states',$data);
+		if($insert){
+		$this->session->set_flashdata('success','State Created Successfuly');
+		return redirect($this->states);
+		}
+		}
+	}
+	
+	public function delete_states($id)
+		{
+			$where['id'] = $id;	
+			$query = $this->MainModel->delete_row('states',$where);
+		if($query)
+			{			
+				$this->session->set_flashdata('success','States Deleted Successfuly');
+				return redirect($this->states);
+			}
+			else
+			{
+				$this->session->set_flashdata('failure','Error. Try again.');
+				return redirect($this->states);
+			}		
+		}
+	
+	public function ajax_update_state()
+	{   
+		$w['id'] = $this->input->post('edid_id');
+		$data['state_name'] = $this->input->post('state_name');
+		$sql="SELECT * FROM `states` WHERE (state_name='".$data['state_name']."')";
+		$query = $this->db->query($sql);
+		$count= $query->num_rows();
+		if ($count>0)
+		{
+			echo 0;
+		}
+		else
+		{	$query = $this->MainModel->update_row('states',$w,$data);
+		     echo 1;
+		}
+	}
+	
+	public function city()
+	{
+		$this->load->model('MenuModel');
+		$data['sidemainmenu']=$this->MenuModel->getMenu();
+		$data['sidesubmenu']=$this->MenuModel->getSubMenu($data['sidemainmenu']);
+		$where['1'] = 1;
+		$data['state'] = $this->MainModel->get_result('states',$where);
+		$this->load->view('admin/master/city',$data);
+	}
+	
+	public function ajax_city_list()
+	{
+		$this->load->model('CityModel');
+		$list = $this->CityModel->get_datatables();
+		$w['status'] = 1;/*List of staff*/
+		$data = array();$no=1;
+		foreach ($list as $r) {
+			$row = array();
+			$row[] = $no;
+			$row[] = $r->city_name;
+			$row[] = $r->state_name;
+			$action='
+			<input type="hidden" value="'.$r->city_name.'" id="city_'.$r->cid.'">
+			<input type="hidden" value="'.$r->state_name.'" id="statename_'.$r->cid.'">
+			<input type="hidden" value="'.$r->states_id.'" id="states_id_'.$r->cid.'">
+			<a data-bs-toggle="modal" onclick="edit_fn('.$r->cid.')" data-bs-target="#editmodel" class="btn btn-primary px-4 radius-30"><i class="fa fa-edit"></i> Edit</a> <a href="'.site_url('master/delete_city/'.$r->cid).'" onclick="return confirm("Are you sure ?")" class="btn btn-danger px-4 radius-30"><i class="fa fa-times"></i> Delete</a>';
+			$row[] = $action;
+			$data[] = $row;
+			$no++;
+		}
+
+		$output = array(
+						"draw" => $_POST['draw'],
+						"recordsTotal" => $this->CityModel->count_all(),											                        "recordsFiltered" => $this->CityModel->count_filtered(),
+						"data" => $data,
+				);
+		//output to json format
+		echo json_encode($output);
+	}
+	public function create_city()
+	{   
+		$data['states_id'] = $this->input->post('state_id');
+		$data['city_name'] = $this->input->post('city_name');
+		$sql="SELECT * FROM `cities` WHERE (city_name='".$data['city_name']."' && states_id='".$data['states_id']."')";
+		$query = $this->db->query($sql);
+		$count= $query->num_rows();
+		if ($count>0)
+		{
+			$this->session->set_flashdata('this_error','Duplicate City Name Not Allowed');
+			return redirect($this->city);
+		}
+		else
+		{
+		$insert = $this->MainModel->insert_row('cities',$data);
+		if($insert){
+		$this->session->set_flashdata('success','City Created Successfuly');
+		return redirect($this->city);
+		}
+		}
+	}
+	public function ajax_update_city()
+	{   
+		$w['id'] = $this->input->post('edid_id');
+		$data['city_name'] = $this->input->post('city_name');
+		$data['states_id'] = $this->input->post('state_id');
+		$sql="SELECT * FROM `cities` WHERE (city_name='".$data['city_name']."' && states_id='".$data['states_id']."')";
+		$query = $this->db->query($sql);
+		$count= $query->num_rows();
+		if ($count>0)
+		{
+			echo 0;
+		}
+		else
+		{	$query = $this->MainModel->update_row('cities',$w,$data);
+		     echo 1;
+		}
+	}
+	
+	public function delete_city($id)
+		{
+			$where['id'] = $id;	
+			$query = $this->MainModel->delete_row('cities',$where);
+		if($query)
+			{			
+				$this->session->set_flashdata('success','City Deleted Successfuly');
+				return redirect($this->city);
+			}
+			else
+			{
+				$this->session->set_flashdata('failure','Error. Try again.');
+				return redirect($this->city);
+			}		
+		}
+	public function products()
+	{
+		$this->load->model('MenuModel');
+		$data['sidemainmenu']=$this->MenuModel->getMenu();
+		$data['sidesubmenu']=$this->MenuModel->getSubMenu($data['sidemainmenu']);
+		$this->load->view('admin/master/products',$data);
+	}	
+		
+	public function ajax_products_list()
+	{
+		$this->load->model('ProductModel');
+		$list = $this->ProductModel->get_datatables();
+		$w['status'] = 1;/*List of staff*/
+		$data = array();$no=1;
+		foreach ($list as $r) {
+			$row = array();
+			$row[] = $no;
+			$row[] = $r->name;
+			$row[] = GetForeignKey('master','id',$r->vertical_type,'master_name');
+			$row[] = GetForeignKey('master','id',$r->product_group,'master_name');
+			$row[] = $r->uom;
+			$row[] = GetForeignKey('account_mst','id',$r->account_id,'account_name'); 
+			
+			$action='<a href="'.site_url('master/accounts/edit/'.$r->id).'"class="btn btn-primary px-4 radius-30"><i class="fa fa-edit"></i> Edit</a> <a href="'.site_url('master/delete_accounts/'.$r->id).'" onclick="return confirm("Are you sure ?")" class="btn btn-danger px-4 radius-30"><i class="fa fa-times"></i> Delete</a>';
+			$row[] = $action;
+			$data[] = $row;
+			$no++;
+		}
+		$output = array(
+						"draw" => $_POST['draw'],
+						"recordsTotal" => $this->ProductModel->count_all(),											                        "recordsFiltered" => $this->ProductModel->count_filtered(),
+						"data" => $data,
+				);
+		//output to json format
+		echo json_encode($output);
+	}	
+		
+  public function accounts()
+	{
+		$this->load->model('MenuModel');
+		$data['sidemainmenu']=$this->MenuModel->getMenu();
+		$data['sidesubmenu']=$this->MenuModel->getSubMenu($data['sidemainmenu']);
+		$this->load->view('admin/master/account',$data);
+	}		
+		
+  
+	public function ajax_accounts_list()
+	{
+		$this->load->model('AccountModel');
+		$list = $this->AccountModel->get_datatables();
+		$w['status'] = 1;/*List of staff*/
+		$data = array();$no=1;
+		foreach ($list as $r) {
+			$row = array();
+			$row[] = $no;
+			$row[] = $r->account_name;
+			if($r->account_type=='A'){$at='Purchase';}
+			if($r->account_type=='B'){$at='Bank';}
+			if($r->account_type=='D'){$at='Deduction';}
+			if($r->account_type=='E'){$at='Expense';}
+			$row[] = $at.$r->account_type;
+			$row[] = $r->master_name;
+			$action='<a href="'.site_url('master/accounts/edit/'.$r->aid).'"class="btn btn-primary px-4 radius-30"><i class="fa fa-edit"></i> Edit</a> <a href="'.site_url('master/delete_accounts/'.$r->aid).'" onclick="return confirm("Are you sure ?")" class="btn btn-danger px-4 radius-30"><i class="fa fa-times"></i> Delete</a>';
+			$row[] = $action;
+			$data[] = $row;
+			$no++;
+		}
+		$output = array(
+						"draw" => $_POST['draw'],
+						"recordsTotal" => $this->AccountModel->count_all(),											                        "recordsFiltered" => $this->AccountModel->count_filtered(),
+						"data" => $data,
+				);
+		//output to json format
+		echo json_encode($output);
+	}
+	
+   public function account_add()
+	{
+		$this->load->model('MenuModel');
+		$data['sidemainmenu']=$this->MenuModel->getMenu();
+		$data['sidesubmenu']=$this->MenuModel->getSubMenu($data['sidemainmenu']);
+		$data['page_name']='Add Account';
+		$data['button_name']='save';
+		$where['master_type']=4;
+		$data['vertical'] = $this->MainModel->get_master('master',4);
+		$this->load->view('admin/master/account_add',$data);
+	}
+
+	public function account_create()
+	{   
+		$data['account_name'] = $this->input->post('account_name');
+		$data['account_type'] = $this->input->post('account_type');
+		$data['vertical_type'] = $this->input->post('vertical_type');
+		$data['tds_flag'] = $this->input->post('tds_flag');
+		$s=$this->input->post('status');
+		if($s==1){$data['status']=1;}else{$data['status']=0;}
+		$sql="SELECT * FROM `account_mst` WHERE (account_name='".$data['account_name']."' &&  vertical_type='".$data['vertical_type']."' && del!=1)";
+		$query = $this->db->query($sql);
+		$count= $query->num_rows();
+		if ($count>0)
+		{
+			$this->session->set_flashdata('this_error','Duplicate Account Name Not Allowed');
+			return redirect($this->account);
+		}
+		else
+		{
+		$insert = $this->MainModel->insert_row('account_mst',$data);
+		if($insert){
+		$this->session->set_flashdata('success','Account Created Successfuly');
+		return redirect($this->account);
+		}
+	}
+ }
+ 
+ public function account_edit($id)
+	{
+		$this->load->model('MenuModel');
+		$data['sidemainmenu']=$this->MenuModel->getMenu();
+		$data['sidesubmenu']=$this->MenuModel->getSubMenu($data['sidemainmenu']);
+		$data['page_name']='Edit Account';
+		$data['button_name']='Update';
+		$where['id']=$id;
+		$data['vertical'] = $this->MainModel->get_master('master',4);
+		$data['account'] = $this->MainModel->get_result('account_mst',$where);
+		$this->load->view('admin/master/account_add',$data);
+	}
+	
+ public function account_update()
+	{
+		$data['account_name'] = $this->input->post('account_name');
+		$data['account_type'] = $this->input->post('account_type');
+		$data['vertical_type'] = $this->input->post('vertical_type');
+		$data['tds_flag'] = $this->input->post('tds_flag');
+		$w['id'] = $this->input->post('id');
+		$s=$this->input->post('status');
+		if($s==1){$data['status']=1;}else{$data['status']=0;}
+		
+		 $sql="SELECT * FROM `account_mst` WHERE (account_name='".$data['account_name']."' &&  vertical_type='".$data['vertical_type']."' && del!=1 && id!='".$w['id']."')";
+	
+		$query = $this->db->query($sql);
+		 $count= $query->num_rows();
+		if ($count>0)
+		{
+			$this->session->set_flashdata('this_error','Duplicate Account Name Not Allowed');
+			return redirect(site_url('master/accounts/edit/'.$w['id']));
+		}
+		else
+		{
+		$insert = $this->MainModel->update_row('account_mst',$w,$data);
+		if($insert){
+		$this->session->set_flashdata('success','Account Updated Successfuly');
+		return redirect($this->account);
+		}
+	  }
+	}
+	
+	
+	public function gst()
+	{
+		$this->load->model('MenuModel');
+		$data['sidemainmenu']=$this->MenuModel->getMenu();
+		$data['sidesubmenu']=$this->MenuModel->getSubMenu($data['sidemainmenu']);
+	    $w['1']=1;
+		$data['gst'] = $this->MainModel->get_result('gst_mst',$w);
+		$this->load->view('admin/master/gst',$data);
+	}
+	
+
+	public function ajax_get_gst_account()
+	{
+		$w['vertical_type'] = $this->input->post('mid');
+		$account_mst = $this->MainModel->get_result('account_mst',$w);
+		echo '<option value="">Select</option>.';
+		foreach($account_mst as $at){
+			echo'<option value="'.$at['id'].'" >'.$at['account_name'].'</option>';
+		
+			}
+	}
+	public function gst_add()
+	{
+		$this->load->model('MenuModel');
+		$data['sidemainmenu']=$this->MenuModel->getMenu();
+		$data['sidesubmenu']=$this->MenuModel->getSubMenu($data['sidemainmenu']);
+		$data['page_name']='Add GST';
+		$data['button_name']='Save';
+		$data['vertical'] = $this->MainModel->get_master('master',4);
+		$this->load->view('admin/master/gst_add',$data);
+	}
+	public function gst_create()
+	{
+		$data['gst_name'] = $this->input->post('gst_name');
+		$data['sgst_account_id'] = $this->input->post('sgst');
+		$data['vertical_type'] = $this->input->post('vertical_type');
+		$data['cgst_account_id'] = $this->input->post('cgst');
+		$data['igst_account_id'] = $this->input->post('igst');
+		$data['igst'] = $this->input->post('rate');
+		$data['sgst']=$data['cgst']=($data['igst']/2);
+		$s=$this->input->post('status');
+		if($s==1){$data['status']='Y';}else{$data['status']='N';}
+		$insert = $this->MainModel->insert_row('gst_mst',$data);
+		if($insert){
+		$this->session->set_flashdata('success','GST Created Successfuly');
+		return redirect($this->gst);
+		}else{
+		$this->session->set_flashdata('error','Error');
+		return redirect($this->gst);
+	   }
+	}
+	public function gst_delete($id)
+		{
+			$where['id'] = $id;	
+			$query = $this->MainModel->delete_row('gst_mst',$where);
+		if($query)
+			{			
+				$this->session->set_flashdata('success','GST Deleted Successfuly');
+				return redirect($this->gst);
+			}
+			else
+			{
+				$this->session->set_flashdata('failure','Error. Try again.');
+				return redirect($this->gst);
+			}		
+		}
+
+	public function cost()
+	{
+		$this->load->model('MenuModel');
+		$data['sidemainmenu']=$this->MenuModel->getMenu();
+		$data['sidesubmenu']=$this->MenuModel->getSubMenu($data['sidemainmenu']);
+	    $w['1']=1;
+		$data['1'] = 1;
+		$this->load->view('admin/master/cost',$data);
+	}
+	public function ajax_cost_list()
+	{
+		$this->load->model('CostModel');
+		$list = $this->CostModel->get_datatables();
+		$data = array();$no=1;
+		foreach ($list as $r) {
+			$row = array();
+			$row[] = $no;
+			if($r->budget_name!=''){$bg=GetForeignKey('master','id',$r->budget_name,'master_name');}else{$bg=$r->budget_name;}
+			if($r->project!=''){$cn=GetForeignKey('master','id',$r->project,'master_name');}else{$cn=$r->project;}
+			$row[] = $bg;///sma_budget_name
+			$row[] = $cn;//compnay
+			$row[] = $r->budget_head;
+			$row[] = $r->total_budget;
+			$row[] = $r->balance_budget;
+			$action='
+			<a  href="'.site_url('master/cost-centre/edit/'.$r->id).'" class="btn btn-primary px-4 radius-30"><i class="fa fa-edit"></i> Edit</a> <a href="'.site_url('master/delete_cost/'.$r->id).'" onclick="return confirm("Are you sure ?")" class="btn btn-danger px-4 radius-30"><i class="fa fa-times"></i> Delete</a>';
+			$row[] = $action;
+			$data[] = $row;
+			$no++;
+		}
+
+		$output = array(
+						"draw" => $_POST['draw'],
+						"recordsTotal" => $this->CostModel->count_all(),											                        "recordsFiltered" => $this->CostModel->count_filtered(),
+						"data" => $data,
+				);
+		//output to json format
+		echo json_encode($output);
+	}
+	
+	
+	public function cost_add()
+	{
+		$this->load->model('MenuModel');
+		$data['sidemainmenu']=$this->MenuModel->getMenu();
+		$data['sidesubmenu']=$this->MenuModel->getSubMenu($data['sidemainmenu']);
+		$data['page_name']='Add Cost Center';
+		$data['button_name']='Save';
+		$w['1']=1;
+		$data['cg'] = $this->MainModel->get_master('master',2);
+		$data['company'] = $this->MainModel->get_result('company',$w);
+		$this->load->view('admin/master/cost_add',$data);
+	}
+	
+	public function cost_create()
+	{
+		$data['budget_head'] = $this->input->post('budget_head');
+		$data['project'] = $this->input->post('project');
+		$data['budget_name'] = $this->input->post('budget_name');
+		$data['total_budget'] = $this->input->post('total_budget');
+		$data['balance_budget'] = $this->input->post('balance_budget');
+		$s=$this->input->post('status');
+		if($s==1){$data['budget_status']='Y';}else{$data['budget_status']='N';}
+		$insert = $this->MainModel->insert_row('sma_budget',$data);
+		 $sql="SELECT * FROM `sma_budget` WHERE (budget_head='".$data['budget_head']."' && project='".$data['project']."' && budget_name='".$data['budget_name']."')";
+		$query = $this->db->query($sql);
+		$count= $query->num_rows();
+		if ($count>0)
+		{
+			$this->session->set_flashdata('this_error','Duplicate Entry Not Allowed');
+			return redirect($this->cost_add);
+			
+		}
+		else{
+			if($insert){
+			$this->session->set_flashdata('success','Cost Center Created Successfuly');
+			return redirect($this->cost);
+			}else{
+			$this->session->set_flashdata('error','Error');
+			return redirect($this->cost);
+		   }
+		}
+	}
+	public function delete_cost($id)
+		{
+			$where['id'] = $id;	
+			$query = $this->MainModel->delete_row('sma_budget',$where);
+		if($query)
+			{			
+				$this->session->set_flashdata('success','States Deleted Successfuly');
+				return redirect($this->cost);
+			}
+			else
+			{
+				$this->session->set_flashdata('failure','Error. Try again.');
+				return redirect($this->cost);
+			}		
+	}
+	
+	public function product_add()
+	{
+		$this->load->model('MenuModel');
+		$data['sidemainmenu']=$this->MenuModel->getMenu();
+		$data['sidesubmenu']=$this->MenuModel->getSubMenu($data['sidemainmenu']);
+		$data['page_name']='Add Product';
+		$data['button_name']='Save';
+		$data['vertical'] = $this->MainModel->get_master('master',4);
+		$data['product_group'] = $this->MainModel->get_master('master',1);
+		$data['units'] = $this->MainModel->get_master('master',3);
+		$w['del']='';
+		$data['account_mst'] = $this->MainModel->get_result('account_mst',$w);
+		$this->load->view('admin/master/account_add',$data);
+	}
+	
+	
+	/*End*/
+}

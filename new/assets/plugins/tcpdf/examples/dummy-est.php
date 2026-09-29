@@ -1,0 +1,7148 @@
+<?php  
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+/* include('../../common/conn.php');
+ ob_start();
+$sql=mysql_query("SELECT * FROM `order_master`  WHERE auto_orderid='".$_GET['id']."'");
+ $row=mysql_fetch_array($sql);
+ $date=date_create($row['date']);
+ $order_date=date_create($row['order_date']);
+ $order_total=$row['order_total'];
+ 
+ $sql_total=mysql_query("SELECT  SUM(discount) AS discount, c_form AS c_form, excise_duty AS excise_duty FROM `order`  WHERE auto_orderid='".$_GET['id']."'");
+$row_total=mysql_fetch_array($sql_total);
+ $discount=$row_total['discount'];
+ 
+ $sub_total=($order_total+$discount);
+ $percentage=(($discount/$order_total)*100);
+
+ $sql_user=mysql_query("SELECT * FROM user WHERE userId='".$row['user_id']."'");
+ $row_user=mysql_fetch_array($sql_user);*/
+//============================================================+
+// File name   : example_061.php
+// Begin       : 2010-05-24
+// Last Update : 2014-01-25
+//
+// Description : Example 061 for TCPDF class
+//               XHTML + CSS
+//
+// Author: Nicola Asuni
+//
+// (c) Copyright:
+//               Nicola Asuni
+//               Tecnick.com LTD
+//               www.tecnick.com
+//               info@tecnick.com
+//============================================================+
+
+/**
+ * Creates an example PDF TEST document using TCPDF
+ * @package com.tecnick.tcpdf
+ * @abstract TCPDF - Example: XHTML + CSS
+ * @author Nicola Asuni
+ * @since 2010-05-25
+ */
+
+// Include the main TCPDF library (search for installation path).
+require_once('tcpdf_include.php');
+
+// create new PDF document
+$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+//$pdf->SetPrintHeader(false);
+//define ('PDF_HEADER_LOGO', 'http://andamantrail.com/img/andaman-trail-logo.jpg');
+$pdf->SetPrintFooter(false);
+// set document information
+$pdf->SetCreator('Andaman Trail');
+$pdf->SetAuthor('Andaman Trail');
+$pdf->SetTitle('Estimate');
+$pdf->SetSubject('EST - 9151');
+$pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+
+// ITINERARY OVERVIEW
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+
+$overview = '
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></ br></ br>
+</td>
+</tr>
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/estovb.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></ br></ br>
+</td>
+</tr>
+
+</tbody>
+</table>  
+  
+
+<table width="680">
+<tbody>
+<tr>
+<td>Dear Rahul Kumar,<br /><br /><br />Your 8 Nights &amp; 9 Days itinerary to Andaman looks perfect. Here is the costing for the inclusions we have selected.<br /><br /><br />If you feel like giving a read on the destination you are heading to, make use of Andaman Trail guides!<br /><br /><br />Also, giving you a heads-up! The prices of airlines and hotels fluctuate a lot. Book your trip before the rates change!<br /><br /></td></tr></tbody></table>  
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/bedroom.png" width="32" alt="" /></td>
+<td align="center">Hotels</td>
+<td align="left">₹  11,999</td></tr>
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/taxi.png" width="32" alt="" /></td>
+<td align="center" valign="middle">Vehicles</td>
+<td align="left" valign="middle">₹  11,999</td></tr>
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/tickets.png" width="32" alt="" /></td>
+<td align="center" valign="middle">Tickets</td>
+<td align="left" valign="middle">₹  11,999</td></tr>
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/ferry-boat.png" width="32" alt="" /></td>
+<td align="center" valign="middle">Ferry</td>
+<td align="left" valign="middle">₹  11,999</td></tr>
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/goggles.png" width="32" alt="" /></td>
+<td align="center" valign="middle">Activities</td>
+<td align="left" valign="middle">₹  11,999</td></tr>
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/taxes.png" width="32" alt="" /></td>
+<td align="center" valign="middle">GST @ 5%</td>
+<td align="left" valign="middle">₹  11,999</td></tr>
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/poster.png" width="32" alt="" /></td>
+<td align="center" valign="middle">Discount</td>
+<td align="left" valign="middle">₹  11,999</td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></ br></ br>
+</td>
+</tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="center" valign="middle">TOTAL COST inc. of all taxes for 1 Adult(s), 1 Child(ren), 1 Infant(s)</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></ br></ br>
+</td>
+</tr>
+
+<tr>
+<td align="center" valign="middle">₹  11,999</td>
+</tr>
+</tbody></table>
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($overview, true, false, true, false, '');
+
+/* NOTE:
+ * *********************************************************
+ * You can load external XHTML using :
+ *
+ * $html = file_get_contents('/path/to/your/file.html');
+ *
+ * External CSS files will be automatically loaded.
+ * Sometimes you need to fix the path of the external CSS.
+ * *********************************************************
+ */
+
+// define some HTML content with style
+// Set some content to print
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
+
+// ITINERARY DAY 1
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$itineraryd1 = '
+
+<table width="680">
+<tbody>
+
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/itib.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d1b.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="right">
+Date : 15 July, 2020
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/tourb.jpg" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/line.png" width="200" alt="" /></td></tr>
+
+
+
+</tbody></table>
+
+';
+
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($itineraryd1, true, false, true, false, '');
+
+
+// add a page
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$itineraryd2 = '
+
+<table width="680">
+<tbody>
+
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/itib.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d2b.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="right">
+Date : 15 July, 2020
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/tourb.jpg" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/line.png" width="200" alt="" /></td></tr>
+
+
+
+</tbody></table>
+
+';
+
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($itineraryd2, true, false, true, false, '');
+
+
+// add a page
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$itineraryd3 = '
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/itib.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d3b.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="right">
+Date : 15 July, 2020
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/tourb.jpg" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/line.png" width="200" alt="" /></td></tr>
+
+
+
+</tbody></table>
+
+';
+
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($itineraryd3, true, false, true, false, '');
+
+// add a page
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$itineraryd4 = '
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/itib.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d4b.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="right">
+Date : 15 July, 2020
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/tourb.jpg" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/line.png" width="200" alt="" /></td></tr>
+
+
+
+</tbody></table>
+
+';
+
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($itineraryd4, true, false, true, false, '');
+
+// add a page
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$itineraryd5 = '
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/itib.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d5b.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="right">
+Date : 15 July, 2020
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/tourb.jpg" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/line.png" width="200" alt="" /></td></tr>
+
+
+
+</tbody></table>
+
+';
+
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($itineraryd5, true, false, true, false, '');
+
+// add a page
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$itineraryd6 = '
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/itib.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d6b.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="right">
+Date : 15 July, 2020
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/tourb.jpg" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/line.png" width="200" alt="" /></td></tr>
+
+
+
+</tbody></table>
+
+';
+
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($itineraryd6, true, false, true, false, '');
+
+
+// add a page
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$itineraryd7 = '
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/itib.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d7b.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="right">
+Date : 15 July, 2020
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/tourb.jpg" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/line.png" width="200" alt="" /></td></tr>
+
+
+
+</tbody></table>
+
+';
+
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($itineraryd7, true, false, true, false, '');
+
+// add a page
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$itineraryd8 = '
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/itib.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d8b.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="right">
+Date : 15 July, 2020
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/tourb.jpg" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/line.png" width="200" alt="" /></td></tr>
+
+
+
+</tbody></table>
+
+';
+
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($itineraryd8, true, false, true, false, '');
+
+
+// add a page
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$itineraryd9 = '
+
+<table width="680">
+<tbody>
+
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/itib.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d9b.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="right">
+Date : 15 July, 2020
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/tourb.jpg" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/line.png" width="200" alt="" /></td></tr>
+
+
+
+</tbody></table>
+
+';
+
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($itineraryd9, true, false, true, false, '');
+
+
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 10);
+
+$hoteld1 = '
+
+<table width="680">
+<tbody>
+
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/hotelb.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Date of Stay: 15 December, 2018</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d1b.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 1 - Accomodates 2 + 1 Extra Child or 1 Adult</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 2 - Accomodates 2</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 3 - Accomodates 2</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 4 - Accomodates 2</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+
+
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($hoteld1, true, false, true, false, '');
+
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 10);
+
+$hoteld2 = '
+
+<table width="680">
+<tbody>
+
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/hotelb.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Date of Stay: 15 December, 2018</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d2b.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 1 - Accomodates 2 + 1 Extra Child or 1 Adult</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 2 - Accomodates 2</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 3 - Accomodates 2</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 4 - Accomodates 2</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($hoteld2, true, false, true, false, '');
+
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 10);
+
+$hoteld3 = '
+
+<table width="680">
+<tbody>
+
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/hotelb.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Date of Stay: 15 December, 2018</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d3b.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 1 - Accomodates 2 + 1 Extra Child or 1 Adult</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 2 - Accomodates 2</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 3 - Accomodates 2</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 4 - Accomodates 2</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($hoteld3, true, false, true, false, '');
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 10);
+
+$hoteld4 = '
+
+<table width="680">
+<tbody>
+
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/hotelb.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Date of Stay: 15 December, 2018</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d4b.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 1 - Accomodates 2 + 1 Extra Child or 1 Adult</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 2 - Accomodates 2</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 3 - Accomodates 2</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 4 - Accomodates 2</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($hoteld4, true, false, true, false, '');
+
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 10);
+
+$hoteld5 = '
+
+<table width="680">
+<tbody>
+
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/hotelb.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Date of Stay: 15 December, 2018</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d5b.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 1 - Accomodates 2 + 1 Extra Child or 1 Adult</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 2 - Accomodates 2</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 3 - Accomodates 2</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 4 - Accomodates 2</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($hoteld5, true, false, true, false, '');
+
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 10);
+
+$hoteld6 = '
+
+<table width="680">
+<tbody>
+
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/hotelb.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Date of Stay: 15 December, 2018</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d6b.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 1 - Accomodates 2 + 1 Extra Child or 1 Adult</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 2 - Accomodates 2</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 3 - Accomodates 2</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 4 - Accomodates 2</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($hoteld6, true, false, true, false, '');
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 10);
+
+$hoteld7 = '
+
+<table width="680">
+<tbody>
+
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/hotelb.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Date of Stay: 15 December, 2018</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d7b.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 1 - Accomodates 2 + 1 Extra Child or 1 Adult</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 2 - Accomodates 2</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 3 - Accomodates 2</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 4 - Accomodates 2</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($hoteld7, true, false, true, false, '');
+
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 10);
+
+$hoteld8 = '
+
+<table width="680">
+<tbody>
+
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/hotelb.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Date of Stay: 15 December, 2018</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d8b.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 1 - Accomodates 2 + 1 Extra Child or 1 Adult</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 2 - Accomodates 2</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 3 - Accomodates 2</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+<p>Room # 4 - Accomodates 2</p>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/hotels.jpg" width="100" alt="" /></td>
+<td><img src="http://andamantrail.com/images/rooms.jpg" width="100" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Hotel King Plaza</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Address: # 101, Phoenix Bay, Port Blair</p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;Restaurant</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p>
+</td>
+<td align="left">
+<p>&nbsp;&nbsp;&nbsp;<strong>Standard A/C Room</strong></p>
+<p>&nbsp;&nbsp;&nbsp;<strong>Amenities</strong></p>
+<p>&nbsp;&nbsp;&nbsp;Wifi</p>
+<p>&nbsp;&nbsp;&nbsp;TV</p></td>
+</tr>
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($hoteld8, true, false, true, false, '');
+
+
+
+
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$vehd1 = '
+
+<table width="680">
+<tbody>
+
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/vehb.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+
+<p>Number of Travellers : 1 Adult(s), 1 Child(ren), 1 Infant(s)</p>
+
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d1b.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="right">
+Date : 15 July, 2020
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td>
+</tr>
+</tbody></table>
+
+
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/cab.jpg" width="200" alt="" /></td>
+
+<td>
+<p>&nbsp;&nbsp;&nbsp;4 Seater x 1</p>
+<p>&nbsp;&nbsp;&nbsp;7 Seater x 1</p>
+<p>&nbsp;&nbsp;&nbsp;17 Seater x 1</p>
+<p>&nbsp;&nbsp;&nbsp;24 Seater x 1</p>
+</td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/line.png" width="200" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+<tr>
+<td>
+<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for lorem ipsum will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
+</td>
+</tr>
+
+</tbody></table>
+
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($vehd1, true, false, true, false, '');
+
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$vehd2 = '
+
+<table width="680">
+<tbody>
+
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/vehb.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+
+<p>Number of Travellers : 1 Adult(s), 1 Child(ren), 1 Infant(s)</p>
+
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d2b.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="right">
+Date : 15 July, 2020
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td>
+</tr>
+</tbody></table>
+
+
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/cab.jpg" width="200" alt="" /></td>
+
+<td>
+<p>&nbsp;&nbsp;&nbsp;4 Seater x 1</p>
+<p>&nbsp;&nbsp;&nbsp;7 Seater x 1</p>
+<p>&nbsp;&nbsp;&nbsp;17 Seater x 1</p>
+<p>&nbsp;&nbsp;&nbsp;24 Seater x 1</p>
+</td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/line.png" width="200" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+<tr>
+<td>
+<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for lorem ipsum will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
+</td>
+</tr>
+
+</tbody></table>
+
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($vehd2, true, false, true, false, '');
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$vehd3 = '
+
+<table width="680">
+<tbody>
+
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/vehb.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+
+<p>Number of Travellers : 1 Adult(s), 1 Child(ren), 1 Infant(s)</p>
+
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d3b.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="right">
+Date : 15 July, 2020
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td>
+</tr>
+</tbody></table>
+
+
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/cab.jpg" width="200" alt="" /></td>
+
+<td>
+<p>&nbsp;&nbsp;&nbsp;4 Seater x 1</p>
+<p>&nbsp;&nbsp;&nbsp;7 Seater x 1</p>
+<p>&nbsp;&nbsp;&nbsp;17 Seater x 1</p>
+<p>&nbsp;&nbsp;&nbsp;24 Seater x 1</p>
+</td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/line.png" width="200" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+<tr>
+<td>
+<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for lorem ipsum will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
+</td>
+</tr>
+
+</tbody></table>
+
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($vehd3, true, false, true, false, '');
+
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$vehd4 = '
+
+<table width="680">
+<tbody>
+
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/vehb.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+
+<p>Number of Travellers : 1 Adult(s), 1 Child(ren), 1 Infant(s)</p>
+
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d4b.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="right">
+Date : 15 July, 2020
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td>
+</tr>
+</tbody></table>
+
+
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/cab.jpg" width="200" alt="" /></td>
+
+<td>
+<p>&nbsp;&nbsp;&nbsp;4 Seater x 1</p>
+<p>&nbsp;&nbsp;&nbsp;7 Seater x 1</p>
+<p>&nbsp;&nbsp;&nbsp;17 Seater x 1</p>
+<p>&nbsp;&nbsp;&nbsp;24 Seater x 1</p>
+</td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/line.png" width="200" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+<tr>
+<td>
+<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for lorem ipsum will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
+</td>
+</tr>
+
+</tbody></table>
+
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($vehd4, true, false, true, false, '');
+
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$vehd5 = '
+
+<table width="680">
+<tbody>
+
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/vehb.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+
+<p>Number of Travellers : 1 Adult(s), 1 Child(ren), 1 Infant(s)</p>
+
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d5b.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="right">
+Date : 15 July, 2020
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td>
+</tr>
+</tbody></table>
+
+
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/cab.jpg" width="200" alt="" /></td>
+
+<td>
+<p>&nbsp;&nbsp;&nbsp;4 Seater x 1</p>
+<p>&nbsp;&nbsp;&nbsp;7 Seater x 1</p>
+<p>&nbsp;&nbsp;&nbsp;17 Seater x 1</p>
+<p>&nbsp;&nbsp;&nbsp;24 Seater x 1</p>
+</td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/line.png" width="200" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+<tr>
+<td>
+<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for lorem ipsum will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
+</td>
+</tr>
+
+</tbody></table>
+
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($vehd5, true, false, true, false, '');
+
+
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$vehd6 = '
+
+<table width="680">
+<tbody>
+
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/vehb.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+
+<p>Number of Travellers : 1 Adult(s), 1 Child(ren), 1 Infant(s)</p>
+
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d6b.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="right">
+Date : 15 July, 2020
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td>
+</tr>
+</tbody></table>
+
+
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/cab.jpg" width="200" alt="" /></td>
+
+<td>
+<p>&nbsp;&nbsp;&nbsp;4 Seater x 1</p>
+<p>&nbsp;&nbsp;&nbsp;7 Seater x 1</p>
+<p>&nbsp;&nbsp;&nbsp;17 Seater x 1</p>
+<p>&nbsp;&nbsp;&nbsp;24 Seater x 1</p>
+</td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/line.png" width="200" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+<tr>
+<td>
+<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for lorem ipsum will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
+</td>
+</tr>
+
+</tbody></table>
+
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($vehd6, true, false, true, false, '');
+
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$vehd7 = '
+
+<table width="680">
+<tbody>
+
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/vehb.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+
+<p>Number of Travellers : 1 Adult(s), 1 Child(ren), 1 Infant(s)</p>
+
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d7b.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="right">
+Date : 15 July, 2020
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td>
+</tr>
+</tbody></table>
+
+
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/cab.jpg" width="200" alt="" /></td>
+
+<td>
+<p>&nbsp;&nbsp;&nbsp;4 Seater x 1</p>
+<p>&nbsp;&nbsp;&nbsp;7 Seater x 1</p>
+<p>&nbsp;&nbsp;&nbsp;17 Seater x 1</p>
+<p>&nbsp;&nbsp;&nbsp;24 Seater x 1</p>
+</td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/line.png" width="200" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+<tr>
+<td>
+<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for lorem ipsum will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
+</td>
+</tr>
+
+</tbody></table>
+
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($vehd7, true, false, true, false, '');
+
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$vehd8 = '
+
+<table width="680">
+<tbody>
+
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/vehb.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+
+<p>Number of Travellers : 1 Adult(s), 1 Child(ren), 1 Infant(s)</p>
+
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d8b.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="right">
+Date : 15 July, 2020
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td>
+</tr>
+</tbody></table>
+
+
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/cab.jpg" width="200" alt="" /></td>
+
+<td>
+<p>&nbsp;&nbsp;&nbsp;4 Seater x 1</p>
+<p>&nbsp;&nbsp;&nbsp;7 Seater x 1</p>
+<p>&nbsp;&nbsp;&nbsp;17 Seater x 1</p>
+<p>&nbsp;&nbsp;&nbsp;24 Seater x 1</p>
+</td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/line.png" width="200" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+<tr>
+<td>
+<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for lorem ipsum will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
+</td>
+</tr>
+
+</tbody></table>
+
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($vehd8, true, false, true, false, '');
+
+
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$vehd9 = '
+
+<table width="680">
+<tbody>
+
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/vehb.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td>
+
+<p>Number of Travellers : 1 Adult(s), 1 Child(ren), 1 Infant(s)</p>
+
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d9b.png" width="680" alt="" />
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="right">
+Date : 15 July, 2020
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td>
+</tr>
+</tbody></table>
+
+
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/cab.jpg" width="200" alt="" /></td>
+
+<td>
+<p>&nbsp;&nbsp;&nbsp;4 Seater x 1</p>
+<p>&nbsp;&nbsp;&nbsp;7 Seater x 1</p>
+<p>&nbsp;&nbsp;&nbsp;17 Seater x 1</p>
+<p>&nbsp;&nbsp;&nbsp;24 Seater x 1</p>
+</td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/line.png" width="200" alt="" /></td></tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+<tr>
+<td>
+<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for lorem ipsum will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
+</td>
+</tr>
+
+</tbody></table>
+
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($vehd9, true, false, true, false, '');
+
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$tick = '
+
+<table width="680">
+<tbody>
+
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/ticketb.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td>
+
+<p>Number of Travellers : 1 Adult(s), 1 Child(ren), 1 Infant(s)</p>
+
+</td>
+</tr>
+
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d1b.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="right">
+Date : 15 July, 2020
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rhoncus, sem a finibus aliquet, diam erat porttitor libero, auctor finibus.</p>
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d2b.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="right">
+Date : 16 July, 2020
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rhoncus, sem a finibus aliquet, diam erat porttitor libero, auctor finibus.</p>
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d3b.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="right">
+Date : 16 July, 2020
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rhoncus, sem a finibus aliquet, diam erat porttitor libero, auctor finibus.</p>
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+
+</tbody></table>
+
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($tick, true, false, true, false, '');
+
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$tick = '
+
+<table width="680">
+<tbody>
+
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/ticketb.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td>
+
+<p>Number of Travellers : 1 Adult(s), 1 Child(ren), 1 Infant(s)</p>
+
+</td>
+</tr>
+
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d4b.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="right">
+Date : 15 July, 2020
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rhoncus, sem a finibus aliquet, diam erat porttitor libero, auctor finibus.</p>
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d5b.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="right">
+Date : 16 July, 2020
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rhoncus, sem a finibus aliquet, diam erat porttitor libero, auctor finibus.</p>
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d6b.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="right">
+Date : 16 July, 2020
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rhoncus, sem a finibus aliquet, diam erat porttitor libero, auctor finibus.</p>
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+
+</tbody></table>
+
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($tick, true, false, true, false, '');
+
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$tick = '
+
+<table width="680">
+<tbody>
+
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/ticketb.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td>
+
+<p>Number of Travellers : 1 Adult(s), 1 Child(ren), 1 Infant(s)</p>
+
+</td>
+</tr>
+
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d7b.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="right">
+Date : 15 July, 2020
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rhoncus, sem a finibus aliquet, diam erat porttitor libero, auctor finibus.</p>
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d8b.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="right">
+Date : 16 July, 2020
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rhoncus, sem a finibus aliquet, diam erat porttitor libero, auctor finibus.</p>
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/d9b.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td align="right">
+Date : 16 July, 2020
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+<tr>
+<td>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rhoncus, sem a finibus aliquet, diam erat porttitor libero, auctor finibus.</p>
+</td>
+</tr>
+
+<tr>
+<td><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" /></td></tr>
+
+
+</tbody></table>
+
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($tick, true, false, true, false, '');
+
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$ferry = '
+
+<table width="680">
+<tbody>
+
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/ferryb.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td>
+
+<p>Number of Travellers : 1 Adult(s), 1 Child(ren), 1 Infant(s)</p>
+
+</td>
+</tr>
+
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="right">
+
+</td>
+</tr>
+
+
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/mak.jpg" width="200" alt="" /></td>
+<td>
+<p>&nbsp;&nbsp;&nbsp;Ferry: Makruzz Gold</p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Seat: Premium></p>
+<p>&nbsp;&nbsp;&nbsp;Date : 15 July, 2020</p></td>
+<p>&nbsp;&nbsp;&nbsp;Route: Port Blair to Havelock</p>
+</tr>
+
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/mak.jpg" width="200" alt="" /></td>
+<td>
+<p>&nbsp;&nbsp;&nbsp;Ferry: Makruzz Gold</p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Seat: Premium></p>
+<p>&nbsp;&nbsp;&nbsp;Route: Port Blair to Havelock</p>
+<p>&nbsp;&nbsp;&nbsp;Date : 15 July, 2020</p></td>
+</tr>
+
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/mak.jpg" width="200" alt="" /></td>
+<td>
+<p>&nbsp;&nbsp;&nbsp;Ferry: Makruzz Gold</p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;Seat: Premium></p>
+<p>&nbsp;&nbsp;&nbsp;Route: Port Blair to Havelock</p>
+<p>&nbsp;&nbsp;&nbsp;Date : 15 July, 2020</p>
+</td>
+</tr>
+
+</tbody></table>
+
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($ferry, true, false, true, false, '');
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$activities = '
+
+<table width="680">
+<tbody>
+
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/actb.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td>
+<p>Number of Travellers : 1 Adult(s), 1 Child(ren), 1 Infant(s)</p>
+</td>
+</tr>
+
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/scuba.jpg" width="200" alt="" /></td>
+<td>
+<p>&nbsp;&nbsp;&nbsp;Activity: Scuba</p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;No of Tickets # 2</p>
+</td>
+</tr>
+
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/seawalk.jpg" width="200" alt="" /></td>
+<td>
+<p>&nbsp;&nbsp;&nbsp;Activity: Sea Walk</p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;No of Tickets # 2</p>
+</td>
+</tr>
+
+</tbody></table>
+
+<table width="680">
+<tbody>
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+</tbody></table>
+
+<table width="680">
+<tbody>
+
+<tr>
+<td><img src="http://andamantrail.com/images/jet.jpg" width="200" alt="" /></td>
+<td>
+<p>&nbsp;&nbsp;&nbsp;Activity: Jet Ski</p>
+<p>&nbsp;&nbsp;&nbsp;<img src="http://andamantrail.com/images/trip.svg" width="100" alt="" /></p>
+<p>&nbsp;&nbsp;&nbsp;No of Tickets # 2</p>
+</td>
+</tr>
+
+</tbody></table>
+
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($activities, true, false, true, false, '');
+
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$payment = '
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/payb.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+<p>Duis cursus ex quis finibus eleifend.</p>
+<p>Cras porttitor risus eu urna cursus euismod.</p>
+</td>
+</tr>
+
+
+
+</tbody></table>
+
+
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($payment, true, false, true, false, '');
+
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$bank = '
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/bankb.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+<p>Duis cursus ex quis finibus eleifend.</p>
+<p>Cras porttitor risus eu urna cursus euismod.</p>
+</td>
+</tr>
+
+
+
+</tbody></table>
+
+
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($bank, true, false, true, false, '');
+
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$terms = '
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/tcb.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+<p>Duis cursus ex quis finibus eleifend.</p>
+<p>Cras porttitor risus eu urna cursus euismod.</p>
+</td>
+</tr>
+
+
+
+</tbody></table>
+
+
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($terms, true, false, true, false, '');
+
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$refund = '
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/refundb.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+<p>Duis cursus ex quis finibus eleifend.</p>
+<p>Cras porttitor risus eu urna cursus euismod.</p>
+</td>
+</tr>
+
+
+
+</tbody></table>
+
+
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($refund, true, false, true, false, '');
+
+
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$inc = '
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/incb.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+<p>Duis cursus ex quis finibus eleifend.</p>
+<p>Cras porttitor risus eu urna cursus euismod.</p>
+</td>
+</tr>
+
+
+
+</tbody></table>
+
+
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($inc, true, false, true, false, '');
+
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$exc = '
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="right"><img src="http://andamantrail.com/images/logo.png" width="200" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/excb.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+<p>Duis cursus ex quis finibus eleifend.</p>
+<p>Cras porttitor risus eu urna cursus euismod.</p>
+</td>
+</tr>
+
+
+
+</tbody></table>
+
+
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($exc, true, false, true, false, '');
+
+
+
+// add a page
+
+$pdf->AddPage('P','A4');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'andamantrail.co', PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+
+$pdf->SetFont('roboto', '', 12);
+
+$back = '
+
+<table width="680">
+<tbody>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/logo.png" width="300" alt="" />
+</td>
+</tr>
+
+<tr>
+<td align="center"><img src="http://andamantrail.com/images/whiten.png" width="680" alt="" />
+</td>
+</tr>
+
+<tr>
+<td>
+<p></p><p></p><p></p><p></p>
+<p>Your Customer Relationship Officer</p>
+<p>Documented by: Rahul Kumar</p>
+<p>Direct Contact: +91-8762711000</p>
+<p>Email: rahul@andamantrail.com</p>
+</td></tr>
+
+<tr>
+<td>
+<p></p><p></p><p></p><p></p>
+<p>Andaman Trail is a brand owned by Exotrail Destination Manaagement Private Limited</p>
+<p>All rights reserved by Exotrail Destination Management Private Limited</p>
+<p>CIN: U63030AN2018PTC005421</p>
+<p>PAN: AAFCE2544M</p>
+<p>TAN: CALE05464E</p>
+<p>For any queries, please call: 1800-200-5100</p>
+</td>
+</tr>
+</tbody></table>
+
+
+
+';
+//echo $my_html; die();
+// output the HTML content
+
+$pdf->writeHTML($back, true, false, true, false, '');
+
+
+
+
+
+
+
+
+// reset pointer to the last page
+$pdf->lastPage();
+
+// ---------------------------------------------------------
+
+//Close and output PDF document
+$pdf->Output('preview.pdf', 'D');
+
+//============================================================+
+// END OF FILE
+//============================================================+
+?>

@@ -1,0 +1,8 @@
+select purchase_id, ds.approval_memo_ref, ds1.approval_memo_ref, ds.product_id , ds1.product_id , ds.supplier_id from 
+(SELECT count(*) as itemcnt, a.id as purchase_id, a.to_supplier as supplier_id, approval_memo_ref, product_id 
+			FROM sma_purchase_order a, `sma_po_items` b where a.id = b.purchase_id 
+				group by approval_memo_ref, to_supplier  ) DS1,
+(select count(*) as itemcnt, a.id as approval_memo_ref, b.supplier_id, product_id 
+				from sma_approval_memo a, sma_approval_items b  where a.id = b.approval_hdr_id and status ='Completed'
+                    group by approval_memo_ref, supplier_id ) DS where ds.approval_memo_ref = ds1.approval_memo_ref and ds.supplier_id = ds1.supplier_id and ds.product_id = ds1.product_id and ds.itemcnt > ds1.itemcnt
+

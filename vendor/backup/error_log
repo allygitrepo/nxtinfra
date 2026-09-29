@@ -1,0 +1,80 @@
+[04-Dec-2020 07:05:40 America/Chicago] PHP Warning:  session_start(): Cannot start session when headers already sent in /home3/syminypj/sekura.xyz/header.php on line 7
+[04-Dec-2020 07:05:40 America/Chicago] PHP Warning:  session_destroy(): Trying to destroy uninitialized session in /home3/syminypj/sekura.xyz/header.php on line 25
+[04-Dec-2020 07:05:40 America/Chicago] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home3/syminypj/sekura.xyz/vendor/vendor.php:1) in /home3/syminypj/sekura.xyz/header.php on line 26
+[04-Dec-2020 07:05:54 America/Chicago] PHP Warning:  session_start(): Cannot start session when headers already sent in /home3/syminypj/sekura.xyz/header.php on line 7
+[04-Dec-2020 07:05:54 America/Chicago] PHP Warning:  session_destroy(): Trying to destroy uninitialized session in /home3/syminypj/sekura.xyz/header.php on line 25
+[04-Dec-2020 07:05:54 America/Chicago] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home3/syminypj/sekura.xyz/vendor/vendor.php:1) in /home3/syminypj/sekura.xyz/header.php on line 26
+[26-Dec-2020 04:43:23 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 963
+[26-Dec-2020 05:38:52 America/Chicago] PHP Warning:  session_start(): Cannot start session when headers already sent in /home3/syminypj/sekura.xyz/header.php on line 7
+[26-Dec-2020 05:38:52 America/Chicago] PHP Warning:  session_destroy(): Trying to destroy uninitialized session in /home3/syminypj/sekura.xyz/header.php on line 25
+[26-Dec-2020 05:38:52 America/Chicago] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home3/syminypj/sekura.xyz/vendor/category.php:1) in /home3/syminypj/sekura.xyz/header.php on line 26
+[27-Dec-2020 10:16:20 America/Chicago] PHP Warning:  session_start(): Cannot start session when headers already sent in /home3/syminypj/sekura.xyz/header.php on line 7
+[27-Dec-2020 10:16:20 America/Chicago] PHP Warning:  session_destroy(): Trying to destroy uninitialized session in /home3/syminypj/sekura.xyz/header.php on line 25
+[27-Dec-2020 10:16:20 America/Chicago] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home3/syminypj/sekura.xyz/vendor/states.php:1) in /home3/syminypj/sekura.xyz/header.php on line 26
+[10-Feb-2021 05:36:05 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 909
+[10-Feb-2021 05:38:08 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 909
+[12-Feb-2021 03:03:47 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 909
+[14-Feb-2021 23:41:21 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 909
+[15-Feb-2021 06:31:13 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 909
+[15-Feb-2021 07:15:30 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 909
+[15-Feb-2021 23:39:42 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 909
+[15-Feb-2021 23:46:40 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 909
+[16-Feb-2021 00:19:31 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 909
+[16-Feb-2021 00:22:51 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 909
+[16-Feb-2021 00:26:49 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 909
+[16-Feb-2021 00:39:50 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 909
+[16-Feb-2021 00:47:21 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 909
+[16-Feb-2021 01:08:44 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 909
+[16-Feb-2021 01:15:07 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 909
+[16-Feb-2021 01:15:29 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 909
+[16-Feb-2021 02:17:30 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1041
+[16-Feb-2021 02:17:31 America/Chicago] PHP Warning:  A non-numeric value encountered in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 78
+[16-Feb-2021 02:17:31 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 182
+[16-Feb-2021 02:18:26 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1041
+[16-Feb-2021 02:18:27 America/Chicago] PHP Warning:  A non-numeric value encountered in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 78
+[16-Feb-2021 02:18:27 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 182
+[16-Feb-2021 02:22:12 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1061
+[16-Feb-2021 02:22:12 America/Chicago] PHP Warning:  A non-numeric value encountered in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 97
+[16-Feb-2021 02:22:12 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 202
+[16-Feb-2021 02:24:37 America/Chicago] PHP Warning:  A non-numeric value encountered in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 97
+[16-Feb-2021 02:28:46 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1063
+[16-Feb-2021 02:28:47 America/Chicago] PHP Warning:  A non-numeric value encountered in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 97
+[16-Feb-2021 02:30:07 America/Chicago] PHP Warning:  A non-numeric value encountered in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 113
+[16-Feb-2021 02:30:39 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1079
+[16-Feb-2021 02:30:40 America/Chicago] PHP Warning:  A non-numeric value encountered in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 113
+[16-Feb-2021 02:32:00 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1079
+[16-Feb-2021 04:16:51 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1079
+[16-Feb-2021 04:17:50 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1079
+[16-Feb-2021 05:47:36 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1079
+[16-Feb-2021 05:47:59 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1079
+[16-Feb-2021 06:37:50 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1079
+[16-Feb-2021 22:59:43 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1089
+[16-Feb-2021 23:08:32 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1089
+[16-Feb-2021 23:23:19 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1089
+[16-Feb-2021 23:31:45 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1089
+[16-Feb-2021 23:32:19 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1089
+[16-Feb-2021 23:34:31 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1089
+[16-Feb-2021 23:34:43 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1089
+[17-Feb-2021 02:30:23 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1089
+[17-Feb-2021 03:01:12 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1089
+[17-Feb-2021 03:01:40 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1089
+[17-Feb-2021 03:02:37 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1089
+[17-Feb-2021 03:03:34 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1089
+[17-Feb-2021 04:01:38 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1089
+[17-Feb-2021 04:04:40 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1089
+[17-Feb-2021 08:12:35 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1089
+[17-Feb-2021 08:14:49 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1089
+[17-Feb-2021 08:15:58 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1089
+[17-Feb-2021 08:16:11 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1089
+[24-Feb-2021 11:41:00 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1089
+[24-Feb-2021 11:44:15 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1089
+[25-Feb-2021 00:46:34 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1089
+[02-Mar-2021 04:46:08 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1089
+[02-Mar-2021 04:47:24 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1089
+[02-Mar-2021 04:48:04 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1089
+[02-Mar-2021 04:48:06 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1089
+[02-Mar-2021 04:48:49 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1089
+[02-Mar-2021 04:53:52 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1089
+[02-Mar-2021 04:58:02 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1089
+[05-Mar-2021 21:53:04 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1085
+[16-Mar-2021 01:39:14 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/vendor/vendor.php on line 1085

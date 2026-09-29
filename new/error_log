@@ -1,0 +1,1 @@
+[10-Apr-2021 15:04:47 America/Chicago] PHP Fatal error:  Cannot redeclare Configrations::workflow() in /home3/syminypj/symphonyp2p.xyz/new/application/controllers/Configrations.php on line 453

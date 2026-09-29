@@ -1,0 +1,3312 @@
+
+  
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Athaang Group of Companies - Procurements</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.6 -->
+  <link rel="stylesheet" href="http://localhost/athang/bootstrap/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="http://localhost/athang/dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="http://localhost/athang/dist/css/skins/_all-skins.min.css">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="http://localhost/athang/plugins/iCheck/flat/blue.css">
+  <!-- Morris chart -->
+  <link rel="stylesheet" href="http://localhost/athang/plugins/morris/morris.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="http://localhost/athang/plugins/select2/select2.css">
+  <!-- jvectormap -->
+  <link rel="stylesheet" href="http://localhost/athang/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
+  <!-- Date Picker -->
+  <link rel="stylesheet" href="http://localhost/athang/plugins/datepicker/datepicker3.css">
+  <!-- Daterange picker -->
+  <link rel="stylesheet" href="http://localhost/athang/plugins/daterangepicker/daterangepicker.css">
+  <!-- bootstrap wysihtml5 - text editor -->
+  <link rel="stylesheet" href="http://localhost/athang/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+<!-- iCheck for checkboxes and radio inputs -->
+  <link rel="stylesheet" href="http://localhost/athang/plugins/iCheck/all.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  
+<style>  
+//# .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited , .btn-primary:focus{
+// #   background-color: #ff8c00 !important;
+//#	border-color: #8064A2;
+//#   }
+   
+  .btn-primary {
+    background-color: #ff8c00;
+    border-color: #ff8c00;
+    color: #FFF; }
+  .btn-primary:hover,  .btn-primary:focus {
+      border-color: #e55317;
+      background-color: #e55317;
+      color: #FFF; }
+  
+  .btn-info {
+    background-color: #ff8c00;
+    border-color: #ff8c00;
+    color: #FFF; }
+  .btn-info:hover,  .btn-info:focus {
+      border-color: #e55317;
+      background-color: #e55317;
+      color: #FFF; }
+		
+		
+	
+	
+</style>
+
+</head>
+
+
+<body class="hold-transition skin-blue sidebar-mini " >
+
+<div class="wrapper">
+
+    <header class="main-header">
+        <!-- Logo -->
+        <a href="http://localhost/athang/dashboard_athang.php?sub=dash" class="logo"  style="background-color:#FFFFFF;">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <img src="http://localhost/athang/dist/img/logo.jpg" class="logo-mini" />
+			<img src="http://localhost/athang/dist/img/logo.jpg" class="logo" style="background-color:#FFFFFF;" />
+			
+            <!--<span class="logo-mini"><b>A</b>LT</span>-->
+            <!-- logo for regular state and mobile devices -->
+            <!--<span class="logo-lg"><b>Admin</b>LTE</span>
+            <span class="logo-lg" style="color:black;" ><b> Athaang </b></span>-->
+
+        </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top"  style="background-color:#ff8c00123;">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle sidebar_btn" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <!-- User Account: style can be found in dropdown.less -->
+                              <!-- User Account: style can be found in dropdown.less -->
+							  
+					  
+					<li class="dropdown user user-menu " >
+						<a href="dashboard_athang.php?sub=dash" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" onclick="openprofile()">
+							<span class="hidden-xs">Welcome Admin&nbsp;&nbsp;							</span>
+						</a>
+						
+						<ul class="dropdown-menu">
+						  <!-- User image -->
+						  <!-- Menu Footer-->
+						  <li class="user-footer">
+							<div class="pull-left">
+							  <a href="http://localhost/athang/setting/user_profile.php?sub=edit&user_id=Admin" class="btn btn-default btn-flat">Profile</a>
+							</div>
+							<div class="pull-right">
+								<a href="http://localhost/athang/setting/user_reset.php?sub=1" class="btn btn-default btn-flat" >Reset Password</a>
+							</div>
+							<!--<div class="pull-right">
+							  <a href="http://localhost/athang/logout.php" class="btn btn-default btn-flat">Sign out</a>
+							</div>-->
+						  </li>
+						</ul>
+						
+					</li>
+					  
+					  
+					  <li class="dropdown tasks-menu">
+						<a href="http://localhost/athang/logout.php" >
+						  <span class="hidden-xs">Logout</span>
+						</a>
+					  </li>	
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- Sidebar user panel -->
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu">
+        <!--<li class="header">MAIN NAVIGATION</li>-->
+		
+        <li class="">
+          <a href="http://localhost/athang/dashboard_athang.php?sub=dash">
+            <i class="fa fa-123tachometer-alt"></i> <span>Dashboard</span>
+          </a>
+        </li>
+		
+	<li class="treeview">
+						<a href="#">
+						<i class="fa fa-123flag-checkered"></i>
+						<span>P2P</span>
+						<span class="pull-right-container">
+						  <i class="fa fa-angle-left pull-right"></i>
+						</span>
+						</a> 
+						<ul class="treeview-menu"><li><a href="http://localhost/athang/approval/index.php?reset=1" target=""><i class="fa fa-123wrench"></i>Approval Memo </a></li><li><a href="http://localhost/athang/purchase_order/index.php?reset=1" target=""><i class="fa fa-123wrench"></i>Purchase Order </a></li><li><a href="http://localhost/athang/supp_invoice/index.php?reset=1" target=""><i class="fa fa-123wrench"></i>Supplier Invoice </a></li></ul>
+					</li>			
+						
+<li class="treeview">
+						<a href="#">
+						<i class="fa fa-123flag-checkered"></i>
+						<span>Account</span>
+						<span class="pull-right-container">
+						  <i class="fa fa-angle-left pull-right"></i>
+						</span>
+						</a> 
+						<ul class="treeview-menu"><li><a href="http://localhost/athang/payment/index.php?sub=list&reset=1" target=""><i class="fa fa-123wrench"></i>Payment </a></li><li><a href="http://localhost/athang/petty/pettycash_expense.php?sub=list&reset=1" target=""><i class="fa fa-123wrench"></i>Petty Cash </a></li><li><a href="http://localhost/athang/payment/vendor_ledger_prn_repo.php?sub=list" target=""><i class="fa fa-123wrench"></i>Ledger </a></li><li><a href="http://localhost/athang/setting/account_group_mst.php?sub=list" target=""><i class="fa fa-123wrench"></i>Account Group </a></li><li><a href="http://localhost/athang/setting/account_mst.php?sub=list" target=""><i class="fa fa-123wrench"></i>Account Master </a></li></ul>
+					</li>			
+						
+<li class="treeview">
+						<a href="#">
+						<i class="fa fa-123flag-checkered"></i>
+						<span>Employee Portal</span>
+						<span class="pull-right-container">
+						  <i class="fa fa-angle-left pull-right"></i>
+						</span>
+						</a> 
+						<ul class="treeview-menu"><li><a href="http://localhost/athang/travel_approval/traval_app.php?sub=list" target=""><i class="fa fa-123wrench"></i>Travel Request </a></li><li><a href="http://localhost/athang/travel_approval/travel_expence.php?sub=list" target=""><i class="fa fa-123wrench"></i>Travel Expense </a></li><li><a href="http://localhost/athang/travel_approval/regular_expense.php?sub=list" target=""><i class="fa fa-123wrench"></i>Regular Expense </a></li></ul>
+					</li>			
+						
+<li class="treeview">
+						<a href="#">
+						<i class="fa fa-123flag-checkered"></i>
+						<span>Budget</span>
+						<span class="pull-right-container">
+						  <i class="fa fa-angle-left pull-right"></i>
+						</span>
+						</a> 
+						<ul class="treeview-menu"><li><a href="http://localhost/athang/budget/budget_adjust.php?sub=list" target=""><i class="fa fa-123wrench"></i>Budget Adjust </a></li><li><a href="http://localhost/athang/budget/transfer_budget_adjust.php?sub=list" target=""><i class="fa fa-123wrench"></i>Transfer Budget From To </a></li><li><a href="http://localhost/athang/budget/budget_trans_list.php?sub=list" target=""><i class="fa fa-123wrench"></i>Budget Transactions </a></li><li><a href="http://localhost/athang/budget/budget_used_SI.php?sub=list" target=""><i class="fa fa-123wrench"></i>Budget Used Transactions </a></li><li><a href="http://localhost/athang/budget/budget_name.php?sub=list" target=""><i class="fa fa-123wrench"></i>Category </a></li><li><a href="http://localhost/athang/budget/budget_category.php?sub=list" target=""><i class="fa fa-123wrench"></i>Sub Category </a></li></ul>
+					</li>			
+						
+<li class="treeview">
+						<a href="#">
+						<i class="fa fa-123flag-checkered"></i>
+						<span>Products</span>
+						<span class="pull-right-container">
+						  <i class="fa fa-angle-left pull-right"></i>
+						</span>
+						</a> 
+						<ul class="treeview-menu"><li><a href="http://localhost/athang/product/product.php?sub=list" target=""><i class="fa fa-123wrench"></i>Product </a></li><li><a href="http://localhost/athang/product/product_group_mst.php?sub=list" target=""><i class="fa fa-123wrench"></i>Product Group </a></li><li><a href="http://localhost/athang/product/units.php?sub=list" target=""><i class="fa fa-123wrench"></i>Units </a></li></ul>
+					</li>			
+						
+<li class="treeview">
+						<a href="#">
+						<i class="fa fa-123flag-checkered"></i>
+						<span>Supplier</span>
+						<span class="pull-right-container">
+						  <i class="fa fa-angle-left pull-right"></i>
+						</span>
+						</a> 
+						<ul class="treeview-menu"><li><a href="http://localhost/athang/vendor/vendor.php?sub=list" target=""><i class="fa fa-123wrench"></i>Supplier </a></li><li><a href="http://localhost/athang/vendor/category.php?sub=list" target=""><i class="fa fa-123wrench"></i>Vendor Category </a></li><li><a href="http://localhost/athang/vendor/type.php?sub=list" target=""><i class="fa fa-123wrench"></i>Vendor Type </a></li><li><a href="http://localhost/athang/vendor/states.php?sub=list" target=""><i class="fa fa-123wrench"></i>States </a></li><li><a href="http://localhost/athang/vendor/cities.php?sub=list" target=""><i class="fa fa-123wrench"></i>City </a></li></ul>
+					</li>			
+						
+<li class="treeview">
+						<a href="#">
+						<i class="fa fa-123flag-checkered"></i>
+						<span>Report</span>
+						<span class="pull-right-container">
+						  <i class="fa fa-angle-left pull-right"></i>
+						</span>
+						</a> 
+						<ul class="treeview-menu"><li><a href="http://localhost/athang/approval/hc_workflow_sum.php?sub=list" target=""><i class="fa fa-123wrench"></i>Approval Note Workflow </a></li><li><a href="http://localhost/athang/pending_list.php?sub=pdf" target=""><i class="fa fa-123wrench"></i>Pending Status </a></li><li><a href="http://localhost/athang/approval/hc_workflow_po.php?sub=list" target=""><i class="fa fa-123wrench"></i>Purchase Order Workflow </a></li><li><a href="http://localhost/athang/approval/hc_workflow_si.php?sub=list" target=""><i class="fa fa-123wrench"></i>Supplier Invoice Workflow </a></li><li><a href="http://localhost/athang/approval/hc_workflow_py.php?sub=list" target=""><i class="fa fa-123wrench"></i>Payment Workflow </a></li></ul>
+					</li>			
+						
+<li class="treeview">
+						<a href="#">
+						<i class="fa fa-123flag-checkered"></i>
+						<span>Setting</span>
+						<span class="pull-right-container">
+						  <i class="fa fa-angle-left pull-right"></i>
+						</span>
+						</a> 
+						<ul class="treeview-menu"><li><a href="http://localhost/athang/setting/role_mst.php?sub=list" target=""><i class="fa fa-123wrench"></i>Role </a></li><li><a href="http://localhost/athang/setting/main_menu.php?sub=list" target=""><i class="fa fa-123wrench"></i>Main Menu </a></li><li><a href="http://localhost/athang/setting/sub_menu.php?sub=list" target=""><i class="fa fa-123wrench"></i>Sub Menu </a></li><li><a href="http://localhost/athang/setting/user.php?sub=list" target=""><i class="fa fa-123wrench"></i>Users </a></li><li><a href="http://localhost/athang/budget/budget.php?sub=list" target=""><i class="fa fa-123wrench"></i>Cost Center </a></li><li><a href="http://localhost/athang/setting/useraccs_new.php?sub=list" target=""><i class="fa fa-123wrench"></i>Role Based Access </a></li><li><a href="http://localhost/athang/setting/department.php?sub=list" target=""><i class="fa fa-123wrench"></i>Department </a></li><li><a href="http://localhost/athang/setting/designation.php?sub=list" target=""><i class="fa fa-123wrench"></i>Designation </a></li><li><a href="http://localhost/athang/setting/document_type.php?sub=list" target=""><i class="fa fa-123wrench"></i>Document Type </a></li><li><a href="http://localhost/athang/setting/company.php?sub=list" target=""><i class="fa fa-123wrench"></i>Company Profile </a></li><li><a href="http://localhost/athang/setting/project.php?sub=list" target=""><i class="fa fa-123wrench"></i>Delivery Location </a></li><li><a href="http://localhost/athang/setting/workflow_config.php?sub=list" target=""><i class="fa fa-123wrench"></i>Workflow Config </a></li><li><a href="http://localhost/athang/setting/term_mst.php?sub=list" target=""><i class="fa fa-123wrench"></i>Term & Conditions </a></li><li><a href="http://localhost/athang/setting/smtp_detail.php?sub=list" target=""><i class="fa fa-123wrench"></i>SMTP Login Detail </a></li><li><a href="http://localhost/athang/setting/gst_mst.php?sub=list" target=""><i class="fa fa-123wrench"></i>GST Master </a></li><li><a href="http://localhost/athang/setting/transaction_type.php?sub=list" target=""><i class="fa fa-123wrench"></i>Transaction Type </a></li></ul>
+					</li>			
+						
+
+<!--		<li class="treeview">
+						<a href="#">
+						<i class="fa fa-123flag-checkered"></i>
+						<span>Other Master</span>
+						<span class="pull-right-container">
+						  <i class="fa fa-angle-left pull-right"></i>
+						</span>
+						</a> 
+				<ul class="treeview-menu">
+								
+						<li><a href="http://localhost/athang/setting/gst_mst.php?sub=list"><i class="fa fa-123asterisk"></i> GST Master </a></li>
+						<li><a href="http://localhost/athang/setting/account_group_mst.php?sub=list"><i class="fa fa-123asterisk"></i> Account Group </a></li>
+				</ul>
+		</li>-->
+
+
+		
+      </ul>
+    </section>
+	<br><br><br>
+    <!-- /.sidebar -->
+  </aside>
+
+<script>
+function openprofile(){
+	
+//	alert('Hello');
+	document.getElementById('openprofile').className = 'open';
+	
+}
+</script>
+<script>
+      function disableClick(){
+        document.onclick=function(event){
+          if (event.button == 2) {
+            alert('Right Click Message');
+            return false;
+          }
+        }
+      }
+	  
+/*function check(e)
+{
+alert(e.keyCode);
+}*/
+ //document.onkeydown = function(e) {
+    //if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 85 ||     e.keyCode === 117 || e.keycode === 17 || e.keycode === 85)) 
+//		if (e.ctrlKey && (    e.keycode === 85)) {//ctrl+u Alt+c, Alt+v will also be disabled sadly.
+//        alert('not allowed');
+//    }
+//    return false;
+};
+	  
+</script>
+
+
+<script>
+        $(document).ready(function() {
+            $(".doctype").select2();
+            
+            $("#btnaddmore").click(function() {
+                var lastdocrow = $(".docrow:last");
+                var totalrows = $(".docrow").length;
+                var newdocrow = $(lastdocrow).clone();
+                $(newdocrow).find(".control-label").html("Document " + (totalrows + 1));
+                $(newdocrow).find(".doctype").val("PAN CARD");
+                $(newdocrow).find(".docdesc").val("");
+                $(newdocrow).find(".docfile").val("");
+                $(newdocrow).find(".select2-container").remove();
+                $(newdocrow).find(".doctype").select2();
+                $(".docpanel").append(newdocrow);
+            });
+        });
+</script>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+             Order
+            <small>Edit</small>
+			
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="http://localhost/athang/dashboard_athang.php"><i class="fa fa-tachometer-alt"></i> Home</a></li>
+            <li><a href="http://localhost/athang/purchase_order/"> Order</a></li>
+            <li class="active">Edit</li>
+        </ol>
+		
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <!-- right column -->
+            <div class="col-md-12">
+                <!-- Horizontal Form -->
+                <div class="box box-info">
+                    <!-- /.box-header -->
+                    <!-- form start -->
+                    <div class="box-body">
+						<form id="form1" class="form-horizontal" action="edit.php?sub=Save" method="post" enctype="multipart/form-data">
+                          
+              <!-- /.box-body -->
+              <!-- /.box-footer -->
+			  <fieldset>
+		                
+												<span class="pull-right"><h4 style="color:red;"><b>Draft</b></h4> </span>
+						
+												
+						<span class="pull-right"><a href="http://localhost/athang/purchase_order/" class="btn btn-danger" >Back</a>&nbsp;&nbsp;&nbsp;</span>
+		                <span class="pull-right"><a href="pur_order_prn.php?sub=pdf&id=9&comp_id=4&location=1&r=1&print_flag=V" class="btn btn-success " target="_blank" >Print </a>&nbsp;&nbsp;&nbsp;</span>
+						
+						<input type="hidden" name="id" value="9">
+						<input type="hidden" name="status" id="statuS" value="Draft" >
+						
+				<div class="box-body">		
+									
+					<ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab_1" data-toggle="tab" id="first_tab" > Order </a></li>
+                        <li class="" ><a href="#tab_2" data-toggle="tab" id="second_tab" >Terms</a></li>
+						<li><a href="#tab_3" data-toggle="tab" id="third_tab" >Documents</a></li>
+						<li><a href="#tab_4" data-toggle="tab" class="btn btn-info" id="forth_tab" >Workflow History</a></li>
+						
+						
+						
+                    </ul>
+					
+					<div class="tab-content">
+					    <div class="tab-pane active" id="tab_1">
+						
+																		<div class="form-group">
+							<div class="col-lg-7" style="padding-top: 6px;">
+								<span class="label label-warning" style="font-size:14px;color:white;" >
+								<input type="radio" name='po_type' id='po_typea'   value='A' onclick="getclear(this.value);" > PO with Approval &nbsp;
+											
+								<input type="radio" name='po_type' id='po_typec' CHECKED  value='C' onclick="getclear(this.value);" > PO cum Approval &nbsp;
+								</span>&nbsp;
+							</div>				
+						</div>
+										
+						<div class="form-group">
+							<div class="col-sm-5">
+								<label for="project" class="control-label">Company<span style="color:red;"> **</span></label>
+							
+							
+								
+								<select class="form-control " name="project" id="projecT" 
+								onchange="getlocation(this.value);getcompanyterm(this.value);"  required readonly >
+                             		<option value=""> Select </option>
+																		<option value="4" selected="selected" >  Athaang Devanahalli Tollway Private Limited</option>
+																		</select>
+							
+						
+						
+						</div>	
+							
+						<div class="col-md-4">
+								<label class="control-label">To Supplier<span style="color:red;"> **</span></label>
+								
+								<span id="getsupplier">	
+								<select class="form-control" name="to_supplier" id="to_Supplier"  required 
+									onchange="get_taxstatus(this.value);getapproval(this.value);" >
+									<option value=""> Select </option>
+																			<option value="1" selected="selected" > 3D Fire and Safety Private Limited</option>
+																		</select>
+								</span>
+													</div>
+							
+					</div>
+						
+														
+                        <div class="form-group">    
+							<div class="col-sm-2">
+							<label for="deliveryLocation" class="control-label">Delivery Location<span style="color:red;"> **</span></label>
+							
+									<span id="getlocation">
+										<select class="form-control" required id="location" name="location" onchange="getdelvaddr(this.value)"  >
+											<option value="">Select</option>
+																					<option value="1" selected="selected" >Head Office</option>
+																					</select>
+									</span>
+												
+							</div>		
+						
+						<span id="getdelvaddr">								
+							<div class="col-md-6">
+								<label class="control-label">Delivery Address</label>
+								<textarea rows="2" class="form-control" id="delivery_address" name="delivery_address"  >316 C Wing Kanakia Zillion, LBS Marg, Kurla West, -400070</textarea>
+								
+							</div>
+						</span>
+						
+							<div class="col-md-3">
+								<label class="control-label">Department<span style="color:red;"> **</span></label>
+								
+								<select class="form-control"  name="department" id="department" required readonly >
+									<option value=""> Select </option>
+																		<option value="1"  > CEO Office</option>
+																		<option value="2"  > Commercial & Regulatory Affairs</option>
+																		<option value="3"  > Contracts & Procurement</option>
+																		<option value="4" selected="selected" > Corporate Secretarial</option>
+																		<option value="5"  > Finance & Accounts</option>
+																		<option value="6"  > HR & Admin</option>
+																		<option value="7"  > Information Technology</option>
+																		<option value="8"  > Legal</option>
+																		<option value="9"  > Operational Excellence</option>
+																		<option value="10"  > Risk, Compliance & IA</option>
+																		<option value="11"  > Safety, Health & Environment</option>
+																		<option value="12"  > Technical, Operations & Maintenance</option>
+																	</select>
+												
+							</div>
+							
+						</div>
+						
+													
+						<div class="form-group">
+							
+										
+							<div class="col-md-3">
+								<label class="control-label">PO.Number</label>
+								<input type="hidden" class="form-control" id="po_number" name="po_number" style="text-align:left;" readonly value="ADHTPL/XYZ/2020-21/3/0" >
+								<input type="text" class="form-control"  style="text-align:left;" readonly value="ADHTPL/XYZ/2020-21/3/0" >
+							</div>
+							
+							<div class="col-md-3">
+								<label class="control-label"> Order Date</label>
+								
+						        <div class="input-group date" data-provide="datepicker" data-date-format="dd-mm-yyyy">
+                                    <div class="input-group-addon">
+                                       <i class="fa fa-calendar-alt"></i>
+                                    </div>
+                                    <input type="text" class="form-control" id="dated" name="dated"  readonly value="03-05-2021">
+								</div>
+									
+							</div>
+							
+							
+							
+							<div class="col-md-2" >
+								<label class="control-label ">Tax Status</label><br>
+														<input type="hidden" name="supplier_location" id="supplier_location" value="O" >
+								
+								<input type='text' class="form-control" readonly value="Out of State">
+						
+							</div>
+							
+														
+							<div class="col-md-3">
+								<label class="control-label">Against Approval Memo Ref.</label>
+								<select class="form-control" name="approval_memo_ref" id="approval_memo_Ref"  onchange="getsupplier(this.value)" >
+                             		<option value=""> Select </option>
+																			<option value="4" selected="selected" >  4 (29-04-2021)</option>
+																		</select>
+							</div>
+							
+							
+						</div>
+						
+												<div class="form-group">
+								
+
+							<div class="col-md-3">
+								<label class="control-label">Supplier Quote Ref.No.</label>
+								<span id="getqref">
+								<input type="text" class="form-control" id="quotation_reference_no" name="quotation_reference_no"   value="asdf" >
+								</span>
+								
+							</div>
+						
+							<div class="col-md-2">
+								<label class="control-label">Credit Days</label>
+								<input type="text" class="form-control" id="credit_days" name="credit_days"  maxlength="3" style="text-align:right;" value="12" >
+							</div>
+						
+						</div>
+						
+						<div class="form-group">
+							
+														<div class="col-md-3">
+								<label class="control-label"><span style="font-size:14px;text-align:right;">Advance Payment Required?</span></label><br>&nbsp;&nbsp;&nbsp;&nbsp;
+								<input type="checkbox" id="advance_flag" name="advance_flag"  value="Y" >
+								
+							</div>
+							
+													</div>	
+							
+						<div class="form-group">
+								
+							<div class="col-md-12">
+								<label class="control-label">Subject</label>
+								<input type="text" class="form-control" id="subject" name="subject"  value="" >
+							</div>
+							
+						</div>
+						
+						<div class="form-group">
+										
+									<div class="col-md-12">
+										<label class="control-label">Notes</label>
+										<input type="text" class="form-control" id="notes" name="notes"  value="" >
+									</div>
+									
+						</div>
+								
+					
+						<div class="form-group">
+								<div class="col-md-12">
+                                    <div class="box-header"><span class="box-title">Background</span></div>
+                                    <div class="box-body">
+                                        <textarea class="form-control" id="reason" name="background"
+                                                  placeholder="Enter text ..."   ></textarea>
+                                    </div>
+									
+									<div class="col-md-12">
+										<input type="submit" name="submit_save_d" id="submit_save_d" class="btn btn-info" value="Save" />
+									</div>
+								
+								</div>
+						</div>
+							
+						<div class="form-group">
+								<div class="col-md-12">
+                                    <div class="box-header"><span class="box-title">Scope of Work</span></div>
+                                    <div class="box-body">
+                                        <textarea class="form-control" id="reason1" name="scope_of_work"                                                    placeholder="Enter text ..."></textarea>
+                                    </div>
+									
+									<div class="col-md-12">
+										<input type="submit" name="submit_save_c" id="submit_save_c" class="btn btn-info" value="Save" />
+									</div>
+								
+								
+                                </div>
+									
+						</div>
+
+						<div class="form-group">
+								<div class="col-md-12">
+                                    <div class="box-header"><span class="box-title">Deviations from SOP</span></div>
+                                    <div class="box-body">
+                                        <textarea class="form-control" id="reason2" name="deviations_from_sop"                                                    placeholder="Enter text ..."></textarea>
+                                    </div>
+									
+									<div class="col-md-12">
+										<input type="submit" name="submit_save_b" id="submit_save_b" class="btn btn-info" value="Save" />
+									</div>
+								
+								
+                                </div>
+								
+								
+						</div>
+							
+						<div class="form-group">
+								<div class="col-md-12">
+                                    <div class="box-header"><span class="box-title">Term & Conditions</span></div>
+                                    <div class="box-body">
+                                        <textarea class="form-control" id="reason3" name="important_terms_conditions"   
+                                                  placeholder="Enter text ..."></textarea>
+                                    </div>
+                                
+									<div class="col-md-12">
+										<input type="submit" name="submit_save_a" id="submit_save_a" class="btn btn-info" value="Save" />
+									</div>
+										
+								</div>								
+						</div>
+						
+										
+						<div class="col-md-12">
+                            <div class="box">
+                                <div class="box-header">
+						
+                            <h4 class="box-title">Product Details</h4>
+							                                    			
+                                <span class="pull-right">
+									<a href="#modalAddItem"
+                                               class="btn btn-primary"
+                                               data-toggle="modal" 
+                                               data-mode="add"
+                                               data-target="#modalAddItem">Add 
+                                    </a>
+                                </span>
+							                                    			
+                                </div>
+                                <div class="box-body">
+                                    <table id="prItemsTable" class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                                <th>Cost Center</th>
+                                                <th style="text-align:right;">PO.Qty</th>
+												<th style="text-align:right;">Received Qty.</th>
+												<th style="text-align:right;">Bal.Qty.</th>
+                                                <th>Unit</th>
+                                                <th style="text-align:right;">Rate</th>
+												<th style="text-align:right;">GST%</th>
+                                                <th style="text-align:right;">Amount</th>
+												
+										<th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="prItemsTableBody">
+										
+																			<tr>
+											<td width='15%'>GPA and Medical Insurance</td>
+											<td width='15%'>TESTING-2 </td>	
+											<td width='8%' style="text-align:right;">120.00</td>	
+											<td width='8%' style="text-align:right;">0.00</td>
+											<td width='8%' style="text-align:right;">120</td>
+											<td width='8%'> Nos</td>	
+											<td width='8%' style="text-align:right;">12.00</td>	
+											<td width='8%' style="text-align:right;">12.00</td>
+											<td width='10%' style="text-align:right;">1,613.00</td>					 
+											<td width='6%'>
+												<a href='#modalEditItem' data-id='15' data-mode='edit' data-toggle='modal' data-target='#modalEditItem15' <i class='fa fa-edit'></i></a>&nbsp;&nbsp;
+														
+<!-- Modal Edit Item-->
+											<div class="modal fade" id="modalEditItem15" role="dialog" aria-labelledby="modalEditItemLabel" data-keyboard="false" data-backdrop="static" >
+    <div class="modal-dialog" role="document" >
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="clearfld()" ><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="modalEditItemLabel">Edit Product </h4>
+            </div>
+            <div class="modal-body">
+                <section class="content">
+                    <div class="row">
+						                <form class="form-horizontal" action="#" method="POST">
+					<input type="hidden" id="rId" name="rid" value="15">
+					<input type="hidden" id="purchaseId_e" name="purchase_id" value="9">
+					
+					<input type="hidden" id="budget_id_curr" name="budget_id_curr" value="2">
+					<input type="hidden" id="budget_id_prev" name="budget_id_prev" value="2">
+					<input type="hidden" id="qty_prev" name="qty_prev" value="120.00">
+					<input type="hidden" id="rate_prev" name="rate_prev" value="12.00">
+					<input type="hidden" id="gst_prev" name="gst_prev" value="12.00">
+							
+					<div class="form-group">
+						<div class="col-sm-4">
+							<label for="itemCategory" class="control-label"> Category</label>
+                            <select class="form-control" id="categoryId" onchange="getmaterial(this.value)">
+							<option value="">Select</option>
+                                                             <option value="11" ></option>
+                                                             <option value="1" >Equipment & Machinery</option>
+                                                             <option value="3" >Fixed Assets</option>
+                                                             <option value="9" >Insurance</option>
+                                                             <option value="7" >IT Products</option>
+                                                             <option value="5" >Maintenance</option>
+                                                             <option value="10" >Profesional Services</option>
+                                                             <option value="4" >Professional Services</option>
+                                                             <option value="2" >Safety Product</option>
+                                                             <option value="8" >Safety Products</option>
+                                                             <option value="6" >spares</option>
+                                                          </select>
+						</div>
+								
+							<div class="col-sm-6">
+							<label for="itemName" class="control-label">Product</label>
+							<span id="getmaterial" >
+								<select class="form-control" name="product_id" id="itemName_e"    onchange="getunit3(this.value)" >
+								<option value="">Select</option>
+																	<option value="1"  >Diesel</option>
+																	<option value="2"  >Petrol</option>
+																	<option value="3"  >Leather - leg sleeves</option>
+																	<option value="4"  >Leather - arm sleeves</option>
+																	<option value="5"  >Leather -hand gloves</option>
+																	<option value="6"  >Cotton Reflective Jackets</option>
+																	<option value="7"  >Motorcycle</option>
+																	<option value="8"  >Grass Cutting Machine</option>
+																	<option value="9"  >GPS Vehicle Tracking Device</option>
+																	<option value="10"  >Safety Shoes</option>
+																	<option value="11"  >Safety Helmets</option>
+																	<option value="12"  >Silicon Reusable Ear Plugs</option>
+																	<option value="13"  >Life Jackets</option>
+																	<option value="14"  >Life Buoys</option>
+																	<option value="15"  >Reflective collar</option>
+																	<option value="16"  >Pneumatic Breaker</option>
+																	<option value="17"  >Weld light -Lighting mast</option>
+																	<option value="18"  >Design for Protection work at Kundil Bridge</option>
+																	<option value="19"  >Geo Bags</option>
+																	<option value="20"  >Topo survey</option>
+																	<option value="21"  >Slope Stability Analysis</option>
+																	<option value="22"  >Drone Survey</option>
+																	<option value="23"  >Inspection of equipments</option>
+																	<option value="24"  >Safety Jackets</option>
+																	<option value="25"  >Mega Bags</option>
+																	<option value="26"  >RCC Porcupines</option>
+																	<option value="27"  >Cement bags</option>
+																	<option value="28"  >Machinery hire charges</option>
+																	<option value="29"  >Bamboo Toe Wall</option>
+																	<option value="30"  >Fire Extinguishers</option>
+																	<option value="31"  >DG Spare parts</option>
+																	<option value="32"  >Lightening Arrestor</option>
+																	<option value="33"  >Bathymetry Survey</option>
+																	<option value="34"  >CCTV Installation</option>
+																	<option value="35"  >Internet Connectivity</option>
+																	<option value="36"  >Survey works</option>
+																	<option value="37"  >Rainwater Harvesting Structure</option>
+																	<option value="38"  >Environment Monitoring Tests</option>
+																	<option value="39"  >Work Zone Safety Items</option>
+																	<option value="40"  >Anti-fog Eyewear</option>
+																	<option value="41"  >Trousers</option>
+																	<option value="42"  >Road Marking</option>
+																	<option value="43"  >Air Compressor</option>
+																	<option value="44"  >Chain Saw </option>
+																	<option value="45"  >Hydraulic Bucket Type Broomer</option>
+																	<option value="46"  >Bitumin Sprayer</option>
+																	<option value="47"  >Bitumen Emulsion � Medium Setting -MS.</option>
+																	<option value="48"  >Bitumen Emulsion � Slow Setting -SS 2.</option>
+																	<option value="49"  >LOTO Devices</option>
+																	<option value="50"  >Denting, Painting and repair works</option>
+																	<option value="51"  >Lab Equipments</option>
+																	<option value="52"  >Safety Signages</option>
+																	<option value="53"  >NSV Survey</option>
+																	<option value="54"  >Design For Guide bund</option>
+																	<option value="56"  >Lifting slings and shackles for Hydra</option>
+																	<option value="57"  >Respirators</option>
+																	<option value="58"  >HDM 4 Software</option>
+																	<option value="59"  >Technical consultancy Servcies</option>
+																	<option value="60"  >Traffic consultancy Servcies</option>
+																	<option value="61"  >Vehicle hire charges</option>
+																	<option value="62"  >Delineators</option>
+																	<option value="63"  >Metal Beam Crash Barrier</option>
+																	<option value="64"  >Road Studs</option>
+																	<option value="65"  >Ordinary soil</option>
+																	<option value="67"  >Aggregates</option>
+																	<option value="68"  >Boulders</option>
+																	<option value="115" selected="selected" >GPA and Medical Insurance</option>
+																	<option value="116"  >Insurance Expenses- Director</option>
+																	<option value="117"  >Insurance Others</option>
+																	<option value="118"  >Advertisement - Expenses</option>
+																	<option value="121"  >AMC - IT</option>
+																	<option value="122"  >Auditors Certification fees</option>
+																	<option value="125"  >Brokerage & Commission</option>
+																	<option value="127"  >Business Promotion</option>
+																	<option value="129"  >Compliance Cost</option>
+																	<option value="131"  >Computer Maintenance Charges</option>
+																	<option value="133"  >Due Diligence Cost</option>
+																	<option value="134"  >E-form Certification fees, Reports and Certificates_Corp. Compliance</option>
+																	<option value="136"  >IT Repairs & Maintenance</option>
+																	<option value="138"  >TESTING</option>
+																	<option value="139"  >TESTING FOR CC CODE</option>
+																</select>
+							</span>
+							</div>
+					</div>
+						
+					<div class="form-group">
+						<div class="col-sm-12">
+							<label for="itemDescription" class="control-label">Description </label>
+                            <textarea rows='02' class="form-control" id="itemDescription_e" name="itemdescription"   placeholder="Item Description...">GPA and Medical Insurance
+</textarea>
+                        </div>
+					</div>
+						    
+					
+               <div class="well well-sm" >    
+                        			
+					<div class="form-group">
+                            
+							<div class="col-sm-6">
+										
+								<div class="col-sm-6">
+									<input type="text" class="form-control" readonly value="Capital Expenses" >
+								</div>
+                            </div>
+		
+							<div class="col-sm-6">
+									
+								<div class="col-sm-6">
+									<input type="text" class="form-control" readonly value="TESTING-2" >
+								</div>
+							</div>
+					</div>
+						    
+														
+								<input type="hidden" class="form-control" name="budget_name_e" readonly value="15" >
+								<input type="hidden" class="form-control" name="budget_head_e" readonly value="TESTING-2" >
+							
+								
+							<div class="form-group">
+									<label class="control-label col-sm-3">Total Budget </label>
+									<div class="col-sm-3">
+										<input type="text" class="form-control" id="total_budget_ab" style="text-align:right;" readonly value="200.00" >
+									</div>
+									
+									<label class="control-label col-sm-3">Balance Budget </label>
+									<div class="col-sm-3">
+										<input type="text" class="form-control" id="balance_budget_ab" style="text-align:right;" readonly value="-472.00" >
+									</div>
+							</div>
+						</div>
+					
+							
+						<div class="form-group">	
+							<div class="form-group col-md-12">
+								
+								<!--<div class="col-sm-2">
+									<label for="itemGST" class="control-label ">GST Type</label>
+									<select class="form-control" name="itemgst_id12" id="itemGST_id12" onchange="getgst1(this.value)"  >
+									<option value=""> Select </option>
+																	<option value="3-12.00"  >GST 12%</option>
+																		<option value="1-18.00"  >GST 18%</option>
+																		<option value="4-28.00"  >GST 28%</option>
+																		<option value="2-5.00"  >GST 5%</option>
+																		</select>
+								</div> -->
+								
+								
+                                <div class="col-sm-2">
+									<label for="itemQuantity" class="control-label ">GST%</label>
+									<input type="text" class="form-control itemGST_e" id="itemGST_e" name="itemgst"  style="text-align:right;" value="12.00" onkeyup="calculateTotalAmounte();">
+									
+									<input type="hidden" class="form-control itemGST_id1" name="itemgst_id" id="itemGST_id1"   value="0" >
+									
+                                </div>
+                            
+								    
+                                <div class="col-sm-2">
+									<label for="itemQuantity" class="control-label ">Qty.</label>
+                                
+									<input type="text" class="form-control" id="itemQuantity_e" name="itemquantity"  style="text-align:right;"  value="120.00" onkeyup="calculateTotalAmounte();">
+                                </div>
+								
+								<div class="col-sm-2">
+									<label for="itemUnits" class="control-label col-sm-1">Units</label>
+								
+									<span id="getunit3">
+										<input type="text" class="form-control" id="itemUnits_e" name="itemunits" readonly value=" Nos" >
+                                	</span>
+                                </div>
+                            
+								
+                                <div class="col-sm-2">
+									<label for="itemRate" class="control-label ">Rate</label>
+									<div class="input-group">
+                                        <span class="input-group-addon">&#8377</span>
+                                        <input type="text" class="form-control" id="itemRate_e" name="itemrate"  placeholder="0.00" style="text-align:right;" value="12.00"  onkeyup="calculateTotalAmounte();">
+                                    </div>
+                                </div>
+								
+								<div class="col-sm-2">
+									<label for="itemAmount" class="control-label">Total</label>
+								
+									<input type="text" class="form-control" id="itemAmount_e" name="itemamount"  style="text-align:right;" readonly value="1612.8">
+                                </div>
+								
+                            </div>
+						</div>
+						
+                            <div class="form-group col-md-12">
+							
+														<label class="control-label col-sm-2">Delivery Date</label>
+								<div class="col-sm-3">
+									<div class="input-group date" data-provide="datepicker" data-date-format="dd-mm-yyyy">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar-alt"></i>
+                                        </div>
+                                        <input type="text" class="form-control" name='deliverydate' id="deliveryDate" value ="" >
+									</div>
+								</div>
+								
+								<div class="col-sm-6">
+									<span id="getbudgeterror"></span>
+								</div>
+							</div>
+							
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="clearfld()">Close</button>
+			                <input type="submit" class="btn btn-primary" id="editItem12345" name="editSave" value="Save" onclick="getbudgeterror123()">
+				
+            </div>
+			
+			
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+/* 	function getbudgeterror(){
+		alert('Budget is Overflow...');
+		var err = 'Budget is Overflow...';
+		$('#getbudgeterror').html(err);
+		return false;
+	} 
+*/
+	
+	function getmaterial123(id){
+		var sub    = 'sub33';
+		var strURL = "app_func.php";
+
+		$.post(strURL,{id:id,sub33:sub},function(result){
+		      $('#getmaterial').html(result);
+		});
+
+	}
+	
+	function getmaterial(id){
+		var sub    = 'sub3';
+		var strURL = "app_func.php";
+		var company_id    = document.getElementById("projecT").value;
+		
+//alert(sub + ' ' + id + ' ' + strURL);
+		$.post(strURL,{id:id,sub3:sub},function(result){
+		      $('#getmaterial').html(result);
+		});
+
+		$.post(strURL,{id:id,company_id:company_id,sub14:sub},function(result){
+		      $('#getcatbudget').html(result);
+		});
+		
+	}
+	
+	function getbudgetabc(id){
+		
+        var sub    = 'sub11';
+//alert(sub + ' ' + id);
+		var strURL = "app_func.php";
+		$.post(strURL,{id:id,sub11:sub},function(result){
+		      $('#getbudgetabc').html(result);
+		});
+	}
+
+	function getbudgetheada(id){
+		
+        var sub    = 'sub2';
+
+		//var rid    = $("#rId").val();
+		var rid		= '15';
+		var abc    = document.getElementsByName("abc")[1].value;
+
+//alert(sub + ' ' + rid+ ' ' + abc);
+		var strURL = "app_func.php";
+		$.post(strURL,{id:id,sub2:sub},function(result){
+		      $('#'+abc).html(result);
+		});
+
+	}
+
+
+
+</script>
+
+
+<!-- Modal Edit Item-->
+																								
+												<a href="del_poitem.php?sub=delete&po_no=9&id_no=15" title="Delete" onclick="return confirm('Are you sure you want to delete?');"><i class="fa fa-remove"></i></a>
+																		
+<!-- Modal Delete Item-->
+														
+											</tr>
+												
+																			<tr>
+											<td width='15%'>Insurance Expenses- Director</td>
+											<td width='15%'>TESTING </td>	
+											<td width='8%' style="text-align:right;">1.00</td>	
+											<td width='8%' style="text-align:right;">0.00</td>
+											<td width='8%' style="text-align:right;">1</td>
+											<td width='8%'> Nos</td>	
+											<td width='8%' style="text-align:right;">15.00</td>	
+											<td width='8%' style="text-align:right;">12.00</td>
+											<td width='10%' style="text-align:right;">17.00</td>					 
+											<td width='6%'>
+												<a href='#modalEditItem' data-id='16' data-mode='edit' data-toggle='modal' data-target='#modalEditItem16' <i class='fa fa-edit'></i></a>&nbsp;&nbsp;
+														
+<!-- Modal Edit Item-->
+											<div class="modal fade" id="modalEditItem16" role="dialog" aria-labelledby="modalEditItemLabel" data-keyboard="false" data-backdrop="static" >
+    <div class="modal-dialog" role="document" >
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="clearfld()" ><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="modalEditItemLabel">Edit Product </h4>
+            </div>
+            <div class="modal-body">
+                <section class="content">
+                    <div class="row">
+						    <form class="form-horizontal" action="#" method="POST">
+					<input type="hidden" id="rId" name="rid" value="16">
+					<input type="hidden" id="purchaseId_e" name="purchase_id" value="9">
+					
+					<input type="hidden" id="budget_id_curr" name="budget_id_curr" value="1">
+					<input type="hidden" id="budget_id_prev" name="budget_id_prev" value="1">
+					<input type="hidden" id="qty_prev" name="qty_prev" value="1.00">
+					<input type="hidden" id="rate_prev" name="rate_prev" value="15.00">
+					<input type="hidden" id="gst_prev" name="gst_prev" value="12.00">
+							
+					<div class="form-group">
+						<div class="col-sm-6">
+							<label for="itemCategory" class="control-label"> Category</label>
+                            <select class="form-control" id="categoryId" onchange="getmaterial(this.value)">
+							<option value="">Select</option>
+                                                             <option value="11" ></option>
+                                                             <option value="1" >Equipment & Machinery</option>
+                                                            
+                                                          </select>
+						</div>
+								
+							<div class="col-sm-6">
+							<label for="itemName" class="control-label">Product</label>
+							<span id="getmaterial" >
+								<select class="form-control" name="product_id" id="itemName_e"    onchange="getunit3(this.value)" >
+								<option value="">Select</option>
+																	<option value="1"  >Diesel</option>
+																
+																	<option value="138"  >TESTING</option>
+																	<option value="139"  >TESTING FOR CC CODE</option>
+																</select>
+							</span>
+							</div>
+					</div>
+						
+					<div class="form-group">
+						<div class="col-sm-12">
+							<label for="itemDescription" class="control-label">Description </label>
+                            <textarea rows='02' class="form-control" id="itemDescription_e" name="itemdescription"   placeholder="Item Description..."></textarea>
+                        </div>
+					</div>
+							
+					
+               <div class="well well-sm" >    
+                        			
+					<div class="form-group">
+                            
+							<div class="col-sm-6">
+										
+								<div class="col-sm-6">
+									<input type="text" class="form-control" readonly value="Capital Expenses" >
+								</div>
+                            </div>
+		
+							<div class="col-sm-6">
+									
+								<div class="col-sm-6">
+									<input type="text" class="form-control" readonly value="TESTING" >
+								</div>
+							</div>
+					</div>
+						    
+														
+								<input type="hidden" class="form-control" name="budget_name_e" readonly value="15" >
+								<input type="hidden" class="form-control" name="budget_head_e" readonly value="TESTING" >
+							
+								
+							<div class="form-group">
+									<label class="control-label col-sm-3">Total Budget </label>
+									<div class="col-sm-3">
+										<input type="text" class="form-control" id="total_budget_ab" style="text-align:right;" readonly value="100.00" >
+									</div>
+									
+									<label class="control-label col-sm-3">Balance Budget </label>
+									<div class="col-sm-3">
+										<input type="text" class="form-control" id="balance_budget_ab" style="text-align:right;" readonly value="83.00" >
+									</div>
+							</div>
+						</div>
+					
+							
+						<div class="form-group">	
+								
+								<div class="col-sm-2">
+									<label for="itemQuantity" class="control-label ">GST%</label>
+									<input type="text" class="form-control itemGST_e" id="itemGST_e" name="itemgst"  style="text-align:right;" value="12.00" onkeyup="calculateTotalAmounte();">
+									
+									<input type="hidden" class="form-control itemGST_id1" name="itemgst_id" id="itemGST_id1"   value="3" >
+									
+                                </div>
+                            
+								    
+                                <div class="col-sm-2">
+									<label for="itemQuantity" class="control-label ">Qty.</label>
+                                
+									<input type="text" class="form-control" id="itemQuantity_e" name="itemquantity"  style="text-align:right;"  value="1.00" onkeyup="calculateTotalAmounte();">
+                                </div>
+								
+								<div class="col-sm-2">
+									<label for="itemUnits" class="control-label col-sm-1">Units</label>
+								
+									<span id="getunit3">
+										<input type="text" class="form-control" id="itemUnits_e" name="itemunits" readonly value=" Nos" >
+                                	</span>
+                                </div>
+                            
+								
+                                <div class="col-sm-2">
+									<label for="itemRate" class="control-label ">Rate</label>
+									<div class="input-group">
+                                        <span class="input-group-addon">&#8377</span>
+                                        <input type="text" class="form-control" id="itemRate_e" name="itemrate"  placeholder="0.00" style="text-align:right;" value="15.00"  onkeyup="calculateTotalAmounte();">
+                                    </div>
+                                </div>
+								
+								<div class="col-sm-2">
+									<label for="itemAmount" class="control-label">Total</label>
+								
+									<input type="text" class="form-control" id="itemAmount_e" name="itemamount"  style="text-align:right;" readonly value="16.8">
+                                </div>
+								
+                            
+						</div>
+						
+                            <div class="form-group col-md-12">
+							
+														<label class="control-label col-sm-2">Delivery Date</label>
+								<div class="col-sm-3">
+									<div class="input-group date" data-provide="datepicker" data-date-format="dd-mm-yyyy">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar-alt"></i>
+                                        </div>
+                                        <input type="text" class="form-control" name='deliverydate' id="deliveryDate" value ="19-05-2021" >
+									</div>
+								</div>
+								
+								<div class="col-sm-6">
+									<span id="getbudgeterror"></span>
+								</div>
+							</div>
+							
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="clearfld()">Close</button>
+			                <input type="submit" class="btn btn-primary" id="editItem12345" name="editSave" value="Save" onclick="getbudgeterror123()">
+				
+            </div>
+			
+			
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+/* 	function getbudgeterror(){
+		alert('Budget is Overflow...');
+		var err = 'Budget is Overflow...';
+		$('#getbudgeterror').html(err);
+		return false;
+	} 
+*/
+	
+	function getmaterial123(id){
+		var sub    = 'sub33';
+		var strURL = "app_func.php";
+
+		$.post(strURL,{id:id,sub33:sub},function(result){
+		      $('#getmaterial').html(result);
+		});
+
+	}
+	
+	function getmaterial(id){
+		var sub    = 'sub3';
+		var strURL = "app_func.php";
+		var company_id    = document.getElementById("projecT").value;
+		
+//alert(sub + ' ' + id + ' ' + strURL);
+		$.post(strURL,{id:id,sub3:sub},function(result){
+		      $('#getmaterial').html(result);
+		});
+
+		$.post(strURL,{id:id,company_id:company_id,sub14:sub},function(result){
+		      $('#getcatbudget').html(result);
+		});
+		
+	}
+	
+	function getbudgetabc(id){
+		
+        var sub    = 'sub11';
+//alert(sub + ' ' + id);
+		var strURL = "app_func.php";
+		$.post(strURL,{id:id,sub11:sub},function(result){
+		      $('#getbudgetabc').html(result);
+		});
+	}
+
+	function getbudgetheada(id){
+		
+        var sub    = 'sub2';
+
+		//var rid    = $("#rId").val();
+		var rid		= '16';
+		var abc    = document.getElementsByName("abc")[1].value;
+
+//alert(sub + ' ' + rid+ ' ' + abc);
+		var strURL = "app_func.php";
+		$.post(strURL,{id:id,sub2:sub},function(result){
+		      $('#'+abc).html(result);
+		});
+
+	}
+
+
+
+</script>
+
+
+<!-- Modal Edit Item-->
+																								
+												<a href="del_poitem.php?sub=delete&po_no=9&id_no=16" title="Delete" onclick="return confirm('Are you sure you want to delete?');"><i class="fa fa-remove"></i></a>
+																		
+<!-- Modal Delete Item-->
+														
+											</tr>
+													
+
+                                            </tbody>
+											                                            <tfoot>
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+												<th></th>
+												<th></th>
+                                                <th colspan="2">Total Amount</th>
+                                                <th style="text-align:right;">1,630.00</th>
+												
+												<th></th>
+                                            </tr>
+                                            </tfoot>
+											
+                                        </table>
+										
+										
+										<input type="hidden" id="checker_value" name="checker_value" value="1630" >
+										
+					<span style="color:red;"></span>                                    </div>
+								</div>
+							</div>			
+						
+							<div class="box-footer">
+								<div class="col-sm-6">
+									
+									<span>&nbsp;&nbsp;</span>
+								</div>
+								
+								<div class="col-sm-6 text-right">
+									<span>&nbsp;&nbsp;</span>
+									 <a href="#tab_2" class="btn btn-primary" data-toggle="tab" onclick="$('#second_tab').trigger('click');getvalidate();" >Next</a>
+								</div>
+							</div>
+	
+				</div>
+								
+				<div class="tab-pane  " id="tab_2">
+
+							<div class="col-md-12">
+                                <div class="box">
+                                    <div class="box-header">
+									
+									<!--<div class="form-group">
+							<div class="col-sm-5">
+								<label for="project" class="control-label">Select Terms</label>
+									<span id="getcompanyterm">
+											<select class="form-control select2" onchange="getspecialterms(this.value);" >
+												<option value=""> Select </option>
+																									<option value="2" >test</option>
+																									<option value="3" >test2</option>
+																								</select>
+								</span>			
+							</div>
+						</div>-->
+							
+						<div class="form-group">
+							<div class="col-md-12">
+								<div class="box-header"><span class="box-title">Special Terms & Condition</span></div>
+							<span id="getspecialterms">		
+								<div class="box-body">
+									<textarea class="form-control" id="reason" name="terms"  ></textarea>
+								</div>
+							</span>	
+							</div>
+						</div>
+						
+						
+                                </div>
+                            </div>
+							
+                           
+	           				<div class="box-footer">
+								<div class="col-sm-6">
+									<a href="#tab_1" class="btn btn-primary" data-toggle="tab" onclick="$('#first_tab').trigger('click')" >Previous</a>
+									<span>&nbsp;&nbsp;</span>
+								</div>
+								
+								<div class="col-sm-6 text-right">
+									
+									<span>&nbsp;&nbsp;</span>
+									 <a href="#tab_3" class="btn btn-primary" data-toggle="tab" onclick="$('#third_tab').trigger('click')" >Next</a>
+								</div>
+							</div>					
+					</div>	
+				</div>
+				
+                        <div class="tab-pane" id="tab_3">
+                            <!-- Attachments -->
+							
+                            <!-- Attachments company_idd -->
+															
+								
+							                                   <table id="prDocsTable" class="table table-bordered table-striped">
+                                      <thead>
+                                      <tr>
+                                          <th>Document Type</th>
+                                          <th>Document Name</th>
+                                          <th>Description</th>
+											<th></th>
+                                      </tr>
+                                      </thead>
+                                      <tbody id="prDocsTableBody">
+				                                                                    </tbody>
+                                      
+                                  </table>
+								  
+						<span id="gegpartyDoc">
+							
+						</span>
+								  
+							<div class="table-responsive">  
+                               <table class="table table-bordered" id="dynamic_field">  
+                                    <tr> 
+										<td>
+                                            <select class="form-control  doctype" name="doctype[]"   >
+                                            <option value="">Select</option>
+											                                                <option value="68"  >  (IE) Letters (Theme Engineer Services pvt. ltc)</option>
+											                                                <option value="67"  > Organizations / Panchayaths</option>
+											                                                <option value="65"  > Panchaths</option>
+											                                                <option value="57"  > Site Bank Payment  Voucher</option>
+											                                                <option value="77"  >(IE) letter, MSV, Nirmal</option>
+											                                                <option value="47"  >Aadhaar card</option>
+											                                                <option value="71"  >Additional Chief Secretary to Government (PWD Lett</option>
+											                                                <option value="117"  >addressed to police</option>
+											                                                <option value="72"  >Annual Report of Road Safety</option>
+											                                                <option value="59"  >Attibele Police Station</option>
+											                                                <option value="42"  >Balance Sheet</option>
+											                                                <option value="27"  >Bank Details</option>
+											                                                <option value="80"  >Bank Guarantees</option>
+											                                                <option value="49"  >Bank Payment  HO Voucher</option>
+											                                                <option value="79"  >BETPL Company</option>
+											                                                <option value="58"  >BETPL Letters </option>
+											                                                <option value="100"  >BETPL Replies</option>
+											                                                <option value="20"  >Boarding Lodging</option>
+											                                                <option value="22"  >Bus Fare</option>
+											                                                <option value="106"  >BWSSB</option>
+											                                                <option value="26"  >Cancelled Cheque</option>
+											                                                <option value="38"  >Circular</option>
+											                                                <option value="32"  >Company Policy</option>
+											                                                <option value="86"  >Completion Certificate</option>
+											                                                <option value="28"  >Compliance </option>
+											                                                <option value="96"  >Compliance Certificate</option>
+											                                                <option value="36"  >Concession Agreement</option>
+											                                                <option value="52"  >Contra Voucher</option>
+											                                                <option value="35"  >Contract Agreement</option>
+											                                                <option value="73"  >Daily Correspondence </option>
+											                                                <option value="23"  >Delivery Challan</option>
+											                                                <option value="111"  >ELCITA</option>
+											                                                <option value="87"  >ELCITA Letters</option>
+											                                                <option value="98"  >Electrical Inspector</option>
+											                                                <option value="99"  >Electrical Inspector - Submission of Form G</option>
+											                                                <option value="60"  >Electronic City Police Station</option>
+											                                                <option value="17"  >Flight Ticket</option>
+											                                                <option value="21"  >Food </option>
+											                                                <option value="88"  >From ELCITA</option>
+											                                                <option value="108"  >From SPL Infra</option>
+											                                                <option value="92"  >Ground Water Dep - Nirmal</option>
+											                                                <option value="11"  >GST Certificate</option>
+											                                                <option value="93"  >GWD- Nirmal</option>
+											                                                <option value="61"  >Hebbagodi Police Station</option>
+											                                                <option value="50"  >HPCL DRIVE TRACK</option>
+											                                                <option value="62"  >Hulimavu Police Station</option>
+											                                                <option value="119"  >IC (Aarvee)- Nirmal</option>
+											                                                <option value="118"  >IE Observations & Compliance report_reg</option>
+											                                                <option value="45"  >Incorporation Certificate</option>
+											                                                <option value="16"  >Installation Certificate</option>
+											                                                <option value="43"  >Insurance Certificate</option>
+											                                                <option value="101"  >Insurance Department</option>
+											                                                <option value="13"  >Invoice</option>
+											                                                <option value="33"  >Invoice</option>
+											                                                <option value="56"  >Journal Voucher</option>
+											                                                <option value="84"  >JPEPL - IE </option>
+											                                                <option value="83"  >JPEPL - Public Works Department </option>
+											                                                <option value="66"  >Labour Office</option>
+											                                                <option value="90"  >Laptop Undertaking</option>
+											                                                <option value="39"  >Legal Notice</option>
+											                                                <option value="105"  >Letter from BWSSB</option>
+											                                                <option value="107"  >Letters</option>
+											                                                <option value="63"  >Madiwala Police Station</option>
+											                                                <option value="70"  >MBI Testing Report</option>
+											                                                <option value="44"  >Memorandum of Association</option>
+											                                                <option value="89"  >Mohan Raju & Co. letters</option>
+											                                                <option value="78"  >Monthly Correspondence</option>
+											                                                <option value="81"  >MPRDC Inward letter</option>
+											                                                <option value="91"  >NBL letter</option>
+											                                                <option value="48"  >NHAI letters</option>
+											                                                <option value="12"  >Other</option>
+											                                                <option value="4"  >PAN Card</option>
+											                                                <option value="46"  >PAN Card</option>
+											                                                <option value="51"  >PETTY CASH PAYMENT VOUCHER</option>
+											                                                <option value="116"  >police</option>
+											                                                <option value="74"  >Police Letter</option>
+											                                                <option value="115"  >Police Letters</option>
+											                                                <option value="29"  >Proforma Invoice</option>
+											                                                <option value="54"  >Purchased Order - Signed</option>
+											                                                <option value="97"  >Quarter ended  Certificate</option>
+											                                                <option value="14"  >Quotation</option>
+											                                                <option value="37"  >Quotation</option>
+											                                                <option value="53"  >Quotation</option>
+											                                                <option value="30"  >Quote</option>
+											                                                <option value="104"  >RA Bill</option>
+											                                                <option value="103"  >RA Bills </option>
+											                                                <option value="55"  >Receipt Voucher </option>
+											                                                <option value="40"  >Rental Agreement</option>
+											                                                <option value="75"  >Replied By E-mail</option>
+											                                                <option value="76"  >Replied By Letter</option>
+											                                                <option value="112"  >Replied to ELCITA</option>
+											                                                <option value="110"  >Replied to Purasabhe /Panchayaths</option>
+											                                                <option value="114"  >Replied to TNSTC (Tamilnadu)</option>
+											                                                <option value="94"  >Requesting Informations</option>
+											                                                <option value="15"  >RFQ</option>
+											                                                <option value="85"  >RFQ</option>
+											                                                <option value="19"  >Rickshaw Fare</option>
+											                                                <option value="95"  >RTI Informations</option>
+											                                                <option value="34"  >Software Licenses Agreement</option>
+											                                                <option value="102"  >Suryacity Police Station</option>
+											                                                <option value="64"  >Suryanagara Police Station</option>
+											                                                <option value="18"  >Taxi Fare</option>
+											                                                <option value="24"  >TDS Certificate</option>
+											                                                <option value="69"  >TDS Certificate</option>
+											                                                <option value="113"  >TNSTC (Tamilnadu)</option>
+											                                                <option value="109"  >TNSTC letters</option>
+											                                                <option value="82"  >UEPL Letter</option>
+											                                                <option value="31"  >User Manual</option>
+											                                                <option value="25"  >Vendor Accepted PO / WO</option>
+											                                                <option value="41"  >Warranty Certificate</option>
+												
+                                            </select>
+										</td>
+										<td>
+											 <textarea class="form-control docdesc" name="docdesc[]" rows="2" placeholder="Enter document description..."></textarea>
+										</td>
+										<td>
+											<input type="file" name="fudoc[]" class="docfile">
+										</td>
+                                        <td>
+										 											<button type="button" name="add" id="add" class="btn btn-success">Add More</button>
+											
+										</td> 
+										
+                                    </tr>  
+                               </table>  
+                            <!--   <input type="button" name="submit" id="submit" class="btn btn-info" value="Submit" />  -->
+							</div> 
+					    
+                                    
+  							<div class="box-footer">
+								<div class="col-sm-6">
+									 <a href="#tab_2" class="btn btn-primary" data-toggle="tab" onclick="$('#second_tab').trigger('click')" >Previous</a>
+									
+									<span>&nbsp;&nbsp;</span>
+								</div>
+								
+								<div class="col-sm-6 text-right">
+									<span>&nbsp;&nbsp;</span>
+								</div>
+							</div>
+
+														
+					<span id="predit"></span>
+
+																
+								<div class="box-footer">
+									<div class="col-sm-6">
+																							
+																		<span>&nbsp;&nbsp;</span>
+										
+										<a href="#deleteAuthority" class="btn btn-info" data-toggle="modal" data-mode="Delete" data-target="#deleteAuthority">Delete</a>		
+																
+								</div>
+								
+								<div class="col-sm-6 text-right">
+																	
+									<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+										
+										<!--<a href="#checkerAuthority" class="btn btn-primary" data-toggle="modal" data-mode="add" data-target="#checkerAuthority">Send</a>-->
+																				<input type='button' class="btn btn-primary" onclick="getapprover()" value="Send " >
+										<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+																			
+										<input type="submit" class="btn btn-primary" onclick="getvalidate();" value="Save" name="Save">
+											
+																
+								<span>&nbsp;&nbsp;</span>
+								
+								<a href="http://localhost/athang/purchase_order/index.php?sub=list" class="btn btn-default" >Back</a>
+									
+								</div>
+							</div>	
+
+										
+											<span id="getapprover">
+								<div class="box-footer">
+								<div class="col-sm-2">
+									<label class="control-label">&nbsp;</label>
+								</div>
+								
+								
+								<BR>
+								
+							</div>
+						
+						</span>
+						
+							
+						</div>
+						
+						<div class="tab-pane" id="tab_4">
+							
+							<div class="modal-header" >
+								
+											
+								<span style="margin: 0 auto;text-align:center" class="form-control-static pull-left" >Document Number : 9 &nbsp;&nbsp; Created By: Admin Admin &nbsp;&nbsp; Dated: 03-05-2021								 
+								</span>
+												
+							</div>
+							<div class="modal-body1" >
+								<section class="content2">
+								<div class="row1">
+								   
+										<table id="prtable" class="table table-bordered table-striped">
+											<thead>
+											<tr>
+											  <th></th>	
+											  
+											  <th>Dated</th>
+											  <th>By User</th>
+											  <th>Decision</th>
+											  <th>Send Dated</th>
+											  <th>To User</th>
+											  <th>Role</th>
+											  <th>remarks</th>
+											  
+											</tr>
+											</thead>
+											<tbody>
+										      
+											<tr>
+												<td width="1%"><input type="hidden" value="179" ></td>
+												<td width="10%" style="text-align:left;">03-05-2021 10:31:37pm</td>
+												<td width="10%" style="text-align:left;">Admin</td>
+												<td width="10%" style="text-align:left;">Draft</td>
+												<td width="10%" style="text-align:left;">03-05-2021 10:31:37pm</td>
+												<td width="10%" style="text-align:left;"></td>
+												<td width="10%" style="text-align:left;"></td>
+												<td width="10%" style="text-align:left;"></td>
+											</tr>
+											
+											</tbody>
+										</table>
+										
+									</div>
+								</section>
+							  </div>
+						
+						</div>
+						
+						
+						<div class="tab-pane" id="tab_5">
+							
+							<div class="modal-header" >
+								
+				<table id="prtable123" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>PO.No.</th>
+					<th>Dated</th>
+					<th>Supplier</th>
+					
+					<th style="text-align:right;">Total</th>
+					<th>By</th>
+					<th>Status</th>
+					<th>Decision</th>
+					
+<!--					<th style="text-align:right;">Action</th>-->
+				
+				</tr>
+                </thead>
+                <tbody>
+
+											
+								
+								</tbody>
+								<tfoot>
+								
+								</tfoot>
+							  </table>
+
+							</div>
+						
+						</div>
+						
+						
+				</div>
+			</div>	
+	
+ <input type="hidden"  value="<option value='68' >   (IE) Letters (Theme Engineer Services pvt. ltc)</option><option value='67' >  Organizations / Panchayaths</option><option value='65' >  Panchaths</option><option value='57' >  Site Bank Payment  Voucher</option><option value='77' > (IE) letter, MSV, Nirmal</option><option value='47' > Aadhaar card</option><option value='71' > Additional Chief Secretary to Government (PWD Lett</option><option value='117' > addressed to police</option><option value='72' > Annual Report of Road Safety</option><option value='59' > Attibele Police Station</option><option value='42' > Balance Sheet</option><option value='27' > Bank Details</option><option value='80' > Bank Guarantees</option><option value='49' > Bank Payment  HO Voucher</option><option value='79' > BETPL Company</option><option value='58' > BETPL Letters </option><option value='100' > BETPL Replies</option><option value='20' > Boarding Lodging</option><option value='22' > Bus Fare</option><option value='106' > BWSSB</option><option value='26' > Cancelled Cheque</option><option value='38' > Circular</option><option value='32' > Company Policy</option><option value='86' > Completion Certificate</option><option value='28' > Compliance </option><option value='96' > Compliance Certificate</option><option value='36' > Concession Agreement</option><option value='52' > Contra Voucher</option><option value='35' > Contract Agreement</option><option value='73' > Daily Correspondence </option><option value='23' > Delivery Challan</option><option value='111' > ELCITA</option><option value='87' > ELCITA Letters</option><option value='98' > Electrical Inspector</option><option value='99' > Electrical Inspector - Submission of Form G</option><option value='60' > Electronic City Police Station</option><option value='17' > Flight Ticket</option><option value='21' > Food </option><option value='88' > From ELCITA</option><option value='108' > From SPL Infra</option><option value='92' > Ground Water Dep - Nirmal</option><option value='11' > GST Certificate</option><option value='93' > GWD- Nirmal</option><option value='61' > Hebbagodi Police Station</option><option value='50' > HPCL DRIVE TRACK</option><option value='62' > Hulimavu Police Station</option><option value='119' > IC (Aarvee)- Nirmal</option><option value='118' > IE Observations & Compliance report_reg</option><option value='45' > Incorporation Certificate</option><option value='16' > Installation Certificate</option><option value='43' > Insurance Certificate</option><option value='101' > Insurance Department</option><option value='13' > Invoice</option><option value='33' > Invoice</option><option value='56' > Journal Voucher</option><option value='84' > JPEPL - IE </option><option value='83' > JPEPL - Public Works Department </option><option value='66' > Labour Office</option><option value='90' > Laptop Undertaking</option><option value='39' > Legal Notice</option><option value='105' > Letter from BWSSB</option><option value='107' > Letters</option><option value='63' > Madiwala Police Station</option><option value='70' > MBI Testing Report</option><option value='44' > Memorandum of Association</option><option value='89' > Mohan Raju & Co. letters</option><option value='78' > Monthly Correspondence</option><option value='81' > MPRDC Inward letter</option><option value='91' > NBL letter</option><option value='48' > NHAI letters</option><option value='12' > Other</option><option value='4' > PAN Card</option><option value='46' > PAN Card</option><option value='51' > PETTY CASH PAYMENT VOUCHER</option><option value='116' > police</option><option value='74' > Police Letter</option><option value='115' > Police Letters</option><option value='29' > Proforma Invoice</option><option value='54' > Purchased Order - Signed</option><option value='97' > Quarter ended  Certificate</option><option value='14' > Quotation</option><option value='37' > Quotation</option><option value='53' > Quotation</option><option value='30' > Quote</option><option value='104' > RA Bill</option><option value='103' > RA Bills </option><option value='55' > Receipt Voucher </option><option value='40' > Rental Agreement</option><option value='75' > Replied By E-mail</option><option value='76' > Replied By Letter</option><option value='112' > Replied to ELCITA</option><option value='110' > Replied to Purasabhe /Panchayaths</option><option value='114' > Replied to TNSTC (Tamilnadu)</option><option value='94' > Requesting Informations</option><option value='15' > RFQ</option><option value='85' > RFQ</option><option value='19' > Rickshaw Fare</option><option value='95' > RTI Informations</option><option value='34' > Software Licenses Agreement</option><option value='102' > Suryacity Police Station</option><option value='64' > Suryanagara Police Station</option><option value='18' > Taxi Fare</option><option value='24' > TDS Certificate</option><option value='69' > TDS Certificate</option><option value='113' > TNSTC (Tamilnadu)</option><option value='109' > TNSTC letters</option><option value='82' > UEPL Letter</option><option value='31' > User Manual</option><option value='25' > Vendor Accepted PO / WO</option><option value='41' > Warranty Certificate</option>" name="opt" id="opt">
+			
+                    </fieldset>
+				
+            </form>
+          </div>
+          
+          <!-- /.box -->
+        </div>
+        <!--/.col (right) -->
+      
+<!-- Modal Add Item-->
+<div class="modal fade" id="modalAddItem" role="dialog" aria-labelledby="modalAddItemLabel" data-keyboard="false" data-backdrop="static" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" onclick="clearfld()" >&times;</span>
+                </button>
+                <h4 class="modal-title" id="modalAddItemLabel">Add Product to Order </h4>
+            </div>
+            <div class="modal-body123">
+                <section class="content">
+                    <div class="row123">
+                        <form class="form-horizontal">
+                            <input type="hidden" id="mode" value='Add'>
+                            <input type="hidden" id="tempId">
+							<input type="hidden" id="purchaseId" value="9">
+							
+							<input type="hidden" name="app_remo_ref" id="app_remo_ref" value="4" >
+						
+												
+							<input type="hidden" name="values" id="Values" value="15678.00" >
+							<input type="hidden" name="tot_amount" id="TOT_amount" value="1630" >
+							
+							<input type="hidden" name="comp_vertical" id="comp_Vertical" value="2" > 
+							
+							<div class="form-group">
+								<div class="col-sm-4">
+									<label for="itemCategory" class="control-label"> Category</label>
+                                    <select class="form-control" id="categoryId" onchange="getmaterial1(this.value)">
+										<option value="">Select</option>
+                                                                            <option value="11" ></option>
+                                                                                <option value="1" >Equipment & Machinery</option>
+                                                                                <option value="3" >Fixed Assets</option>
+                                                                                <option value="9" >Insurance</option>
+                                                                                <option value="7" >IT Products</option>
+                                                                                <option value="5" >Maintenance</option>
+                                                                                <option value="10" >Profesional Services</option>
+                                                                                <option value="4" >Professional Services</option>
+                                                                                <option value="2" >Safety Product</option>
+                                                                                <option value="8" >Safety Products</option>
+                                                                                <option value="6" >spares</option>
+                                                                            </select>
+								</div>
+								
+                                <div class="col-sm-8">
+									<label for="itemName" class="control-label">Product Name</label>
+									<span id="getmaterial1" ><span id="getgrnitem" >
+										<select class="form-control" id="itemName" required >
+											<option value="">Select</option>	
+										
+										</select>
+									</span>
+								</div>	
+                                
+                            </div>
+							
+							<div class="form-group">
+							    
+											
+										
+								<div class="col-sm-6">
+									<label for="itemDescription" class="control-label col-sm-2">Description</label>
+									<span id = "getdesc">	
+										<textarea rows='01' class="form-control" id="itemDescription" placeholder="Item Description..."></textarea>
+									</span>
+								</div>
+								
+								<div class="col-sm-6">
+									<label for="itemDescription" class="control-label ">Posting Account</label>
+									<span id = "getdesc">	
+										<input type='text' class="form-control" id="posting_ACCOUNT_A" >
+									</span>
+								</div>
+								
+								
+                            </div>
+                            
+						<span id="getcatbudget" >
+							<div class="form-group">
+                               <div class="col-sm-6">
+									<label for="itemName" class="control-label">Cost Center Group</label>
+								</div>
+								
+								<div class="col-sm-6">
+									<label for="itemName" class="control-label">Cost Center Name</label>
+								</div>								
+                            </div>
+							
+							<div class="form-group">	
+								<div class="col-sm-12">
+									
+								</div>
+							</div>
+						</span>		
+							
+						<!--<div class="well well-sm" > -->
+							
+														
+							 <div class="form-group">
+								<div class="col-sm-2">
+									<label for="itemGST" class="control-label ">GST Type</label>
+								<select class="form-control" name="itemgst_id" id="itemGST_id" onchange="getgst(this.value)" >
+									<option value=""> Select </option>
+																	<option value="3-12.00" >GST 12%</option>
+																		<option value="1-18.00" >GST 18%</option>
+																		<option value="4-28.00" >GST 28%</option>
+																		<option value="2-5.00" >GST 5%</option>
+																	</select>
+								</div>
+								
+								<div class="col-sm-2">
+									<label for="itemGST" class="control-label col-sm-1">GST%</label>
+									<input type="text" class="form-control" id="itemGST" name="itemgst" style="text-align:right;" readonly onkeyup="calculateTotalAmount();" value=''>
+									
+									<input type="hidden" name="itemgst_id" id="itemGST_ID" >
+																	
+								</div>
+								
+								<div class="col-sm-2">
+									<label for="itemQuantity" class="control-label col-sm-1">Qty.</label>
+                                	<input type="text" class="form-control" id="itemQuantity"  style="text-align:right;" onkeyup="calculateTotalAmount();">
+                                </div>
+                            
+								<div class="col-sm-2">
+									<label for="itemUnits" class="control-label col-sm-1">Units</label>
+									<span id="getunit2">
+										<input type="text" class="form-control" id="itemUnits" name='itemunits' readonly >
+									</span>
+
+                                </div>
+								
+								<div class="col-sm-2">
+									<label for="itemRate" class="control-label ">Rate</label>
+                                	<div class="input-group">
+                                        <span class="input-group-addon">&#8377</span>
+                                        <input type="text" class="form-control" id="itemRate"  style="text-align:right;"  onkeyup="calculateTotalAmount();">
+                                    </div>
+                                </div>
+
+								<div class="col-sm-2">
+									<label for="itemAmount" class="control-label ">Total</label>
+                                	<input type="text" class="form-control" id="itemAmount_display" style="text-align:right;" readonly>
+									
+									<input type="hidden" class="form-control" id="itemAmount" >
+									
+                                </div>
+								
+							</div>
+							
+							<div class="form-group">
+								
+								
+                            
+								<label class="control-label col-sm-2">Delivery Date </label>
+								<div class="col-sm-3">
+									<div class="input-group date" data-provide="datepicker" data-date-format="dd-mm-yyyy">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar-alt"></i>
+                                        </div>
+                                        <input type="text" class="form-control" id="deliveryDATE" >
+									</div>
+								</div>
+								
+								<div class="col-sm-6">
+									<span id="errormsg" style="color:red;" ></span>
+								</div>
+								
+							</div>
+							
+                        </form>
+                    </div>
+                </section>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="clearfld()" >Close</button>
+                <button type="button" class="btn btn-primary" id="addItem">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Add Item-->
+
+
+<!--Approval Workflow Popup-->
+
+<div class="modal fade" id="approvalAuthority" role="dialog" aria-labelledby="approvalAuthority">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="approvalAuthority">Remarks </h4>
+            </div>
+            <div class="modal-body123">
+                <section class="content">
+                    <div class="box-body">
+                        <div class="col-md-12">
+                        <div class="box-body">
+							<form class="form-horizontal">
+                                        
+								
+										
+							<input type="hidden" id="approverC" name="approver" value='3' >
+							<input type="hidden" id="modeE" name="mode" value='' >
+							<input type="hidden" id="po_idE" name="po_id" value="9" >
+										
+							<div class="form-group">
+								<label for="approver" class="col-sm-2 control-label">Remarks</label>
+                                <div class="col-sm-10">
+									<textarea class="form-control" rows="3" name="remarks" id="remarksA"></textarea>
+								</div>
+							</div>
+							
+							</form>	
+									
+                        </div>
+			
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" id="submitApprove">Submit</button>
+					</div>
+			
+                </div>
+             </div>			
+			</section>
+		</div>
+    </div>
+  </div>
+</div>
+
+<!--Approval Workflow Popup End -->
+	  
+
+<!--Reject Workflow Popup-->
+
+<div class="modal fade" id="rejectAuthority" role="dialog" aria-labelledby="rejectAuthority">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="rejectAuthority">Remarks </h4>
+            </div>
+            <div class="modal-body123">
+                <section class="content">
+                            <div class="box-body">
+                                <div class="col-md-12">
+                                    <div class="box-body">
+										<form class="form-horizontal">
+                                        
+																				
+										<input type="hidden" name="po_id" id="po_idR" value="9" >
+										<input type="hidden" id="modeR" name="mode" value='Reject'>
+										
+										
+										<div class="form-group">
+											<label for="approver" class="col-sm-2 control-label">Remarks</label>
+                                            <div class="col-sm-10">
+												<textarea class="form-control" rows="3" name="remarks" id="remarksR"></textarea>
+											</div>
+										</div>
+									
+                                    </div>
+
+								</form>	
+									
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-primary" id="submitReject">Submit</button>
+							</div>
+			
+                                </div>
+                            </div>			
+			</section>
+		</div>
+    </div>
+  </div>
+</div>
+
+<!--/.col (right) -->
+
+<!-- For Document Attachment Start
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>  -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>        
+
+<script>  
+ $(document).ready(function(){
+      var i=1;  
+      $('#add').click(function(){  
+			var opt =  document.getElementById('opt').value;
+           i++;  
+           $('#dynamic_field').append('<tr id="row'+i+'"><td><select class="form-control select2 doctype col-sm-1" name="doctype[]" ><option value="">Select</option>'+opt+'</select></td><td><textarea class="form-control docdesc" name="docdesc[]" rows="2" placeholder="Enter document description..."></textarea></td><td><input type="file" name="fudoc[]" class="docfile"></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');  
+      });  
+      $(document).on('click', '.btn_remove', function(){  
+           var button_id = $(this).attr("id");   
+           $('#row'+button_id+'').remove();  
+      });  
+      $('#submit').click(function(){            
+           $.ajax({  
+                url:"name.php",  
+                method:"POST",  
+                data:$('#add_name').serialize(),  
+                success:function(data)  
+                {  
+                     alert(data);  
+                     $('#add_name')[0].reset();  
+                }  
+           });  
+      });  
+ });  
+ </script>
+ <!-- For Document Attachment End-->
+	
+<!--Make to DraftPopup-->
+<div class="modal fade" id="makeDraftAuthority" role="dialog" aria-labelledby="makeDraftAuthority">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="makeDraftAuthority">Do you want to Make Draft? </h4>
+            </div>
+            <div class="modal-body123">
+                <section class="content">
+                            <div class="box-body">
+                                <div class="col-md-12">
+                                    <div class="box-body">
+										<form class="form-horizontal">                                        
+																				<input type="hidden" name="po_id" id="po_idD" value="9" >
+										<input type="hidden" id="modeD" name="mode" value='Accept'>
+										<input type="hidden" id="approverD" name="approver" value=''>
+										
+										<div class="form-group">
+											<label for="status" class="col-sm-2 control-label">Status</label>
+											<div class="col-sm-4">
+												<input type="text" class="form-control" id="statusD" readonly name="status" value="Draft" >
+											</div>
+										</div>
+										
+										<div class="form-group">
+											<label for="approver" class="col-sm-2 control-label">Remarks</label>
+                                            <div class="col-sm-10">
+												<textarea class="form-control" rows="3" name="remarks" id="remarksD"></textarea>
+											</div>
+										</div>
+										
+                                    </div>
+
+								</form>	
+									
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-primary" id="submitDraft">Submit</button>
+							</div>
+			
+                                </div>
+                            </div>			
+			</section>
+		</div>
+    </div>
+  </div>
+</div>
+
+<!--Make to DraftPopup-->
+
+
+<!--Make to Suspend-->
+<div class="modal fade" id="makeSuspend" role="dialog" aria-labelledby="makeSuspend">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="makeSuspend">Do you want to Suspend? </h4>
+            </div>
+            <div class="modal-body123">
+                <section class="content">
+                            <div class="box-body">
+                                <div class="col-md-12">
+                                    <div class="box-body">
+										<form class="form-horizontal">                                        
+																				<input type="hidden" name="po_id" id="po_idS" value="9" >
+										<input type="hidden" id="modeS" name="mode" value='Accept'>
+										<input type="hidden" id="approverS" name="approver" value=''>
+										
+										<div class="form-group">
+											<label for="status" class="col-sm-2 control-label">Status</label>
+											<div class="col-sm-4">
+												<input type="text" class="form-control" id="statusS" readonly name="status" value="Draft" >
+											</div>
+										</div>
+										
+										<div class="form-group">
+											<label for="approver" class="col-sm-2 control-label">Remarks</label>
+                                            <div class="col-sm-10">
+												<textarea class="form-control" rows="3" name="remarks" id="remarksS"></textarea>
+											</div>
+										</div>
+                                    </div>
+								</form>	
+									
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-primary" id="submitSuspend">Submit</button>
+							</div>
+			
+                                </div>
+                            </div>			
+			</section>
+		</div>
+    </div>
+  </div>
+</div>
+<!--Make to Suspend-->
+
+
+<!--Make to Amend-->
+<div class="modal fade" id="makeAmend" role="dialog" aria-labelledby="makeAmend">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="makeAmend">Do you want to Amend? </h4>
+            </div>
+            <div class="modal-body123">
+                <section class="content">
+                            <div class="box-body">
+                                <div class="col-md-12">
+                                    <div class="box-body">
+										<form class="form-horizontal">
+																				<input type="hidden" name="po_id" id="po_idN" value="9" >
+										<input type="hidden" id="modeN" name="mode" value='Accept'>
+										<input type="hidden" id="approverN" name="approver" value=''>
+										
+										<div class="form-group">
+											<label for="status" class="col-sm-2 control-label">Status</label>
+											<div class="col-sm-4">
+												<input type="text" class="form-control" id="statusN" readonly name="status" value="Draft" >
+											</div>
+										</div>
+										
+										<div class="form-group">
+											<label for="approver" class="col-sm-2 control-label">Remarks</label>
+                                            <div class="col-sm-10">
+												<textarea class="form-control" rows="3" name="remarks" id="remarksN"></textarea>
+											</div>
+										</div>
+                                    </div>
+								</form>	
+									
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-primary" id="submitAmend">Submit</button>
+							</div>
+			
+                                </div>
+                            </div>			
+			</section>
+		</div>
+    </div>
+  </div>
+</div>
+<!--Make to Amend-->
+
+<!--Delete  Popup-->
+
+<div class="modal fade" id="deleteAuthority" role="dialog" aria-labelledby="deleteAuthority">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="deleteAuthority">Do you want to Delete? </h4>
+            </div>
+            <div class="modal-body123">
+                <section class="content">
+                            <div class="box-body">
+                                <div class="col-md-12">
+                                    <div class="box-body">
+										<form class="form-horizontal">                                        
+																				<input type="hidden" name="po_id" id="po_idZ" value="9" >
+										<input type="hidden" id="modeZ" name="mode" value='Accept'>
+										<input type="hidden" id="approverZ" name="approver" value=''>
+										
+										<div class="form-group">
+											<label for="status" class="col-sm-2 control-label">Status</label>
+											<div class="col-sm-4">
+												<input type="text" class="form-control" id="statusZ" readonly name="status" value="Draft" >
+											</div>
+										</div>
+										
+										<div class="form-group">
+											<label for="approver" class="col-sm-2 control-label">Remarks</label>
+                                            <div class="col-sm-10">
+												<textarea class="form-control" rows="3" name="remarks" id="remarksZ"></textarea>
+											</div>
+										</div>
+										
+                                    </div>
+
+								</form>	
+									
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-primary" id="submitDelete">Submit</button>
+							</div>
+			
+                                </div>
+                            </div>			
+			</section>
+		</div>
+    </div>
+  </div>
+</div>
+
+<!--Delete Popup End -->
+
+<!--Checker Workflow Popup-->
+
+<div class="modal fade" id="checkerAuthority" role="dialog" aria-labelledby="checkerAuthority">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="checkerAuthority">Send To... </h4>
+            </div>
+            <div class="modal-body123">
+                <section class="content">
+                            <div class="box-body">
+                                <div class="col-md-12">
+                                    <div class="box-body">
+										<form class="form-horizontal">
+                                        
+																				
+										<input type="hidden" name="status" id="statusE" value="Draft" >
+										<input type="hidden" name="po_id" id="po_idE" value="9" >
+										<input type="hidden" id="modeC" name="mode" value='Checker'>
+										
+										<div class="form-group col-md-12">
+                                        
+											<label for="approver" class="col-sm-4 control-label">User Name</label>
+                                            <div class="col-sm-7">
+                                                <span id="getuser">
+													<select class="form-control select2123" id="approverE" name="approver" required>
+													    <option value="">Select</option>
+																											</select>
+												</span>
+                                            </div>
+										</div>
+										
+										<div class="form-group col-md-12">
+											<label for="approver" class="col-sm-4 control-label">Status</label>
+                                            <div class="col-sm-7">
+												<input type="text" class="form-control" id="statusE" style="color:red;" readonly name="status" value="Draft" >
+
+                                            </div>
+                                        </div>
+										
+										<div class="form-group">
+											<label for="approver" class="col-sm-2 control-label">Remarks</label>
+                                            <div class="col-sm-10">
+												<textarea class="form-control" rows="3" name="remarks" id="remarksE"></textarea>
+											</div>
+										</div>
+										
+                                    </div>
+
+								</form>	
+									
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-primary" id="submitChecker">Submit</button>
+							</div>
+			
+                                </div>
+                            </div>			
+			</section>
+		</div>
+    </div>
+  </div>
+</div>
+
+<!--Checker Workflow Popup End -->
+
+
+<!--Blocked -->
+
+<div class="modal fade" id="blockAuthority" role="dialog" aria-labelledby="blockAuthority">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="blockAuthority">Want to Block?</h4>
+				<p>Remaining amount will be added back to respective budget head account once blocked.</p>
+            </div>
+            <div class="modal-body123">
+                <section class="content">
+                            <div class="box-body">
+                                <div class="col-md-12">
+                                    <div class="box-body">
+										<form class="form-horizontal">
+                                        
+								 												
+										<input type="hidden" name="po_id" id="po_idB" value="9" >
+										<input type="hidden" id="modeB" name="mode" value='Checker'>
+										
+										<div class="form-group col-md-12">
+											<label for="approver" class="col-sm-4 control-label">Status</label>
+                                            <div class="col-sm-7">
+												<input type="text" class="form-control" id="statusB" style="color:red;" readonly name="status" value="Draft" >
+
+                                            </div>
+                                        </div>
+										
+										<div class="form-group">
+											<label for="approver" class="col-sm-2 control-label">Remarks</label>
+                                            <div class="col-sm-10">
+												<textarea class="form-control" rows="3" name="remarks" id="remarksB"></textarea>
+											</div>
+										</div>
+										
+                                    </div>
+
+								</form>	
+									
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-primary" id="submitBlock">Submit</button>
+							</div>
+			
+                                </div>
+                            </div>			
+			</section>
+		</div>
+    </div>
+  </div>
+</div>
+
+<!-- Blocked -->
+	
+										
+<!-- jQuery 2.2.3 -->
+<script src="http://localhost/athang/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+  $.widget.bridge('uibutton', $.ui.button);
+</script>
+<!-- Bootstrap 3.3.6 -->
+<script src="http://localhost/athang/bootstrap/js/bootstrap.js"></script>
+<!-- Sparkline -->
+<script src="http://localhost/athang/plugins/sparkline/jquery.sparkline.min.js"></script>
+<!-- jvectormap -->
+<script src="http://localhost/athang/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+<script src="http://localhost/athang/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+<!-- jQuery Knob Chart -->
+<script src="http://localhost/athang/plugins/knob/jquery.knob.js"></script>
+<!-- datepicker -->
+<script src="http://localhost/athang/plugins/datepicker/bootstrap-datepicker.js"></script>
+<!-- daterangepicker -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="http://localhost/athang/plugins/daterangepicker/daterangepicker.js"></script>
+<!-- Bootstrap WYSIHTML5 -->
+<script src="http://localhost/athang/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js"></script>
+<!-- Slimscroll -->
+<script src="http://localhost/athang/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="http://localhost/athang/plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="http://localhost/athang/dist/js/app.js"></script>
+
+<!-- Select2 -->
+<script src="http://localhost/athang/plugins/select2/select2.full.js"></script>
+<!-- InputMask -->
+<script src="http://localhost/athang/plugins/input-mask/jquery.inputmask.js"></script>
+<script src="http://localhost/athang/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="http://localhost/athang/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+<!-- Bootstrap WYSIHTML5 -->
+<script src="http://localhost/athang/plugins/ckeditor/ckeditor.js"></script>
+
+
+<!-- DataTables -->
+<script src="http://localhost/athang/plugins/datatables/jquery.dataTables.js"></script>
+<script src="http://localhost/athang/plugins/datatables/dataTables.bootstrap.js"></script>
+
+<script>
+
+   $("#submitDraft").on("click", function(e){
+        var mode		 	=  $("#modeD").val();
+		var po_id		 	=  $("#po_idD").val();
+        var status 			=  $("#statusD").val();
+		var remarks			=  $("#remarksD").val();
+		
+//alert(remarks +  ' ' + po_id );
+	
+		$('#makeDraftAuthority').modal('hide');
+		var strURL = "py_draft_func.php";
+		$.post(strURL,{ po_id:po_id,
+						mode:mode,
+						status:status,
+						remarks:remarks},
+						function(result){
+		      $('#predit').html(result);
+		});
+	});
+
+	$("#submitSuspend").on("click", function(e){
+        var mode		 	=  $("#modeS").val();
+		var po_id		 	=  $("#po_idS").val();
+        var status 			=  $("#statusS").val();
+		var remarks			=  $("#remarksS").val();
+		
+//alert(remarks +  ' ' + po_id + ' ' + status);
+
+		$('#makeSuspend').modal('hide');
+		var strURL = "py_suspend_func.php";
+		$.post(strURL,{ po_id:po_id,
+						mode:mode,
+						status:status,
+						remarks:remarks},
+						function(result){
+		      $('#predit').html(result);
+		});
+	});
+
+	$("#submitAmend").on("click", function(e){
+        var mode		 	=  $("#modeN").val();
+		var po_id		 	=  $("#po_idN").val();
+        var status 			=  $("#statusN").val();
+		var remarks			=  $("#remarksN").val();
+//alert(remarks +  ' ' + po_id + ' ' + status);
+
+		$('#makeAmend').modal('hide');
+		var strURL = "py_amend_func.php";
+		$.post(strURL,{ po_id:po_id,
+						mode:mode,
+						status:status,
+						remarks:remarks},
+						function(result){
+		      $('#predit').html(result);
+		});
+	});
+	
+   $("#submitChecker").on("click", function(e){
+        var sub = 'sub10';
+		var mode		 	=  $("#modeC").val();
+		
+		var po_id		 	=  $("#po_idE").val();
+		var approver		=  $("#approverE option:selected").val();
+        var status 			=  $("#statusE").val();
+		var remarks			=  $("#remarksE").val();
+
+//	alert(sub + ' ' + mode + ' ' + approver + ' ' + status );		 
+
+		if(approver==''){
+			alert("User Name should select...");
+			return;
+		}
+		
+		 $('#checkerAuthority').modal('hide');
+		var strURL = "app_func.php";
+		$.post(strURL,{ po_id:po_id,
+						mode:mode,
+						approver:approver,
+						status:status,
+						remarks:remarks,
+						sub10:sub},
+						function(result){
+		      $('#predit').html(result);
+		});
+		
+		 $('#checkerAuthority').modal('hide');
+	
+	});
+	
+
+    $("#submitApprove").on("click", function(e){
+		
+		$('.hidden-div').hide();
+		$('#predit').html('Wait...');
+        var sub = 'sub9';
+		var mode		 	=  $("#modeE").val();
+		
+//		alert(sub + ' ' + mode);
+
+		var company		 	=  $("#projecT").val();
+		var po_id		 	=  $("#po_idE").val();
+	    var status 			=  $("#statuS").val();
+		var to_supplier		= $("#to_Supplier").val();
+		var approval_memo_ref	= $("#approval_memo_Ref").val();
+		var budget_head_id	= $("#budget_Head").val();		
+        var statusap		=  mode;
+		var approver		=  $("#approverC").val();
+		var remarks			=  $("#remarksA").val();
+//alert(company + ' ' + statusap+' #0# '+status+' #1# '+approval_memo_ref+' #5# '+po_id);
+		
+		
+		var strURL = "app_func.php";
+		$.post(strURL,{ po_id:po_id,
+						mode:mode,
+						company:company,	
+						approval_memo_ref:approval_memo_ref,
+						budget_head_id:budget_head_id,
+						to_supplier:to_supplier,
+						status:status,
+						approver:approver,
+						statusap:mode,
+						remarks:remarks,
+						sub9:sub},
+						function(result){
+		      $('#predit').html(result);
+		});
+		
+		$('#approvalAuthority').modal('hide');
+		
+	});
+
+		
+    $("#submitReject").on("click", function(e){
+        var sub = 'sub9';
+		var mode		 	=  $("#modeR").val();
+		
+//		alert(sub + ' ' + mode);		 
+		var po_id		 	=  $("#po_idR").val();
+		
+		var status 			=  $("#statuS").val();
+		//var po_id			=  $("#iD").val();
+		
+		var account_year	= $("#account_Year").val();
+		var company			= $("#companY").val();
+		var budget_head_id	= $("#budget_head_Id").val();
+		var budget_name		= $("#budget_Name").val();
+		
+        var statusap		=  mode;
+		var remarks			=  $("#remarksR").val();
+		
+//alert(statusap+' #0# '+status+' #1# '+account_year+' #2# '+company+' #3# '+budget_head_id+' #4# '+budget_name+' #5# '+po_id);
+
+		 $('#rejectAuthority').modal('hide');
+		var strURL = "app_func.php";
+		$.post(strURL,{ po_id:po_id,
+						mode:mode,
+						account_year:account_year,
+						company:company,
+						budget_head_id:budget_head_id,
+						budget_name:budget_name,
+						status:status,
+						statusap:mode,
+						remarks:remarks,
+						sub9:sub},
+						function(result){
+		      $('#predit').html(result);
+		});
+		
+	});
+
+
+	$("#submitBlock").on("click", function(e){
+        var sub = 'sub13';
+		var mode		 	=  $("#modeB").val();
+		
+		var po_id		 	=  $("#po_idB").val();
+		//var approver		=  $("#approverE option:selected").val();
+        var status 			=  $("#statusB").val();
+		var remarks			=  $("#remarksB").val();
+
+//		alert(po_id+  ' ' + sub + ' ' + mode + ' ' + status );		 
+		
+		$('#blockAuthority').modal('hide');
+		var strURL = "app_func.php";
+		$.post(strURL,{ po_id:po_id,
+						mode:mode,
+						status:status,
+						remarks:remarks,
+						sub13:sub},
+						function(result){
+		      $('#predit').html(result);
+		});
+		
+		 $('#blockAuthority').modal('hide');
+				 
+	});
+		
+	
+    var itemArray = []; // stores all item details table values in memory
+
+/*    $(document).ready(function () {
+        $('.datepicker').datepicker();
+        // $('.datepicker').datepicker({
+        //     "format": 'd/M/Y',
+        //     "autoclose": true
+        // });
+        $('.select2').select2();
+        CKEDITOR.replace('reason');
+        $("#prItemsTable").DataTable({
+            "paging": false,
+            "ordering": false,
+            "info": false,
+            "searching": false
+        });
+    });
+*/	
+
+    function validateInputs() {
+        if ($("#reqDate").val() === '') {
+            return false;
+        }
+        if (itemArray.length == 0) {
+            $("#err").html("Please add items to the Purchase Order");
+            return false;
+        }
+        $("#items").val(JSON.stringify(itemArray));
+        console.log($("#items"));
+        return true;
+    }
+
+	
+    function calculateTotalAmounte() {
+		var qty1='';
+		var rate1='';
+		var amt1='';
+		var gst1='';
+		
+//        var qty1 = $('#itemQuantity_e').val();
+//        var rate1 = $('#itemRate_e').val();
+//		var gst1 = $('#itemGST_e').val();
+		var qty1 = document.getElementById("itemQuantity_e").value;
+		var rate1 = document.getElementById("itemRate_e").value;
+		var gst1 = document.getElementById("itemGST_e").value;
+		var balance_budget = document.getElementById("balance_budget_ab").value;
+//alert(qty1 + ' <> ' + rate1 + ' <> ' +  amt1);
+        var amt1 = qty1 * rate1;
+		var amt1 = amt1 + (amt1 * gst /100);
+		
+        amt = parseFloat(amt1);
+        amt = amt.toLocaleString('en-US', { style: 'currency', currency: 'INR' });
+        $('#itemAmount_e').val(amt1);
+		
+		if(amt1 > balance_budget){
+			 alert("Budget goes into negative balance ... Please confirm...");
+		}
+		
+    }
+
+	
+    function calculateTotalAmount() {
+        var qty = $('#itemQuantity').val();
+        var rate = $('#itemRate').val();
+		var gst = $('#itemGST').val();
+        var amt = qty * rate;
+		var amt = amt + (amt * gst /100);
+        amt = parseFloat(amt);
+		amta = parseFloat(amt);
+        amt = amt.toLocaleString('en-US', { style: 'currency', currency: 'INR' });
+        $('#itemAmount').val(amta);
+		$('#itemAmount_display').val(amt);
+    }
+
+    $('#modalDeleteItem').on('show.bs.modal', function(e) {
+        var tempId = $(e.relatedTarget).data('id');
+        var i;
+        for (i = 0; i < itemArray.length; i++) {
+            var obj = itemArray[i];
+            if (obj.tempId == tempId) {
+                $(e.currentTarget).find('input[id="itemTempId"]').val(tempId);
+                $(e.currentTarget).find('div[class="modal-body"]').html('Are you sure you want to delete item "' + obj.name + "'");
+                break;
+            }
+        }
+    });
+
+    $("#btnDeleteItemYes").on("click", function(e){
+        var i;
+        for (i = 0; i < itemArray.length; i++) {
+            //var obj = itemArray[i];
+            if (itemArray[i].tempId == $("#itemTempId").val()) {
+                itemArray.splice(i, 1);
+                break;
+            }
+        }
+        buildItemsTable();
+        $('#modalDeleteItem').modal('hide');
+    });
+
+    function setSelectedValue(object, value) {
+        for (var i = 0; i < object.options.length; i++) {
+            if (object.options[i].text === value) {
+                object.options[i].selected = true;
+                return;
+            }
+        }
+
+        // Throw exception if option `value` not found.
+        var tag = object.nodeName;
+        var str = "Option '" + value + "' not found";
+
+        if (object.id != '') {
+            str = str + " in //" + object.nodeName.toLowerCase()
+                + "[@id='" + object.id + "']."
+        }
+
+        else if (object.name != '') {
+            str = str + " in //" + object.nodeName.toLowerCase()
+                + "[@name='" + object.name + "']."
+        }
+
+        else {
+            str += "."
+        }
+
+        throw str;
+    }
+
+   $("#submitDelete").on("click", function(e){
+        var mode		 	=  $("#modeZ").val();
+		var po_id		 	=  $("#po_idZ").val();
+        var status 			=  $("#statusZ").val();
+		var remarks			=  $("#remarksZ").val();
+		
+//alert(remarks +  ' ' + po_id + ' ' + st_flag);
+	
+		$('#deleteAuthority').modal('hide');
+		var strURL = "py_delete_func.php";
+		$.post(strURL,{ po_id:po_id,
+						mode:mode,
+						status:status,
+						remarks:remarks,
+						mode:mode},
+						function(result){
+		      $('#predit').html(result);
+		});
+	});
+
+
+    $('#modalAddItem').on('show.bs.modal', function(e) {
+        var mode = $(e.relatedTarget).data('mode');
+        $(e.currentTarget).find('input[id="mode"]').val(mode);
+        if (mode === 'add') {
+            // clear existing values
+            $("#itemDescription").val("");
+            $("#itemQuantity").val("");
+            $("#itemUnits").val("");
+            $("#itemRate").val("");
+			$("#itemGST").val("");
+            $("#itemAmount").val("");
+			$("#deliveryDate").val("");
+        }
+        else {
+            var tempId = $(e.relatedTarget).data('id');
+            $(e.currentTarget).find('input[id="tempId"]').val(tempId);
+            var i;
+            for (i = 0; i < itemArray.length; i++) {
+                var obj = itemArray[i];
+                if (obj.tempId == tempId) {
+                    $(e.currentTarget).find('input[id="itemTempId"]').val(tempId);
+                    //$(e.currentTarget).find('select[id="itemName"]').val(obj.id);
+                    setSelectedValue($(e.currentTarget).find('select[id="itemName"]')[0], obj.name);
+					setSelectedValue($(e.currentTarget).find('select[id="categoryId"]')[0], obj.name);
+					$(e.currentTarget).find('input[id="itemDescription"]').val(obj.description);
+                    $(e.currentTarget).find('input[id="itemQuantity"]').val(obj.quantity);
+                    $(e.currentTarget).find('input[id="itemUnits"]').val(obj.units);
+                    $(e.currentTarget).find('input[id="itemRate"]').val(obj.rate);
+					$(e.currentTarget).find('input[id="itemGST"]').val(obj.gst);
+                    $(e.currentTarget).find('input[id="itemAmount"]').val(obj.amount);
+					$(e.currentTarget).find('input[id="deliveryDate"]').val(obj.deliverydate);
+                    break;
+                }
+            }
+        }
+    });
+
+    $("#addItem").on("click", function(e){
+        var sub = 'sub1';
+	//	var mode = $("#mode").val();
+		var budget_id  		= '';
+		var purchase_id  =  $("#purchaseId").val();		
+        var product_id   =  $("#itemName option:selected").val();
+        var product_name =  $("#itemName option:selected").html();
+		
+		var company_id    =  $("#company_id_a").val();
+		var budget_name   =  $("#budget_Name").val();
+		var budget_head   =  $("#budget_name_a").val();
+		var total_budget  =  $("#total_budget").val();
+		var balance_budget  =  $("#balance_budget_a").val();
+		var budget_id  		=  $("#budget_id").val();
+        var description =   $("#itemDescription").val();
+		
+		var budget_NAME 	= $("#budget_NAME").val();
+		
+		var quantity 		= $("#itemQuantity").val();
+        var units 	=         $("#itemUnits").val();
+        var rate 	=         $("#itemRate").val();
+		var gst  	=         $("#itemGST").val();
+		var gst_id 			 =  $("#itemGST_ID").val();
+        var amount 	=         $("#itemAmount").val();
+		var deliverydate =    $("#deliveryDATE").val();
+//alert(deliverydate);		return false;
+
+//alert(budget_NAME + ' <#> ' + quantity + ' <<>> ' + rate + ' <<>> ' + product_id);
+        
+		if(product_id==''){
+			alert('Product must be select.....');
+			return false;
+		}
+		
+		if(budget_NAME==''){
+			alert('Cost Center must be select.....');
+			return false;
+		}
+		
+		if(quantity==0 || rate==0){
+			
+			alert('Quantity / Rate must be enter.....');
+			return false;
+		}
+
+//alert(balance_budget + ' <> ' + amount + ' <> ' + budget_name + ' <> ' + company_id + ' <> ' + budget_id );
+//return false;
+        
+		if( parseInt(amount) > parseInt(balance_budget) ){
+			alert('Insufficient Budget for Product Name '+ product_name);
+			var msg = 'Insufficient Budget for Product Name: '+ product_name;
+			$('#errormsg').html(msg);
+			return false;
+		}
+//return false;
+//alert(deliverydate);
+
+		var app_values =  parseInt($("#Values").val());
+		var tot_amount =  parseInt($("#TOT_amount").val());
+		var check_value = parseInt(parseInt(rate) * parseInt(quantity)) + parseInt((((parseInt(rate) ) * parseInt(quantity) ) * gst) / 100);
+//alert('Check Value##0: ' + check_value);		
+//		var check_value = parseInt(check_value) + parseInt(tot_amount);
+
+        $('#modalAddItem').modal('hide');
+		var strURL = "po_func.php";
+		$.post(strURL,{ product_id:product_id,purchase_id:purchase_id,
+							product_name:product_name,
+							description:description,
+							company_id:company_id,
+							budget_name:budget_name,
+							budget_head:budget_head,
+							total_budget:total_budget,
+							balance_budget:balance_budget,
+							budget_id:budget_id,
+							quantity:quantity,
+							units:units,
+							rate:rate,
+							gst:gst,
+							gst_id:gst_id,
+							amount:amount,
+							deliverydate:deliverydate,
+							sub1:sub},
+							function(result){
+		      $('#prItemsTableBody').html(result);
+		});
+		
+//        saveItem(mode);
+		
+    });
+
+//Disable click outside of bootstrap modal area to close modal 
+$('#modalAddItem123').modal({backdrop123: 'static', keyboard123: false}) 
+//Disable click outside of bootstrap modal area to close modal 	
+
+    $("#editItem").on("click", function(e){
+//    function(editItem){    
+		var sub = 'sub3';
+
+		var rid 		=  $("#rid_e").val();
+		var purchase_id =  $("#purchaseId_e").val();		
+        var id =            $("#itemName_e option:selected").val();
+        var name =          $("#itemName_e option:selected").html();
+		var catid =         $("#categoryId_e option:selected").val();
+        var catname =       $("#categoryId_e option:selected").html();
+        var description =   $("#itemDescription_e").val();
+        var quantity =      $("#itemQuantity_e").val();
+        var units =         $("#itemUnits_e").val();
+        var rate =          $("#itemRate_e").val();
+		var gst  =          $("#itemGST_e").val();
+        var amount =        $("#itemAmount_e").val();
+		var deliverydate =  $("#deliveryDate_e").val();
+        $('#modalEditItem'+rid).modal('hide');
+		var strURL = "po_func.php";
+		$.post(strURL,{ rid:rid,id:id,purchase_id:purchase_id,
+							name:name,
+							catname:catname,
+							catid:catid,
+							description:description,
+							quantity:quantity,
+							units:units,
+							rate:rate,
+							gst:gst,
+							amount:amount,
+							deliverydate:deliverydate,
+							sub3:sub},
+							function(result){
+		      $('#prItemsTableBody').html(result);
+		});
+		
+//        saveItem(mode);
+		
+    });
+
+
+</script>
+
+<script>
+    $(function () {
+        $("#prtable").DataTable();
+    });
+
+	$(document).ready(function () {
+        $('.datepicker').datepicker({
+            "format": 'd/M/Y',
+            "autoclose": true
+        });
+        $('.select2').select2();
+        CKEDITOR.replace('reason');
+        CKEDITOR.replace('reason1');
+        CKEDITOR.replace('reason2');
+        CKEDITOR.replace('reason3');
+		$("#prItemsTable").DataTable({
+            "paging": false,
+            "ordering": false,
+            "info": false,
+            "searching": false
+        });
+    });
+	
+	function getcatbudget (id){
+		var sub    = 'sub14';
+		var strURL = "app_func.php";
+		var company_id    = document.getElementById("projecT").value;
+		var product_id    = document.getElementById("itemName").value;
+		
+//alert(sub + ' ' + id + ' ' + company_id + ' ' + product_id + ' ' + strURL);
+		$.post(strURL,{id:id,company_id:company_id,product_id:product_id,sub14:sub},function(result){
+		      $('#getcatbudget').html(result);
+		});
+
+	}
+	
+	function getcatbudgett(id){
+		var sub    = 'sub14A';
+		var strURL = "app_func.php";
+		var company_id    = document.getElementById("projecT").value;
+		var product_id    = document.getElementById("itemName").value;
+		
+//alert(sub + ' ' + id + ' ' + company_id + ' ' + product_id + ' ' + strURL);
+		$.post(strURL,{id:id,company_id:company_id,product_id:product_id,sub14A:sub},function(result){
+		      $('.getcatbudgett').html(result);
+		});
+
+	}
+	
+	function getcostcenter(id){
+		
+        var sub    = 'sub1';
+		var company_id    = document.getElementById("projecT").value;
+		
+//alert(sub + ' ' + company_id  );		
+		var strURL = "app_func.php";
+		$.post(strURL,{id:id,company_id:company_id,sub1:sub},function(result){
+		      $('#getcostcenter').html(result);
+		});
+
+	}
+
+	function getcostcenterr(id){
+		
+        var sub    = 'sub1A';
+		var company_id    = document.getElementById("projecT").value;
+		
+//alert(sub + ' ' + id + ' ' + company_id  );
+
+		 var strURL = "app_func.php";
+		$.post(strURL,{id:id,company_id:company_id,sub1A:sub},function(result){
+		      $('.getcostcenterr').html(result);
+		});
+ 
+	}
+
+	function getbudgethead(id){
+		
+        var sub    = 'sub2';
+//alert(sub);		
+		var strURL = "app_func.php";
+		$.post(strURL,{id:id,sub2:sub},function(result){
+		      $('#getbudgethead').html(result);
+		});
+
+	}
+
+	function getunit2(id){	
+        var sub    = 'sub4';
+//alert(sub);
+		var strURL = "app_func.php";
+		$.post(strURL,{id:id,sub4:sub},function(result){
+		     // $('#getunit2').html(result);
+			
+			  var splitString = result.split("##");
+		
+				var uom 			=  splitString['0'];
+				var account_name 	= splitString['1'];
+			//alert(account_name);	
+			  $("#itemUnits").val(uom);
+			  $("#posting_ACCOUNT_A").val(account_name);
+			  
+		});
+	}
+
+	function getunit3(id){	
+        var sub    = 'sub4';
+//alert(sub);
+		var strURL = "app_func.php";
+		$.post(strURL,{id:id,sub4:sub},function(result){
+		      $('#getunit3').html(result);
+		});
+	}
+	
+	function getunit1(id){	
+        var sub    = 'sub44';
+		var comp_vertical    = document.getElementById("comp_Vertical").value;
+		var company_id       = document.getElementById("projecT").value;
+//alert(sub);
+		var strURL = "app_func.php";
+		$.post(strURL,{id:id,company_id:company_id,comp_vertical:comp_vertical,sub44:sub},function(result){
+		      //$('#getunit1').html(result);
+			  
+			  //alert(result);
+			  
+			 //var input = 'john smith~123 Street~Apt 4~New York~NY~12345';
+
+			var fields = result.split('-');
+
+			var unit = fields[0];
+			var description = fields[1];
+			var igst	= fields[2];
+			var igst_id	= fields[3];
+			
+//alert(unit+ ' ' + description);			
+			$('#itemUnits').val(unit);
+			$('#itemDescription').val(description);
+			$('#itemGST').val(igst);
+			//$('#itemGST_ID').val(igst_id);
+
+// etc.
+
+		});
+		
+	}
+	
+  function validateInputs() {
+        if ($("#reqDate").val() === '') {
+            return false;
+        }
+        if (itemArray.length == 0) {
+            $("#err").html("Please add items to the Purchase Requisitions");
+            return false;
+        }
+        $("#items").val(JSON.stringify(itemArray));
+        console.log($("#items"));
+        return true;
+    }
+
+
+	function getdelvaddr(id){
+        var sub    = 'sub6';
+//alert(sub);
+		var strURL = "app_func.php";
+		$.post(strURL,{id:id,sub6:sub},function(result){
+		      $('#getdelvaddr').html(result);
+		});
+	}
+
+function getsupplier(id){
+        var sub    = 'sub7';
+//alert(sub);
+		var strURL = "app_func.php";
+		$.post(strURL,{id:id,sub7:sub},function(result){
+		      $('#getsupplier').html(result);
+		});
+	}
+
+
+	function getqref(id){
+        var sub    = 'sub8';
+        var approval_hdr_id    = document.getElementById("approval_memo_Ref").value;
+//alert(approval_hdr_id);
+		var strURL = "app_func.php";
+		$.post(strURL,{id:id,sub8:sub,approval_hdr_id:approval_hdr_id},function(result){
+		      $('#getqref').html(result);
+		});
+	}
+		
+		
+	function delete_poItem(po_no, id_no){
+
+		
+		//alert("Delete PO Item");
+		//alert(po_no + ' ' + id_no);
+		var strURL = "del_poitem.php";
+		$.post(strURL,{po_no:po_no,id_no:id_no},function(result){
+		      $('#delete_poItem').html(result);
+		});
+		
+	}
+	
+
+	function getpartydoc(id){
+
+		var sub    = 'sub23';
+		var id 	   = 'N';
+		var checkBox = document.getElementById("partyDoc");
+		if (checkBox.checked == true){
+			var id	='Y';
+		}	
+
+		if(id=='Y'){
+			var party_id_doc = document.getElementById("party_id_doc").value;
+			var company_idd_doc = document.getElementById("company_idd_doc").value;
+			
+			
+		//alert(id + ' ' + sub + ' ' + party_id_doc);
+			var strURL = "app_func.php";
+			$.post(strURL,{id:id,sub23:sub,party_id_doc:party_id_doc,company_idd_doc:company_idd_doc},function(result){
+				  $('#gegpartyDoc').html(result);
+			});
+		}
+		else {
+			$('#gegpartyDoc').html("");
+		}	
+
+	}
+	
+	function getapprover(){
+		
+		var company_id    	= document.getElementById("projecT").value;
+		var checker_value   = document.getElementById("checker_value").value;
+		var sub = 'sub24';
+//alert(sub);		
+		var strURL = "app_func.php";
+		$.post(strURL,{company_id:company_id,checker_value:checker_value,sub24:sub},function(result){
+		      $('#getapprover').html(result);
+		});
+		
+	}
+
+	function getcompanyterm(id){
+		var sub    = 'sub25';
+		var strURL = "app_func.php";
+		$.post(strURL,{id:id,sub25:sub},function(result){
+		      $('#getcompanyterm').html(result);
+		});
+	}	
+	
+	function getspecialterms(id){
+		var sub    = 'sub26';
+		var strURL = "app_func.php";
+		$.post(strURL,{id:id,sub26:sub},function(result){
+		      $('#getspecialterms').html(result);
+		});
+	}
+
+	function getlocation(id){
+		
+        var sub    = 'sub5';
+//alert(sub);		
+		var strURL = "app_func.php";
+		$.post(strURL,{id:id,sub5:sub},function(result){
+		      $('#getlocation').html(result);
+		});
+
+	}
+	
+	function getworkflowtype(id){
+		
+        var sub    = 'sub27';
+//	alert(sub);
+		var strURL = "app_func.php";
+		$.post(strURL,{id:id,sub27:sub},function(result){
+		      $('#getworkflowtype').html(result);
+		});
+
+	}
+	
+	function getworkflowtype(id){
+		
+        var sub    = 'sub27';
+//	alert(sub);
+		var strURL = "app_func.php";
+		$.post(strURL,{id:id,sub27:sub},function(result){
+		      $('#getworkflowtype').html(result);
+		});
+
+	}
+	
+	function getmaterial1(id){
+		
+        var sub    = 'sub3A';
+		var strURL = "app_func.php";
+		$.post(strURL,{id:id,sub3A:sub},function(result){
+		      $('#getmaterial1').html(result);
+		});
+
+	}
+
+	function clearfld(){
+		
+		$('#itemDescription').html('');
+		$('#itemQuantity').html('');
+		$('#itemUnits').html('');
+		$('#itemRate').html('');
+		$('#itemGST').html('');
+		$('#itemAmount').html('');
+	
+		//$baseurl1 = $baseurl . $modulePath;
+		location.reload();
+	
+	}
+	
+	
+	function getsubmit(){
+		
+		var row_affected 	=  $("#row_affected").val();
+		var approval_role_1	=  $("#APPROVER_1").val();
+		var approval_role_2	=  $("#APPROVER_2").val();
+		var approval_role_3 =  $("#APPROVER_3").val();
+
+//alert(row_affected + ' ' + approval_role_1 + ' ' + approval_role_2 + ' ' + approval_role_3);
+
+		if(row_affected==1){
+			if(approval_role_1==''){
+				alert('First Approval should select !!!');
+				return false;
+			}
+		}
+		else if(row_affected==2){
+			if(approval_role_1==''){
+				alert('First Approval should select !!!');
+				return false;
+			}
+			else if(approval_role_2==''){
+				alert('Second Approval should select !!!');
+				return false;
+			}
+		}
+		if(row_affected==3){
+			if(approval_role_1==''){
+				alert('First Approval should select !!!');
+				return false;
+			}
+			else if(approval_role_2==''){
+				alert('Second Approval should select !!!');
+				return false;
+			}
+			else if(approval_role_3==''){
+				alert('Third Approval should select !!!');
+				return false;
+			}
+		}
+		
+		return false;
+		
+	}
+	function getvalidate(){
+		
+		var project 	=  $("#projecT").val();
+		var location 	=  $("#location").val();
+		var department 	=  $("#department").val();
+		//var quotation_reference_no 	=  $("#quotation_reference_no").val();
+		var to_supplier 	=  $("#to_Supplier").val();
+		
+		
+		
+		if(project==''){
+			alert('Company selection mandatory !!!');
+			return;
+		}
+		
+		if(location==''){
+			alert('Location selection mandatory !!!');
+			return;
+		}
+		if(department==''){
+			alert('Department selection mandatory !!!');
+			return;
+		}
+		
+		if(to_supplier==''){
+			alert('Supplier selection mandatory !!!');
+			return;
+		}
+		
+	}	
+	
+	
+	function getgst(id){
+
+//alert(id);		
+		var splitString = id.split("-");
+		
+		var gst_id =  splitString['0'];
+		var gst_perc = splitString['1'];
+		
+//alert(gst_id + ' ' + gst_perc);			
+		$('#itemGST_ID').val(gst_id);
+		$('#itemGST').val(gst_perc);
+			  
+	}
+	
+	
+	function getgst1(id){
+
+//alert(id);		
+		var splitString = id.split("-");
+		
+		var gst_id =  splitString['0'];
+		var gst_perc = splitString['1'];
+		
+//alert(gst_id + ' ' + gst_perc);			
+		$('.itemGST_id1').val(gst_id);
+		$('.itemGST_e').val(gst_perc);
+			  
+	}
+	
+	
+</script>
+
+</body>
+</html>

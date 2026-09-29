@@ -1,0 +1,1 @@
+ UPDATE sma_approval_items SET where `po_quantity` = po_quantity - '70.0000', `po_value` = '0', po_no = 0 WHERE 1 and reversal_item_no = '15' and approval_hdr_id = '11'  UPDATE sma_approval_items SET where `po_quantity` = po_quantity - '1.0000', `po_value` = '0', po_no = 0 WHERE 1 and reversal_item_no = '21' and approval_hdr_id = '11' 

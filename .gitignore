@@ -1,0 +1,4 @@
+images
+p2p_emails/google-secrets.php
+*.env
+.env

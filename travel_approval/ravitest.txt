@@ -1,0 +1,4 @@
+SELECT a.reference, a.amount, a.budget_name, a.budget_head, a.budget_id, 	b.company_id FROM `sma_expenses` a, sma_travel_expenses b, account_mst c 
+					where a.approval_ref_no = b.id and b.id = '1' and a.reference = c.id  UPDATE `sma_budget` SET 
+						used_budget = used_budget + 5000.00 , blocked_budget = blocked_budget - 5000.00 
+							WHERE id = '77' update sma_travel_expenses set status = 'Draft', `approval_status` = '', del ='' where id = '1' select * from sma_user where userid = ( select draft_by from sma_travel_expenses where id = '1' ) insert into workflow_history ( doc_type, doc_id, create_by, create_date, status, reviewed_by, approved, approved_date, remarks ) values( '', '1', '98', now(), 'Draft', '98', '', now(), 'test' )

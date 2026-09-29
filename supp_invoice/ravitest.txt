@@ -1,0 +1,1 @@
+ update sma_supplier_invoice set payable_amount = payable_amount + '100.00', bal_amount = bal_amount + '100.00' where id = '123' 

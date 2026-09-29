@@ -1,0 +1,138 @@
+[27-Dec-2020 10:12:56 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[07-Jan-2021 06:20:26 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[07-Jan-2021 06:20:59 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[07-Jan-2021 09:48:59 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[08-Jan-2021 00:12:01 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[08-Jan-2021 00:19:05 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[08-Jan-2021 00:20:48 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[08-Jan-2021 00:22:56 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[08-Jan-2021 00:26:14 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[13-Jan-2021 22:40:38 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[13-Jan-2021 22:40:59 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[05-Feb-2021 00:49:16 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[10-Feb-2021 02:45:46 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[12-Feb-2021 04:55:32 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[26-Feb-2021 07:03:47 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[26-Feb-2021 07:04:38 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[03-Mar-2021 06:17:40 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[03-Mar-2021 06:17:48 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[03-Mar-2021 08:12:11 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[04-Mar-2021 07:00:46 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[05-Mar-2021 01:26:36 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[05-Mar-2021 01:30:22 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[05-Mar-2021 01:30:25 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 1622
+[05-Mar-2021 01:30:25 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 1650
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 211
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:30:28 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:31:38 America/Chicago] PHP Warning:  sizeof(): Parameter must be an array or an object that implements Countable in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 1008
+[05-Mar-2021 01:31:38 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 1580
+[05-Mar-2021 01:31:38 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 1622
+[05-Mar-2021 01:31:38 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 1650
+[05-Mar-2021 01:31:38 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[05-Mar-2021 01:31:41 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 1622
+[05-Mar-2021 01:31:41 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 1650
+[05-Mar-2021 01:32:12 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 211
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:18 America/Chicago] PHP Warning:  Cannot assign an empty string to a string offset in /home3/syminypj/sekura.xyz/ipc/ipc_prn.php on line 681
+[05-Mar-2021 01:32:47 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 1622
+[05-Mar-2021 01:32:47 America/Chicago] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 1650
+[05-Mar-2021 03:39:05 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[05-Mar-2021 09:57:11 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[05-Mar-2021 09:58:27 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[06-Mar-2021 06:56:21 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[07-Mar-2021 07:27:26 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[07-Mar-2021 23:39:32 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[08-Mar-2021 00:02:16 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346
+[08-Mar-2021 01:08:29 America/Chicago] PHP Warning:  Use of undefined constant num - assumed 'num' (this will throw an Error in a future version of PHP) in /home3/syminypj/sekura.xyz/ipc/ipc.php on line 346

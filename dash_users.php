@@ -1,0 +1,2468 @@
+<?php
+//include("header.php");
+
+?>
+<!-- DataTables -->
+<!--<link rel="stylesheet" href="<?php echo $baseurl . "plugins/datatables/dataTables.bootstrap.css"?>">-->
+
+  <!-- Content Wrapper. Contains page content 
+  <div class="content-wrapper">-->
+    <!-- Content Header (Page header) -->
+    <!-- Main content -->
+	
+    <section class="content">
+    	
+		
+	<?php						
+		$comid  = $_SESSION['comid'];
+		$role	= $_SESSION['role'];
+		$user_category	= $_SESSION['user_category'];
+		$sql = "SELECT * from sma_workflow where doc_type= 'PR' and user_category = '$user_category' ";
+					$result = mysqli_query($con, $sql);
+					$row = mysqli_fetch_array($result);
+					$from_value 		= $row['from_value'];
+					$to_value 			= $row['to_value'];
+					$project_manager	= $row['project_manager'];
+					$project_incharge 	= $row['project_incharge'];
+					$coo_cxo 			= $row['coo_cxo'];
+					
+		//echo $role."<<<>>>";			
+		$rowcount = 0;
+			
+		$rowcount =1;
+//		if ($rowcount > 0){
+			$modulePath1 = "approval/";
+	?>
+
+<div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+		  
+		  <div class="box-body">
+		  
+							<?php
+								$pcnt = 0;
+								if ($role =='Checker'){
+									$sql="SELECT approval_status, count(*) as cnt from sma_approval_memo where project in ( $comid ) and  approval_status in('Pending', 'Verified') 
+										and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'AP') 
+										or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'AP') or draft_by = '$user' ) group by approval_status ";
+								}
+								else {
+									$sql = "SELECT approval_status, count(*) as cnt FROM `sma_approval_memo` where project in ($comid) and approval_status in('Pending', 'Verified')  and draft_by = '$user' group by approval_status";
+								}
+//$sql = "SELECT approval_status, count(*) as cnt FROM `sma_approval_memo` where approval_status = 'Pending'  and draft_by = 'user'  group by approval_status ";
+								$res = mysqli_query($con, $sql);
+								while($r1 = mysqli_fetch_array($res)){
+									$sts = $r1['approval_status'];
+									$pcnt = $r1['cnt'];
+								}
+									
+								$acnt = 0;
+								if ($role =='Checker'){
+									$sql="SELECT approval_status, count(*) as cnt from sma_approval_memo where project in ( $comid ) and  approval_status in('Approved') 
+										and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'AP') 
+										or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'AP') or draft_by = '$user' )  group by approval_status ";
+								}
+								else {
+									$sql = "SELECT approval_status, count(*) as cnt FROM `sma_approval_memo` where project in ($comid) and approval_status = 'Approved' and draft_by = '$user' group by approval_status";
+								}
+								//$sql = "SELECT approval_status, count(*) as cnt FROM `sma_approval_memo` where approval_status = 'Approved'  and draft_by = '$user'  group by approval_status";
+								$res = mysqli_query($con, $sql);
+								while($r1 = mysqli_fetch_array($res)){
+									$sts = $r1['approval_status'];
+									$acnt = $r1['cnt'];
+								}
+								
+								$rcnt = 0;
+								if ($role =='Checker'){
+									$sql="SELECT approval_status, count(*) as cnt from sma_approval_memo where project in ( $comid ) and  approval_status in('Rejected') 
+										and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'AP') 
+										or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'AP') or draft_by = '$user' ) group by approval_status ";
+								}
+								else {
+									$sql = "SELECT approval_status, count(*) as cnt FROM `sma_approval_memo` where project in ($comid) and approval_status = 'Rejected' and draft_by = '$user' group by approval_status";
+								}
+								//$sql = "SELECT approval_status, count(*) as cnt FROM `sma_approval_memo` where approval_status = 'Rejected' and draft_by = '$user'  group by approval_status";
+								$res = mysqli_query($con, $sql);
+								while($r1 = mysqli_fetch_array($res)){
+									$sts = $r1['approval_status'];
+									$rcnt = $r1['cnt'];
+								}
+							?>		
+		  <ul class="nav nav-tabs">
+              <li class="active"><a href="#tab_1" data-toggle="tab" id="first_tab" > Pending <span class="btn btn-info" ><?php echo $pcnt; ?></span></a></li>
+              <li><a href="#tab_2" data-toggle="tab" id="second_tab">Approved <span class="btn btn-success" ><?php echo $acnt; ?></span></a></li>
+              <li><a href="#tab_3" data-toggle="tab" id="third_tab">Rejected <span class="btn btn-danger" ><?php echo $rcnt; ?></span></a></li>
+			  <h3 style="text-align:right;">Approval Memo</h3>
+          </ul>
+		  
+			<div class="tab-content">
+				<div class="tab-pane active" id="tab_1">
+						
+            <!-- /.box-header -->
+		<?php
+			//$sql="SELECT * from sma_approval_memo where  approval_status in('Pending') and company in ( $comid ) and draft_by = '$user' ";
+			if ($role =='Checker'){
+				$sql="SELECT * from sma_approval_memo where project in ( $comid ) and  approval_status in('Pending', 'Verified')  
+				and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'AP') 
+				or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'AP') or draft_by = '$user' )  order by id desc ";
+			}
+			else {
+				$sql = "SELECT * FROM `sma_approval_memo` where project in ($comid) and approval_status in('Pending', 'Verified')  and draft_by = '$user' order by id desc ";
+			}
+			
+			
+			$result = mysqli_query($con, $sql);
+			echo mysqli_error($con);
+			$rowcount=mysqli_num_rows($result);
+		?>
+              <table id="prtable1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th></th>
+					<th>Sr.No. Pending</th>
+                    <th>Dated</th>
+					<th>Company</th>
+					<th>Department</th>
+					<th>Created By</th>
+					<th>Decision</th>
+					<th>By</th>
+					
+					<th style="text-align:right;">Action</th>
+				
+				</tr>
+                </thead>
+                <tbody>
+			<?php
+					while($row = mysqli_fetch_array($result)){
+						
+						$approval_hdr_id = $row['id'];
+						$sql 	= "SELECT `values` as total_amount FROM `sma_approval_details` where vendor_selected = 'Y' and approval_hdr_id = '$approval_hdr_id' ";
+						$r4 	= mysqli_query($con, $sql);
+						$r3 		= mysqli_fetch_array($r4);
+						$tot_amount	= $r3['total_amount'];
+						
+						$company = $row['company'];
+						$sql = "select * from company where comp_id = '$company' ";
+						$q2  = mysqli_query($con, $sql);
+						$r2 = mysqli_fetch_array($q2);
+						$company  = $r2['comp_name'];
+
+						$department = $row['department'];
+						$sql = "select * from sma_department where id = '$department' ";
+						$q2  = mysqli_query($con, $sql);
+						$r2 = mysqli_fetch_array($q2);
+						$department  = $r2['name'];
+						
+						$j=$j+1;						
+						
+				$baseurl1 = $baseurl.$modulePath1.'edit.php?sub=edit&id='.$row["id"];
+				
+				?>
+		<a href="<?php echo $baseurl . $modulePath1 . "edit.php?sub=edit&id=". $row['id']?>" title="Edit">
+			<tr style="cursor:pointer; " onmouseover="ChangeBackgroundColor(this)" onmouseout="RestoreBackgroundColor(this)" onclick="location.href='<?php echo $baseurl1;?>'">
+					<td width="1%"><input type="hidden" value="<?php echo $j;?>" > </td>
+					<td width="10%"><?php echo $row['id'];?></td>
+					<td width="10%"><?php echo date('d-m-Y', strtotime($row['dated']));?></td>
+					<td width="20%"><?php echo $company;?></td>
+					<td width="10%"><?php echo $department;?></td>
+					<td width="08%"><?php echo $row['draft_by'];?></td>
+					<td width="10%"><?php echo $row['approval_status'];?></td>
+					<td width="10%"><?php echo $row['changed_by'];?></td>
+					
+					<td width="5%" style="text-align:right;" ><a href="<?php echo $baseurl . $modulePath1 . "edit.php?sub=edit&id=". $row['id']?>"><i class="fa fa-edit"></i></a> </td>
+		
+			</tr>
+		</a>
+				<?php } ?>
+				
+                
+                </tbody>
+              </table>
+            </div>
+		
+			 
+					
+<!---------------------------------------------------------------------------------------------------------------------------------------------------------------->
+						
+	        
+
+	<?php						
+		$comid  = $_SESSION['comid'];
+		$role	= $_SESSION['role'];
+		$user_category	= $_SESSION['user_category'];
+		$sql = "SELECT * from sma_workflow where doc_type= 'PR' and user_category = '$user_category' ";
+					$result = mysqli_query($con, $sql);
+					$row = mysqli_fetch_array($result);
+					$from_value 		= $row['from_value'];
+					$to_value 			= $row['to_value'];
+					$project_manager	= $row['project_manager'];
+					$project_incharge 	= $row['project_incharge'];
+					$coo_cxo 			= $row['coo_cxo'];
+					
+		//echo $role."<<<>>>";			
+		$rowcount = 0;
+		
+			//$sql="SELECT * from sma_approval_memo where  approval_status in('Approved') and company in ( $comid ) and draft_by = '$user' ";
+			if ($role =='Checker'){
+				$sql="SELECT * from sma_approval_memo where project in ( $comid ) and  approval_status in('Approved') 
+				and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'AP') 
+				or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'AP') or draft_by = '$user' )  order by id desc ";
+			}
+			else {
+				$sql = "SELECT * FROM `sma_approval_memo` where project in ($comid) and approval_status = 'Approved' and draft_by = '$user' order by id desc";
+			}
+//echo $sql;
+		
+			$result = mysqli_query($con, $sql);
+			echo mysqli_error($con);
+			$rowcount=mysqli_num_rows($result);
+		
+			$modulePath1 = "approval/";
+	?>
+
+
+		  <!-- Step 1 -->
+            <div class="tab-pane" id="tab_2">
+
+            <!-- /.box-header -->
+     
+			   
+            <!-- /.box-header -->
+              <table id="prtable1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th></th>
+					<th>Sr.No. Approved</th>
+                    <th>Dated</th>
+					<th>Company</th>
+					<th>Department</th>
+					<th>Created By</th>
+					<th>Decision</th>
+					<th>By</th>
+					
+					<th style="text-align:right;">Action</th>
+				
+				</tr>
+                </thead>
+                <tbody>
+			<?php
+					while($row = mysqli_fetch_array($result)){
+						
+						$approval_hdr_id = $row['id'];
+						$sql 	= "SELECT `values` as total_amount FROM `sma_approval_details` where vendor_selected = 'Y' and approval_hdr_id = '$approval_hdr_id' ";
+						$r4 	= mysqli_query($con, $sql);
+						$r3 		= mysqli_fetch_array($r4);
+						$tot_amount	= $r3['total_amount'];
+		
+						$company = $row['company'];
+						$sql = "select * from company where comp_id = '$company' ";
+						$q2  = mysqli_query($con, $sql);
+						$r2 = mysqli_fetch_array($q2);
+						$company  = $r2['comp_name'];
+
+						$department = $row['department'];
+						$sql = "select * from sma_department where id = '$department' ";
+						$q2  = mysqli_query($con, $sql);
+						$r2 = mysqli_fetch_array($q2);
+						$department  = $r2['name'];
+						
+						$j=$j+1;						
+						
+				$baseurl1 = $baseurl.$modulePath1.'edit.php?sub=edit&id='.$row["id"];
+				
+				?>
+		<a href="<?php echo $baseurl . $modulePath1 . "edit.php?sub=edit&id=". $row['id']?>" title="Edit">
+			<tr style="cursor:pointer; " onmouseover="ChangeBackgroundColor(this)" onmouseout="RestoreBackgroundColor(this)" onclick="location.href='<?php echo $baseurl1;?>'">
+					<td width="1%"><input type="hidden" value="<?php echo $j;?>" > </td>
+					<td width="10%"><?php echo $row['id'];?></td>
+					<td width="10%"><?php echo date('d-m-Y', strtotime($row['dated']));?></td>
+					<td width="20%"><?php echo $company;?></td>
+					<td width="10%"><?php echo $department;?></td>
+					<td width="08%"><?php echo $row['draft_by'];?></td>
+					<td width="10%"><?php echo $row['approval_status'];?></td>
+					<td width="10%"><?php echo $row['changed_by'];?></td>
+					
+					<td width="5%" style="text-align:right;" ><a href="<?php echo $baseurl . $modulePath1 . "edit.php?sub=edit&id=". $row['id']?>"><i class="fa fa-edit"></i></a> </td>
+		
+			</tr>
+		</a>
+				<?php } ?>
+				
+                
+                </tbody>
+              </table>
+            </div>
+		
+          <!-- /.box -->
+ 	
+
+        
+	
+	<?php						
+		$comid  = $_SESSION['comid'];
+		$role	= $_SESSION['role'];
+		$user_category	= $_SESSION['user_category'];
+		$sql = "SELECT * from sma_workflow where doc_type= 'PR' and user_category = '$user_category' ";
+					$result = mysqli_query($con, $sql);
+					$row = mysqli_fetch_array($result);
+					$from_value 		= $row['from_value'];
+					$to_value 			= $row['to_value'];
+					$project_manager	= $row['project_manager'];
+					$project_incharge 	= $row['project_incharge'];
+					$coo_cxo 			= $row['coo_cxo'];
+					
+		//echo $role."<<<>>>";			
+		$rowcount = 0;
+		
+//			$sql="SELECT * from sma_approval_memo where  approval_status in('Rejected') and company in ( $comid ) and draft_by = '$user' ";
+			if ($role =='Checker'){
+				$sql="SELECT * from sma_approval_memo where project in ( $comid ) and  approval_status in('Rejected') 
+				and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'AP') 
+				or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'AP') or draft_by = '$user' )  order by id desc ";
+			}
+			else {
+				$sql = "SELECT * FROM `sma_approval_memo` where project in ($comid) and approval_status = 'Rejected' and draft_by = '$user' order by id desc ";
+			}		
+			$result = mysqli_query($con, $sql);
+			echo mysqli_error($con);
+			$rowcount=mysqli_num_rows($result);
+
+			$modulePath1 = "approval/";
+	?>
+
+           <div class="tab-pane" id="tab_3">
+								
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="prtable1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th></th>
+					<th>Sr.No.</th>
+                    <th>Dated</th>
+					<th>Company</th>
+					<th>Department</th>
+					<th>Created By</th>
+					<th>Decision</th>
+					<th>By</th>
+					
+					<th style="text-align:right;">Action</th>
+				
+				</tr>
+                </thead>
+                <tbody>
+			<?php
+					while($row = mysqli_fetch_array($result)){
+						
+						$approval_hdr_id = $row['id'];
+						$sql 	= "SELECT `values` as total_amount FROM `sma_approval_details` where vendor_selected = 'Y' and approval_hdr_id = '$approval_hdr_id' ";
+						$r4 	= mysqli_query($con, $sql);
+						$r3 		= mysqli_fetch_array($r4);
+						$tot_amount	= $r3['total_amount'];
+						
+/*						if($user != 'Admin'){
+							$sql = "SELECT count(*) as cnt from sma_workflow 
+								where doc_type= 'AP' and user_category = '$user_category' and $tot_amount >= from_value and $tot_amount <= to_value ";
+				
+						
+							if($role =='Project Manager' ){
+								$sql .= " and project_manager ='Y' ";
+							}
+							else if($role =='Project Incharge' ){
+								$sql .= " and project_incharge ='Y' ";
+							}
+							else if($role == 'CXO' || $role =='COO') {
+								$sql .= " and coo_cxo ='Y' ";
+							}
+						
+							$r4 = mysqli_query($con, $sql);
+							$row_affected = mysqli_affected_rows($con);
+						//echo $sql."<BR>";
+						//echo $row_affected ;
+						
+							if($row_affected > 0){
+								$r3 	= mysqli_fetch_array($r4);
+								$cnt	= $r3['cnt'];
+							}
+							else {
+								continue;
+							}
+							
+							if ( $cnt == 0 ){
+								continue;
+							}
+						}
+						*/
+						$company = $row['company'];
+						$sql = "select * from company where comp_id = '$company' ";
+						$q2  = mysqli_query($con, $sql);
+						$r2 = mysqli_fetch_array($q2);
+						$company  = $r2['comp_name'];
+
+						$department = $row['department'];
+						$sql = "select * from sma_department where id = '$department' ";
+						$q2  = mysqli_query($con, $sql);
+						$r2 = mysqli_fetch_array($q2);
+						$department  = $r2['name'];
+						
+						$j=$j+1;						
+						
+				$baseurl1 = $baseurl.$modulePath1.'edit.php?sub=edit&id='.$row["id"];
+				
+				?>
+		<a href="<?php echo $baseurl . $modulePath1 . "edit.php?sub=edit&id=". $row['id']?>" title="Edit">
+			<tr style="cursor:pointer; " onmouseover="ChangeBackgroundColor(this)" onmouseout="RestoreBackgroundColor(this)" onclick="location.href='<?php echo $baseurl1;?>'">
+					<td width="1%"><input type="hidden" value="<?php echo $j;?>" > </td>
+					<td width="10%"><?php echo $row['id'];?></td>
+					<td width="10%"><?php echo date('d-m-Y', strtotime($row['dated']));?></td>
+					<td width="20%"><?php echo $company;?></td>
+					<td width="10%"><?php echo $department;?></td>
+					<td width="08%"><?php echo $row['draft_by'];?></td>
+					<td width="10%"><?php echo $row['approval_status'];?></td>
+					<td width="10%"><?php echo $row['changed_by'];?></td>
+					
+					<td width="5%" style="text-align:right;" ><a href="<?php echo $baseurl . $modulePath1 . "edit.php?sub=edit&id=". $row['id']?>"><i class="fa fa-edit"></i></a> </td>
+		
+			</tr>
+		</a>
+				<?php } ?>
+				
+                
+                </tbody>
+              </table>
+            </div>
+		</div>				
+       </div>
+	</div>
+  </div>
+</div>
+</div>
+
+  
+          <!-- /.box -->
+        
+
+    <?php 
+	
+		$rowcount =0;	
+//		if ($rowcount > 0){
+			$modulePath2 = "purchase_order/";
+	?>
+	
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+		  
+		  <div class="box-body">
+		  
+								<?php
+								$pcnt = 0;
+								if ($role =='Checker'){
+									$sql="SELECT approval_status, count(*) as cnt from sma_purchase_order where project in ( $comid ) and  approval_status in('Pending', 'Verified')  
+										and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'PO') 
+										or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'PO') or draft_by = '$user' ) group by approval_status ";
+								}
+								else {
+									$sql = "SELECT approval_status, count(*) as cnt FROM `sma_purchase_order` where project in ($comid) and approval_status in('Pending', 'Verified')  and draft_by = '$user' group by approval_status";
+								}
+//echo $sql."<BR>";
+								//$sql = "SELECT approval_status, count(*) as cnt FROM `sma_purchase_order` where approval_status = 'Pending' group by approval_status";
+								$res = mysqli_query($con, $sql);
+								while($r1 = mysqli_fetch_array($res)){
+									$sts = $r1['approval_status'];
+									$pcnt = $r1['cnt'];
+								}
+								?> 
+								<?php	
+								$acnt = 0;
+								if ($role =='Checker'){
+									$sql="SELECT approval_status, count(*) as cnt from sma_purchase_order where project in ( $comid ) and  approval_status in('Approved') 
+										and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'PO') 
+										or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'PO') or draft_by = '$user' )  group by approval_status ";
+								}
+								else {
+									$sql = "SELECT approval_status, count(*) as cnt FROM `sma_purchase_order` where project in ($comid) and approval_status = 'Approved'  and draft_by = '$user' group by approval_status";
+								}
+								
+								$res = mysqli_query($con, $sql);
+								while($r1 = mysqli_fetch_array($res)){
+									$sts = $r1['approval_status'];
+									$acnt = $r1['cnt'];
+								}
+									?>
+								
+								<?php
+								$rcnt = 0;
+								if ($role =='Checker'){
+									$sql="SELECT approval_status, count(*) as cnt from sma_purchase_order where project in ( $comid ) and  approval_status in('Rejected') 
+										and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'PO') 
+										or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'PO') or draft_by = '$user' )  group by approval_status ";
+								}
+								else {
+									$sql = "SELECT approval_status, count(*) as cnt FROM `sma_purchase_order` where project in ( $comid ) and approval_status = 'Rejected'  and draft_by = '$user' group by approval_status";
+								}
+						
+								$res = mysqli_query($con, $sql);
+								while($r1 = mysqli_fetch_array($res)){
+									$sts = $r1['approval_status'];
+									$rcnt = $r1['cnt'];
+								}
+									?> 
+
+		  <!-- Step 1 -->
+
+		<ul class="nav nav-tabs">
+              <li class="active"><a href="#tab_11" data-toggle="tab" id="first_tab" > Pending <span class="btn btn-info" ><?php echo $pcnt; ?></span></a></li>
+              <li><a href="#tab_22" data-toggle="tab" id="second_tab">Approved <span class="btn btn-success" ><?php echo $acnt; ?></span></a></li>
+              <li><a href="#tab_33" data-toggle="tab" id="third_tab">Rejected <span class="btn btn-danger" ><?php echo $rcnt; ?></span></a></li>
+			  <h3 style="text-align:right;">Purchase Order</h3>
+		</ul>
+		  
+		  <div class="tab-content">
+			   <div class="tab-pane active" id="tab_11">
+    
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="prtable1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>PO.No.</th>
+					<th>Dated</th>
+					<th>Supplier</th>
+					<th>Department</th>
+					<th style="text-align:right;">Total</th>
+					<th>Created By</th>
+					<th>Decision</th>
+					<th>By</th>
+					
+					<th style="text-align:right;">Action</th>
+				
+				</tr>
+                </thead>
+                <tbody>
+	<?php
+		if ($role =='Checker'){
+			$sql="SELECT * from sma_purchase_order where project in ( $comid ) and  approval_status in('Pending', 'Verified')  
+				and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'PO') 
+				or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'PO') or draft_by = '$user' )  order by id desc ";
+		}
+		else {
+			$sql = "SELECT * FROM `sma_purchase_order` where project in ($comid) and approval_status in('Pending', 'Verified')  and draft_by = '$user' order by id desc ";
+		}
+								
+		$result = mysqli_query($con, $sql);
+		echo mysqli_error($con);
+		$rowcount=mysqli_num_rows($result);
+	
+	while($row = mysqli_fetch_array($result)){
+			
+		$purchase_id = $row['id'];
+		//$tot_amount = '10000';
+		$sql="SELECT * from sma_po_items where purchase_id = '$purchase_id' ";
+		$res1 = mysqli_query($con, $sql);
+		echo mysqli_error($con);
+		while($r1 = mysqli_fetch_array($res1)){
+			$qty 	= $r1['quantity'];
+			$rate 	= $r1['unit_rate'];
+			$gst	= $r1['gst'];
+			$amount = $qty * $rate + (($qty * $rate) * $gst / 100);
+			$tot_amount = $tot_amount + $amount;
+		}
+		
+		$department = $row['department'];
+		$sql 	= "select * from sma_department where id = '$department' ";
+		$q2 	= mysqli_query($con, $sql);
+		$r2 	= mysqli_fetch_array($q2);
+		$department = $r2['name'];
+		
+		$project = $row['project'];
+		$sql 	= "select * from sma_project where id = '$project' ";
+		$q2 	= mysqli_query($con, $sql);
+		$r2 	= mysqli_fetch_array($q2);
+		$project = $r2['name'];		
+		
+		$budget_name = $row['budget_name'];
+		$sql 	= "select * from sma_budget_name where id = '$budget_name' ";
+		$sql = " SELECT * FROM sma_budget_name where id in ( select budget_name from `sma_budget` where id = '$budget_name') ";
+		$q2 	= mysqli_query($con, $sql);
+		$r2 	= mysqli_fetch_array($q2);
+		$budget_name = $r2['name'];
+				
+		$budget_head = $row['budget_head'];
+		$sql 	= "select * from sma_budget_category where id = '$budget_head' ";
+		$q2 	= mysqli_query($con, $sql);
+		$r2 	= mysqli_fetch_array($q2);
+		$budget_head = $r2['category'];
+		
+		$to_supplier = $row['to_supplier'];
+		$sql 	= "select * from sma_party_mst where id = '$to_supplier' ";
+		$q2 	= mysqli_query($con, $sql);
+		$r2 	= mysqli_fetch_array($q2);
+		$to_supplier = $r2['party_name'];
+	
+		$purchase_id = $row['id'];
+		$tot_amount = '';
+		$sql="SELECT * from sma_po_items where purchase_id = '$purchase_id' ";
+		$res1 = mysqli_query($con, $sql);
+		echo mysqli_error($con);
+		while($r1 = mysqli_fetch_array($res1)){
+			$qty 	= $r1['quantity'];
+			$rate 	= $r1['unit_rate'];
+			$gst	= $r1['gst'];
+			$amount = $qty * $rate + (($qty * $rate) * $gst / 100);
+			$tot_amount = $tot_amount + $amount;
+		}
+		
+		$baseurl1 = $baseurl.$modulePath2.'edit.php?sub=edit&id='.$row["id"];						
+		
+		?>
+		
+	<a href="<?php echo $baseurl1;?>" title="Edit">
+	<tr style="cursor:pointer; "onclick="location.href='<?php echo $baseurl1;?>'">
+
+		<td width="1%"><input type="hidden" value="<?php echo $row['id'];?>"></td>
+		<td width="15%"><?php echo $row['po_number'];?></td>
+		<td width="10%"><?php echo date('d-m-Y', strtotime($row['dated']));?></td>
+		<td width="15%"><?php echo $to_supplier;?></td>
+		<td width="10%"><?php echo $department;?></td>
+		<td width="10%" style="text-align:right;"><?php echo $tot_amount;?></td>
+		<td width="08%"><?php echo $row['draft_by'];?></td>
+		<td width="10%"><?php echo $row['approval_status'];?></td>
+		<td width="10%"><?php echo $row['changed_by'];?></td>
+		
+		<td width="5%" style="text-align:right;">
+		<a href="<?php echo $baseurl . $modulePath2;?>edit.php?sub=edit&id=<?php echo $row['id'];?>" name="btnEdit" title="Edit" placeholder="top center"><i class="fa fa-edit"></i>&nbsp;&nbsp;</a>
+		<!--<a href="edit.php?sub=delete&id=<?php echo $row['id'];?>" title="Delete" onclick="return confirm('Are you sure you want to delete?');"><i class="fa fa-remove"></i></a>-->
+		</td>
+    </tr>
+	</a>
+				<?php } ?>
+				
+                
+                </tbody>
+                <tfoot>
+                
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.box-body -->
+		</div>	
+          
+	
+	<?php
+	$rowcount =0;	
+		$modulePath2 = "purchase_order/";
+	?>
+	
+	<div class="tab-pane" id="tab_22">
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="prtable1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>PO.No.</th>
+					<th>Dated</th>
+					<th>Supplier</th>
+					<th>Department</th>
+					<th style="text-align:right;">Total</th>
+					<th>Created By</th>
+					<th>Decision</th>
+					<th>By</th>
+					
+					<th style="text-align:right;">Action</th>
+				
+				</tr>
+                </thead>
+                <tbody>
+	<?php
+		if ($role =='Checker'){
+			$sql="SELECT * from sma_purchase_order where project in ( $comid ) and  approval_status in('Approved') 
+				and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'PO') 
+				or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'PO') or draft_by = '$user' )  order by id desc ";
+		}
+		else {
+			$sql = "SELECT * FROM `sma_purchase_order` where project in ($comid) and approval_status = 'Approved' and draft_by = '$user' order by id desc ";
+		}
+		
+	//	$sql="SELECT * from sma_purchase_order where project in ($comid) and approval_status in('Approved') and draft_by = '$user' order by id desc ";
+		$result = mysqli_query($con, $sql);
+		echo mysqli_error($con);
+		$rowcount=mysqli_num_rows($result);
+//echo $sql."<BR>";		
+		
+	while($row = mysqli_fetch_array($result)){
+			
+		$purchase_id = $row['id'];
+		//$tot_amount = '10000';
+		$sql="SELECT * from sma_po_items where purchase_id = '$purchase_id' ";
+		$res1 = mysqli_query($con, $sql);
+		echo mysqli_error($con);
+		while($r1 = mysqli_fetch_array($res1)){
+			$qty 	= $r1['quantity'];
+			$rate 	= $r1['unit_rate'];
+			$gst	= $r1['gst'];
+			$amount = $qty * $rate + (($qty * $rate) * $gst / 100);
+			$tot_amount = $tot_amount + $amount;
+		}
+		
+		$department = $row['department'];
+		$sql 	= "select * from sma_department where id = '$department' ";
+		$q2 	= mysqli_query($con, $sql);
+		$r2 	= mysqli_fetch_array($q2);
+		$department = $r2['name'];
+		
+		$project = $row['project'];
+		$sql 	= "select * from sma_project where id = '$project' ";
+		$q2 	= mysqli_query($con, $sql);
+		$r2 	= mysqli_fetch_array($q2);
+		$project = $r2['name'];		
+		
+		
+		$budget_name = $row['budget_name'];
+		$sql 	= "select * from sma_budget_name where id = '$budget_name' ";
+		$sql = " SELECT * FROM sma_budget_name where id in ( select budget_name from `sma_budget` where id = '$budget_name') ";
+		$q2 	= mysqli_query($con, $sql);
+		$r2 	= mysqli_fetch_array($q2);
+		$budget_name = $r2['name'];
+				
+		$budget_head = $row['budget_head'];
+		$sql 	= "select * from sma_budget_category where id = '$budget_head' ";
+		$q2 	= mysqli_query($con, $sql);
+		$r2 	= mysqli_fetch_array($q2);
+		$budget_head = $r2['category'];
+		
+		$to_supplier = $row['to_supplier'];
+		$sql 	= "select * from sma_party_mst where id = '$to_supplier' ";
+		$q2 	= mysqli_query($con, $sql);
+		$r2 	= mysqli_fetch_array($q2);
+		$to_supplier = $r2['party_name'];
+	
+		$purchase_id = $row['id'];
+		$tot_amount = '';
+		$sql="SELECT * from sma_po_items where purchase_id = '$purchase_id' ";
+		$res1 = mysqli_query($con, $sql);
+		echo mysqli_error($con);
+		while($r1 = mysqli_fetch_array($res1)){
+			$qty 	= $r1['quantity'];
+			$rate 	= $r1['unit_rate'];
+			$gst	= $r1['gst'];
+			$amount = $qty * $rate + (($qty * $rate) * $gst / 100);
+			$tot_amount = $tot_amount + $amount;
+		}
+		
+		$baseurl1 = $baseurl.$modulePath2.'edit.php?sub=edit&id='.$row["id"];						
+		
+		?>
+		
+	<a href="<?php echo $baseurl1;?>" title="Edit">
+	<tr style="cursor:pointer; "onclick="location.href='<?php echo $baseurl1;?>'">
+
+		<td width="1%"><input type="hidden" value="<?php echo $row['id'];?>"></td>
+		<td width="15%"><?php echo $row['po_number'];?></td>
+		<td width="10%"><?php echo date('d-m-Y', strtotime($row['dated']));?></td>
+		<td width="15%"><?php echo $to_supplier;?></td>
+		<td width="10%"><?php echo $department;?></td>
+		<td width="10%" style="text-align:right;"><?php echo $tot_amount;?></td>
+		<td width="08%"><?php echo $row['draft_by'];?></td>
+		<td width="10%"><?php echo $row['approval_status'];?></td>
+		<td width="10%"><?php echo $row['changed_by'];?></td>
+		
+		<td width="5%" style="text-align:right;">
+		<a href="<?php echo $baseurl . $modulePath2;?>edit.php?sub=edit&id=<?php echo $row['id'];?>" name="btnEdit" title="Edit" placeholder="top center"><i class="fa fa-edit"></i>&nbsp;&nbsp;</a>
+		<!--<a href="edit.php?sub=delete&id=<?php echo $row['id'];?>" title="Delete" onclick="return confirm('Are you sure you want to delete?');"><i class="fa fa-remove"></i></a>-->
+		</td>
+    </tr>
+	</a>
+				<?php } ?>
+				
+                
+                </tbody>
+                <tfoot>
+                
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+		 
+	<?php
+	$rowcount =0;	
+		$modulePath2 = "purchase_order/";
+	?>
+		<div class="tab-pane" id="tab_33">
+		
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="prtable1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>PO.No.</th>
+					<th>Dated</th>
+					<th>Supplier</th>
+					<th>Department</th>
+					<th style="text-align:right;">Total</th>
+					<th>Created By</th>
+					<th>Decision</th>
+					<th>By</th>
+					
+					<th style="text-align:right;">Action</th>
+				
+				</tr>
+                </thead>
+                <tbody>
+	<?php
+		if ($role =='Checker'){
+			$sql="SELECT * from sma_purchase_order where project in ( $comid ) and  approval_status in('Rejected') 
+				and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'PO') 
+				or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'PO') or draft_by = '$user' )  order by id desc ";
+		}
+		else {
+			$sql = "SELECT * FROM `sma_purchase_order` where project in ($comid) and approval_status = 'Rejected' and draft_by = '$user' order by id desc ";
+		}
+		
+//$sql="SELECT * from sma_purchase_order where project in ($comid) and approval_status in('Rejected') and draft_by = '$user' order by id desc ";
+		$result = mysqli_query($con, $sql);
+		echo mysqli_error($con);
+		$rowcount=mysqli_num_rows($result);
+//echo $sql."<br>";				
+	while($row = mysqli_fetch_array($result)){
+			
+		$purchase_id = $row['id'];
+		$sql="SELECT * from sma_po_items where purchase_id = '$purchase_id' ";
+		$res1 = mysqli_query($con, $sql);
+		echo mysqli_error($con);
+		while($r1 = mysqli_fetch_array($res1)){
+			$qty 	= $r1['quantity'];
+			$rate 	= $r1['unit_rate'];
+			$gst	= $r1['gst'];
+			$amount = $qty * $rate + (($qty * $rate) * $gst / 100);
+			$tot_amount = $tot_amount + $amount;
+		}
+		
+		
+		$department = $row['department'];
+		$sql 	= "select * from sma_department where id = '$department' ";
+		$q2 	= mysqli_query($con, $sql);
+		$r2 	= mysqli_fetch_array($q2);
+		$department = $r2['name'];
+		
+		$project = $row['project'];
+		$sql 	= "select * from sma_project where id = '$project' ";
+		$q2 	= mysqli_query($con, $sql);
+		$r2 	= mysqli_fetch_array($q2);
+		$project = $r2['name'];		
+		
+		
+		$budget_name = $row['budget_name'];
+		$sql 	= "select * from sma_budget_name where id = '$budget_name' ";
+		$sql = " SELECT * FROM sma_budget_name where id in ( select budget_name from `sma_budget` where id = '$budget_name') ";
+		$q2 	= mysqli_query($con, $sql);
+		$r2 	= mysqli_fetch_array($q2);
+		$budget_name = $r2['name'];
+				
+		$budget_head = $row['budget_head'];
+		$sql 	= "select * from sma_budget_category where id = '$budget_head' ";
+		$q2 	= mysqli_query($con, $sql);
+		$r2 	= mysqli_fetch_array($q2);
+		$budget_head = $r2['category'];
+		
+		$to_supplier = $row['to_supplier'];
+		$sql 	= "select * from sma_party_mst where id = '$to_supplier' ";
+		$q2 	= mysqli_query($con, $sql);
+		$r2 	= mysqli_fetch_array($q2);
+		$to_supplier = $r2['party_name'];
+	
+		$purchase_id = $row['id'];
+		$tot_amount = '';
+		$sql="SELECT * from sma_po_items where purchase_id = '$purchase_id' ";
+		$res1 = mysqli_query($con, $sql);
+		echo mysqli_error($con);
+		while($r1 = mysqli_fetch_array($res1)){
+			$qty 	= $r1['quantity'];
+			$rate 	= $r1['unit_rate'];
+			$gst	= $r1['gst'];
+			$amount = $qty * $rate + (($qty * $rate) * $gst / 100);
+			$tot_amount = $tot_amount + $amount;
+		}
+		
+		$baseurl1 = $baseurl.$modulePath2.'edit.php?sub=edit&id='.$row["id"];						
+		
+		?>
+		
+	<a href="<?php echo $baseurl1;?>" title="Edit">
+	<tr style="cursor:pointer; "onclick="location.href='<?php echo $baseurl1;?>'">
+
+		<td width="1%"><input type="hidden" value="<?php echo $row['id'];?>"></td>
+		<td width="15%"><?php echo $row['po_number'];?></td>
+		<td width="10%"><?php echo date('d-m-Y', strtotime($row['dated']));?></td>
+		<td width="15%"><?php echo $to_supplier;?></td>
+		<td width="10%"><?php echo $department;?></td>
+		<td width="10%" style="text-align:right;"><?php echo $tot_amount;?></td>
+		<td width="08%"><?php echo $row['draft_by'];?></td>
+		<td width="10%"><?php echo $row['approval_status'];?></td>
+		<td width="10%"><?php echo $row['changed_by'];?></td>
+		
+		<td width="5%" style="text-align:right;">
+		<a href="<?php echo $baseurl . $modulePath2;?>edit.php?sub=edit&id=<?php echo $row['id'];?>" name="btnEdit" title="Edit" placeholder="top center"><i class="fa fa-edit"></i>&nbsp;&nbsp;</a>
+		<!--<a href="edit.php?sub=delete&id=<?php echo $row['id'];?>" title="Delete" onclick="return confirm('Are you sure you want to delete?');"><i class="fa fa-remove"></i></a>-->
+		</td>
+    </tr>
+	</a>
+				<?php } ?>
+				
+                
+                </tbody>
+                <tfoot>
+                
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+		 </div>
+	     </div>
+		</div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+
+
+<!--  Start Payment and SI -->
+
+
+
+
+	<?php						
+		$comid  = $_SESSION['comid'];
+		$role	= $_SESSION['role'];
+		$user_category	= $_SESSION['user_category'];
+		$rowcount = 0;
+			
+		$rowcount =1;
+//		if ($rowcount > 0){
+			$modulePath1 = "supp_invoice/";
+	?>
+
+<div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+		  
+		  <div class="box-body">
+		  
+							<?php
+								$pcnt = 0;
+								if ( $role =='Accountant' || $role =='Checker - Account' || $role =='HOD - Account' || $role =='Checker' || $role =='Maker' ){
+									$sql="SELECT approval_status, count(*) as cnt from sma_supplier_invoice where company_id in ( $comid ) and  approval_status in('Pending', 'Verified') 
+										and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'SI') 
+										or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'SI') or draft_by = '$user' ) group by approval_status ";
+								}
+								else {
+									$sql = "SELECT approval_status, count(*) as cnt FROM `sma_supplier_invoice` where company_id in ($comid) and approval_status in('Pending', 'Verified')  and draft_by = '$user' group by approval_status";
+								}
+								$res = mysqli_query($con, $sql);
+								while($r1 = mysqli_fetch_array($res)){
+									$sts = $r1['approval_status'];
+									$pcnt = $r1['cnt'];
+								}
+									
+								$acnt = 0;
+								if ($role =='Accountant' || $role =='Checker - Account' || $role =='HOD - Account'  || $role =='Checker'  || $role =='Maker' ){
+									$sql="SELECT approval_status, count(*) as cnt from sma_supplier_invoice where company_id in ( $comid ) and  approval_status in('Approved') 
+										and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'SI') 
+										or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'SI') or draft_by = '$user' )  group by approval_status ";
+								}
+								else {
+									$sql = "SELECT approval_status, count(*) as cnt FROM `sma_supplier_invoice` where company_id in ($comid) and approval_status = 'Approved' and draft_by = '$user' group by approval_status";
+								}
+								//$sql = "SELECT approval_status, count(*) as cnt FROM `sma_supplier_invoice` where approval_status = 'Approved'  and draft_by = '$user'  group by approval_status";
+								$res = mysqli_query($con, $sql);
+								while($r1 = mysqli_fetch_array($res)){
+									$sts = $r1['approval_status'];
+									$acnt = $r1['cnt'];
+								}
+								
+								$rcnt = 0;
+								if ($role =='Accountant' || $role =='Checker - Account' || $role =='HOD - Account' || $role =='Checker' || $role =='Maker'  ){
+									$sql="SELECT approval_status, count(*) as cnt from sma_supplier_invoice where company_id in ( $comid ) and  approval_status in('Rejected') 
+										and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'SI') 
+										or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'SI') or draft_by = '$user' ) group by approval_status ";
+								}
+								else {
+									$sql = "SELECT approval_status, count(*) as cnt FROM `sma_supplier_invoice` where company_id in ($comid) and approval_status = 'Rejected' and draft_by = '$user' group by approval_status";
+								}
+								//$sql = "SELECT approval_status, count(*) as cnt FROM `sma_supplier_invoice` where approval_status = 'Rejected' and draft_by = '$user'  group by approval_status";
+								$res = mysqli_query($con, $sql);
+								while($r1 = mysqli_fetch_array($res)){
+									$sts = $r1['approval_status'];
+									$rcnt = $r1['cnt'];
+								}
+							?>		
+		
+		  <ul class="nav nav-tabs">
+              <li class="active"><a href="#tab_A1" data-toggle="tab" id="first_tab" > Pending <span class="btn btn-info" ><?php echo $pcnt; ?></span></a></li>
+              <li><a href="#tab_A2" data-toggle="tab" id="second_tab">Approved <span class="btn btn-success" ><?php echo $acnt; ?></span></a></li>
+              <li><a href="#tab_A3" data-toggle="tab" id="third_tab">Rejected <span class="btn btn-danger" ><?php echo $rcnt; ?></span></a></li>
+			  <h3 style="text-align:right;">Supplier Invoice</h3>
+		</ul>
+		  
+			<div class="tab-content">
+				<div class="tab-pane active" id="tab_A1">
+						
+            <!-- /.box-header -->
+		<?php
+			//$sql="SELECT * from sma_supplier_invoice where  approval_status in('Pending') and company in ( $comid ) and draft_by = '$user' ";
+			if ($role =='Accountant' || $role =='Checker - Account' || $role =='HOD - Account' || $role =='Checker' || $role =='Maker'  ){
+				$sql="SELECT * from sma_supplier_invoice where company_id in ( $comid ) and  approval_status in('Pending', 'Verified')  
+				and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'SI') 
+				or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'SI') or draft_by = '$user' )  order by id desc ";
+			}
+			else {
+				$sql = "SELECT * FROM `sma_supplier_invoice` where company_id in ($comid) and approval_status in('Pending', 'Verified')  and draft_by = '$user' order by id desc ";
+			}
+			
+//echo $role. ' ' . $sql;
+			
+			$result = mysqli_query($con, $sql);
+			echo mysqli_error($con);
+			$rowcount=mysqli_num_rows($result);
+		?>
+              <table id="prtable1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th></th>
+					<th>#</th>				
+					<th>Dated</th>
+					<th>Supp.Inv.No.</th>
+					<th>Company Name</th>
+					<th>Supplier Name</th>
+					<th>Created By</th>
+					<th>Decision</th>
+					<th>By</th>
+					
+					<th style="text-align:right;">Action</th>
+				
+				</tr>
+                </thead>
+                <tbody>
+			<?php
+					while($row = mysqli_fetch_array($result)){
+						
+						$company = $row['company_id'];
+						$sql = "select * from company where comp_id = '$company' ";
+						$q2  = mysqli_query($con, $sql);
+						$r2  = mysqli_fetch_array($q2);
+						$company_name  = $r2['comp_name'];
+
+						$to_supplier = $row['suplier_name'];
+						$sql 	= "select * from sma_party_mst where id = '$to_supplier' ";
+						$q2 	= mysqli_query($con, $sql);
+						$r2 	= mysqli_fetch_array($q2);
+						$suplier_name = $r2['party_name'];
+	
+						$j=$j+1;						
+						
+				$baseurl1 = $baseurl.$modulePath1.'edit.php?sub=edit&id='.$row["id"];
+				
+				?>
+		<a href="<?php echo $baseurl . $modulePath1 . "edit.php?sub=edit&id=". $row['id']?>" title="Edit">
+			<tr style="cursor:pointer; " onmouseover="ChangeBackgroundColor(this)" onmouseout="RestoreBackgroundColor(this)" onclick="location.href='<?php echo $baseurl1;?>'">
+					<td width="1%"><input type="hidden" value="<?php echo $row['id'];?>"></td>
+					<td width="5%"><?php echo $row['id'];?></td>
+					<td width="10%"><?php echo date('d-m-Y', strtotime($row['invoice_date']));?></td>
+					<td width="10%"><?php echo $row['supplier_invoice_no'];?></td>
+					<td width="15%"><?php echo $company_name;?></td>
+					<td width="15%"><?php echo $suplier_name;?></td>
+					<td width="10%"><?php echo $row['changed_by'];?></td>
+					<td width="10%"><?php echo $row['status'];?></td>
+					<td width="10%"><?php echo $row['approval_status'];?></td>
+					
+					<td width="5%" style="text-align:right;" ><a href="<?php echo $baseurl . $modulePath1 . "edit.php?sub=edit&id=". $row['id']?>"><i class="fa fa-edit"></i></a> </td>
+		
+			</tr>
+		</a>
+				<?php } ?>
+				
+                
+                </tbody>
+              </table>
+            </div>
+		
+			 
+					
+<!---------------------------------------------------------------------------------------------------------------------------------------------------------------->
+						
+	        
+
+	<?php						
+		$comid  = $_SESSION['comid'];
+		$role	= $_SESSION['role'];
+		$user_category	= $_SESSION['user_category'];
+		$sql = "SELECT * from sma_workflow where doc_type= 'PR' and user_category = '$user_category' ";
+					$result = mysqli_query($con, $sql);
+					$row = mysqli_fetch_array($result);
+					$from_value 		= $row['from_value'];
+					$to_value 			= $row['to_value'];
+					$project_manager	= $row['project_manager'];
+					$project_incharge 	= $row['project_incharge'];
+					$coo_cxo 			= $row['coo_cxo'];
+					
+		//echo $role."<<<>>>";			
+		$rowcount = 0;
+		
+			//$sql="SELECT * from sma_supplier_invoice where  approval_status in('Approved') and company in ( $comid ) and draft_by = '$user' ";
+			if ($role =='Accountant' || $role =='Checker - Account' || $role =='HOD - Account' || $role =='Checker'  || $role =='Maker' ){
+				$sql="SELECT * from sma_supplier_invoice where company_id in ( $comid ) and  approval_status in('Approved') 
+				and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'SI') 
+				or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'SI') or draft_by = '$user' )  order by id desc ";
+			}
+			else {
+				$sql = "SELECT * FROM `sma_supplier_invoice` where company_id in ($comid) and approval_status = 'Approved' and draft_by = '$user' order by id desc";
+			}
+//echo $sql;
+		
+			$result = mysqli_query($con, $sql);
+			echo mysqli_error($con);
+			$rowcount=mysqli_num_rows($result);
+		
+			$modulePath1 = "supp_invoice/";
+	?>
+
+
+		  <!-- Step 1 -->
+            <div class="tab-pane" id="tab_A2">
+
+            <!-- /.box-header -->
+     
+			   
+            <!-- /.box-header -->
+              <table id="prtable1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th></th>
+					<th>#</th>				
+					<th>Dated</th>
+					<th>Supp.Inv.No.</th>
+					<th>Company Name</th>
+					<th>Supplier Name</th>
+					<th>Created By</th>
+					<th>Decision</th>
+					<th>By</th>
+					
+					<th style="text-align:right;">Action</th>
+				
+				</tr>
+                </thead>
+                <tbody>
+			<?php
+					while($row = mysqli_fetch_array($result)){
+						
+						$company = $row['company_id'];
+						$sql = "select * from company where comp_id = '$company' ";
+						$q2  = mysqli_query($con, $sql);
+						$r2 = mysqli_fetch_array($q2);
+						$company_name  = $r2['comp_name'];
+						
+						$to_supplier = $row['suplier_name'];
+						$sql 	= "select * from sma_party_mst where id = '$to_supplier' ";
+						$q2 	= mysqli_query($con, $sql);
+						$r2 	= mysqli_fetch_array($q2);
+						$suplier_name = $r2['party_name'];
+	
+						$j=$j+1;						
+						
+				$baseurl1 = $baseurl.$modulePath1.'edit.php?sub=edit&id='.$row["id"];
+				
+				?>
+		<a href="<?php echo $baseurl . $modulePath1 . "edit.php?sub=edit&id=". $row['id']?>" title="Edit">
+			<tr style="cursor:pointer; " onmouseover="ChangeBackgroundColor(this)" onmouseout="RestoreBackgroundColor(this)" onclick="location.href='<?php echo $baseurl1;?>'">
+					<td width="1%"><input type="hidden" value="<?php echo $j;?>" > </td>
+					<td width="5%"><?php echo $row['id'];?> </td>
+					<td width="10%"><?php echo date('d-m-Y', strtotime($row['invoice_date']));?></td>
+					<td width="10%"><?php echo $row['supplier_invoice_no'];?></td>
+					<td width="15%"><?php echo $company_name;?></td>
+					<td width="15%"><?php echo $suplier_name;?></td>
+					<td width="10%"><?php echo $row['changed_by'];?></td>
+					<td width="10%"><?php echo $row['status'];?></td>
+					<td width="10%"><?php echo $row['approval_status'];?></td>
+					
+					<td width="5%" style="text-align:right;" ><a href="<?php echo $baseurl . $modulePath1 . "edit.php?sub=edit&id=". $row['id']?>"><i class="fa fa-edit"></i></a> </td>
+		
+			</tr>
+		</a>
+				<?php } ?>
+				
+                
+                </tbody>
+              </table>
+            </div>
+		
+          <!-- /.box -->
+	
+	<?php						
+		$comid  = $_SESSION['comid'];
+		$role	= $_SESSION['role'];
+		$user_category	= $_SESSION['user_category'];
+		$sql = "SELECT * from sma_workflow where doc_type= 'PR' and user_category = '$user_category' ";
+					$result = mysqli_query($con, $sql);
+					$row = mysqli_fetch_array($result);
+					$from_value 		= $row['from_value'];
+					$to_value 			= $row['to_value'];
+					$project_manager	= $row['project_manager'];
+					$project_incharge 	= $row['project_incharge'];
+					$coo_cxo 			= $row['coo_cxo'];
+					
+		//echo $role."<<<>>>";			
+		$rowcount = 0;
+		
+//			$sql="SELECT * from sma_supplier_invoice where  approval_status in('Rejected') and company in ( $comid ) and draft_by = '$user' ";
+			if ($role =='Accountant' || $role =='Checker - Account' || $role =='HOD - Account' || $role =='Checker'  || $role =='Maker' ){
+				$sql="SELECT * from sma_supplier_invoice where company_id in ( $comid ) and  approval_status in('Rejected') 
+				and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'SI') 
+				or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'SI') or draft_by = '$user' )  order by id desc ";
+			}
+			else {
+				$sql = "SELECT * FROM `sma_supplier_invoice` where company_id in ($comid) and approval_status = 'Rejected' and draft_by = '$user' order by id desc ";
+			}		
+			$result = mysqli_query($con, $sql);
+			echo mysqli_error($con);
+			$rowcount=mysqli_num_rows($result);
+
+			$modulePath1 = "supp_invoice/";
+	?>
+
+           <div class="tab-pane" id="tab_A3">
+								
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="prtable1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th></th>
+					<th>#</th>
+					<th>Dated</th>
+					<th>Supp.Inv.No.</th>
+					<th>Company Name</th>
+					<th>Supplier Name</th>
+					<th>Created By</th>
+					<th>Decision</th>
+					<th>By</th>
+					
+					<th style="text-align:right;">Action</th>
+				
+				</tr>
+                </thead>
+                <tbody>
+			<?php
+					while($row = mysqli_fetch_array($result)){
+						
+						$to_supplier = $row['suplier_name'];
+						$sql 	= "select * from sma_party_mst where id = '$to_supplier' ";
+						$q2 	= mysqli_query($con, $sql);
+						$r2 	= mysqli_fetch_array($q2);
+						$suplier_name = $r2['party_name'];
+	
+						$company = $row['company_id'];
+						$sql = "select * from company where comp_id = '$company' ";
+						$q2  = mysqli_query($con, $sql);
+						$r2 = mysqli_fetch_array($q2);
+						$company_name  = $r2['comp_name'];
+
+						$j=$j+1;						
+						
+				$baseurl1 = $baseurl.$modulePath1.'edit.php?sub=edit&id='.$row["id"];
+				
+				?>
+		<a href="<?php echo $baseurl . $modulePath1 . "edit.php?sub=edit&id=". $row['id']?>" title="Edit">
+			<tr style="cursor:pointer; " onmouseover="ChangeBackgroundColor(this)" onmouseout="RestoreBackgroundColor(this)" onclick="location.href='<?php echo $baseurl1;?>'">
+					<td width="1%"><input type="hidden" value="<?php echo $j;?>" > </td>
+					<td width="5%"><?php echo $row['id'];?> </td>
+					<td width="10%"><?php echo date('d-m-Y', strtotime($row['invoice_date']));?></td>
+					<td width="10%"><?php echo $row['supplier_invoice_no'];?></td>
+					<td width="15%"><?php echo $company_name;?></td>
+					<td width="15%"><?php echo $suplier_name;?></td>
+					<td width="10%"><?php echo $row['changed_by'];?></td>
+					<td width="10%"><?php echo $row['status'];?></td>
+					<td width="10%"><?php echo $row['approval_status'];?></td>
+					
+					<td width="5%" style="text-align:right;" ><a href="<?php echo $baseurl . $modulePath1 . "edit.php?sub=edit&id=". $row['id']?>"><i class="fa fa-edit"></i></a> </td>
+		
+			</tr>
+		</a>
+				<?php } ?>
+				
+                
+                </tbody>
+              </table>
+            </div>
+		</div>				
+       </div>
+	</div>
+  </div>
+</div>
+</div>
+
+  
+
+<!----GRN DASHBOARD-->
+
+<div class="row">
+      <div class="col-xs-12">
+          <div class="box">
+		  
+		  <div class="box-body">
+		  
+							<?php
+								$pcnt = 0;
+								if ($role =='Checker' || $role =='Project Manager' || $role == 'Project Incharge' || $role == 'CXO' || $role =='COO' ){
+									$sql="SELECT approval_status, count(*) as cnt from sma_grn_srn where  approval_status in('Pending', 'Prepared') 
+										and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'GS') 
+										or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'GS') or draft_by = '$user' ) group by approval_status ";
+								}
+								else {
+									$sql = "SELECT approval_status, count(*) as cnt FROM `sma_grn_srn` where approval_status in('Pending', 'Prepared')  and draft_by = '$user' group by approval_status";
+								}
+								if($user == 'Admin'){
+									$sql = "SELECT approval_status, count(*) as cnt FROM `sma_grn_srn` where approval_status in('Pending', 'Verified') group by approval_status";
+								}
+//					echo $sql;			
+								$res = mysqli_query($con, $sql);
+								while($r1 = mysqli_fetch_array($res)){
+									$sts = $r1['approval_status'];
+									$pcnt = $r1['cnt'];
+								}
+									
+								$acnt = 0;
+								if ($role =='Checker' || $role =='Project Manager' || $role == 'Project Incharge' || $role == 'CXO' || $role =='COO' ){
+									$sql="SELECT approval_status, count(*) as cnt from sma_grn_srn where  approval_status in('Approved') 
+										and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'GS') 
+										or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'GS') or draft_by = '$user' )  group by approval_status ";
+								}
+								else {
+									$sql = "SELECT approval_status, count(*) as cnt FROM `sma_grn_srn` where  approval_status = 'Approved' and draft_by = '$user' group by approval_status";
+								}
+								if($user == 'Admin'){
+									$sql = "SELECT approval_status, count(*) as cnt FROM `sma_grn_srn` where  approval_status in('Approved') group by approval_status";
+								}
+								//$sql = "SELECT approval_status, count(*) as cnt FROM `sma_grn_srn` where approval_status = 'Approved'  and draft_by = '$user'  group by approval_status";
+								$res = mysqli_query($con, $sql);
+								while($r1 = mysqli_fetch_array($res)){
+									$sts = $r1['approval_status'];
+									$acnt = $r1['cnt'];
+								}
+								
+								$rcnt = 0;
+								if ($role =='Checker' || $role =='Project Manager' || $role == 'Project Incharge' || $role == 'CXO' || $role =='COO' ){
+									$sql="SELECT approval_status, count(*) as cnt from sma_grn_srn where   approval_status in('Rejected') 
+										and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'GS') 
+										or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'GS') or draft_by = '$user' ) group by approval_status ";
+								}
+								else {
+									$sql = "SELECT approval_status, count(*) as cnt FROM `sma_grn_srn` where  approval_status = 'Rejected' and draft_by = '$user' group by approval_status";
+								}
+								
+								if($user == 'Admin'){
+									$sql = "SELECT approval_status, count(*) as cnt FROM `sma_grn_srn` where  approval_status in('Rejected') group by approval_status";
+								}
+								
+								//$sql = "SELECT approval_status, count(*) as cnt FROM `sma_grn_srn` where approval_status = 'Rejected' and draft_by = '$user'  group by approval_status";
+								$res = mysqli_query($con, $sql);
+								while($r1 = mysqli_fetch_array($res)){
+									$sts = $r1['approval_status'];
+									$rcnt = $r1['cnt'];
+								}
+							?>		
+		
+		  <ul class="nav nav-tabs">
+              <li class="active"><a href="#tab_1GS" data-toggle="tab" id="first_tab" > Pending <span class="btn btn-info" ><?php echo $pcnt; ?></span></a></li>
+              <li><a href="#tab_2GS" data-toggle="tab" id="second_tab">Approved <span class="btn btn-success" ><?php echo $acnt; ?></span></a></li>
+              <li><a href="#tab_3GS" data-toggle="tab" id="third_tab">Rejected <span class="btn btn-danger" ><?php echo $rcnt; ?></span></a></li>
+			  <h3 style="text-align:right;">GRN SRN</h3>
+		</ul>
+		  
+			<div class="tab-content">
+				<div class="tab-pane active" id="tab_1GS">
+						
+            <!-- /.box-header -->
+		<?php
+			
+			$modulePathg = "grnsrn/";
+		
+			if ($role =='Checker' || $role =='Project Manager' || $role == 'Project Incharge' || $role == 'CXO' || $role =='COO' ){
+				$sql="SELECT * from sma_grn_srn where   approval_status in('Pending', 'Prepared')  
+				and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'GS')
+				or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'GS') or draft_by = '$user' )  order by id desc ";
+			}
+			else {
+				$sql = "SELECT * FROM `sma_grn_srn` where  approval_status in('Pending', 'Prepared')  and draft_by = '$user' order by id desc ";
+			}
+			if($user == 'Admin'){
+				$sql = "SELECT * FROM `sma_grn_srn` where  approval_status in('Pending', 'Prepared')  order by id desc ";
+			}					
+//echo $sql;			
+			$result = mysqli_query($con, $sql);
+			echo mysqli_error($con);
+			$rowcount=mysqli_num_rows($result);
+		?>
+              <table id="prtable1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+					<th>SrNo.</th>
+					<th>Dated</th>
+					<th>Supplier Name</th>
+					<th>Supp.Inv.No.</th>
+					<th>Our PO Ref.NO.</th>
+					<th>Transport LR No.</th>
+					<th>Created By</th>
+					<th>Decision</th>
+					<th>By</th>
+				
+				</tr>
+                </thead>
+                <tbody>
+			<?php
+					while($row = mysqli_fetch_array($result)){						
+
+						$supplier_id = $row['supplier_name'];
+						$sql="SELECT * from sma_party_mst where id = '$supplier_id' ";
+						$q2 = mysqli_query($con, $sql);
+						$r2 = mysqli_fetch_array($q2);
+						$supplier_name = $r2['party_name'];
+						
+						$our_po_ref_no = $row['our_po_ref_no'];
+						$sql="SELECT * from sma_purchase_order where id = '$our_po_ref_no' ";
+						$q2 = mysqli_query($con, $sql);
+						$r2 = mysqli_fetch_array($q2);
+						$our_po_ref_no = $r2['po_number'];
+						
+						
+						$j=$j+1;						
+						
+						$baseurl1 = $baseurl.$modulePathg.'edit.php?sub=edit&id='.$row["id"];
+				
+				?>
+		<a href="<?php echo $baseurl . $modulePathg . "edit.php?sub=edit&id=". $row['id']?>" title="Edit">
+			<tr style="cursor:pointer; " onmouseover="ChangeBackgroundColor(this)" onmouseout="RestoreBackgroundColor(this)" onclick="location.href='<?php echo $baseurl1;?>'">
+					<td width="0%"><input type="hidden" value="<?php echo $j;?>" > </td>
+					<td width="6%" style="text-align:right;"><?php echo $row['id'];?></td>
+					<td width="08%"><?php echo date('d-m-Y', strtotime($row['received_date']));?></td>
+					<td width="23%"><?php echo $supplier_name;?></td>
+					<td width="09%"><?php echo $row['supplier_invoice_no'];?></td>
+					<td width="17%"><?php echo $our_po_ref_no;?></td>					
+					<td width="10%"><?php echo $row['transport_lr_no'];?></td>
+
+					<td width="08%"><?php echo $row['draft_by'];?></td>
+					<td width="10%"><?php echo $row['approval_status'];?></td>
+					<td width="10%"><?php echo $row['changed_by'];?></td>
+					
+			</tr>
+		</a>
+				<?php } ?>
+				
+                </tbody>
+              </table>
+            </div>
+		
+			 
+					
+<!---------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+	<?php						
+		$comid  = $_SESSION['comid'];
+		$role	= $_SESSION['role'];
+		$user_category	= $_SESSION['user_category'];
+		$sql = "SELECT * from sma_workflow where doc_type= 'PR' and user_category = '$user_category' ";
+					$result = mysqli_query($con, $sql);
+					$row = mysqli_fetch_array($result);
+					$from_value 		= $row['from_value'];
+					$to_value 			= $row['to_value'];
+					$project_manager	= $row['project_manager'];
+					$project_incharge 	= $row['project_incharge'];
+					$coo_cxo 			= $row['coo_cxo'];
+					
+		//echo $role."<<<>>>";			
+		$rowcount = 0;
+		
+			if ($role =='Checker' || $role =='Project Manager' || $role == 'Project Incharge' || $role == 'CXO' || $role =='COO' ){
+				$sql="SELECT * from sma_grn_srn where   approval_status in('Approved') 
+				and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'GS') 
+				or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'GS') or draft_by = '$user' )  order by id desc ";
+			}
+			else {
+				$sql = "SELECT * FROM `sma_grn_srn` where  approval_status = 'Approved' and draft_by = '$user' order by id desc";
+			}
+			
+			if($user == 'Admin'){
+				$sql = "SELECT * FROM `sma_grn_srn` where  approval_status in('Approved')  order by id desc ";
+			}					
+//echo $sql;
+		
+			$result = mysqli_query($con, $sql);
+			echo mysqli_error($con);
+			$rowcount=mysqli_num_rows($result);
+		
+			$modulePathg = "grnsrn/";
+	?>
+
+
+		  <!-- Step 1 -->
+            <div class="tab-pane" id="tab_2GS">
+
+            <!-- /.box-header -->
+     
+			   
+            <!-- /.box-header -->
+              <table id="prtable1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+					<th>SrNo.</th>
+					<th>Dated</th>
+					<th>Supplier Name</th>
+					<th>Supp.Inv.No.</th>
+					<th>Our PO Ref.NO.</th>
+					<th>Transport LR No.</th>
+					<th>Created By</th>
+					<th>Decision</th>
+					<th>By</th>
+					
+				</tr>
+                </thead>
+                <tbody>
+			<?php
+					while($row = mysqli_fetch_array($result)){
+						
+						$supplier_id = $row['supplier_name'];
+						$sql="SELECT * from sma_party_mst where id = '$supplier_id' ";
+						$q2 = mysqli_query($con, $sql);
+						$r2 = mysqli_fetch_array($q2);
+						$supplier_name = $r2['party_name'];
+						
+						$our_po_ref_no = $row['our_po_ref_no'];
+						$sql="SELECT * from sma_purchase_order where id = '$our_po_ref_no' ";
+						$q2 = mysqli_query($con, $sql);
+						$r2 = mysqli_fetch_array($q2);
+						$our_po_ref_no = $r2['po_number'];
+						
+						
+						$j=$j+1;						
+						
+						$baseurl1 = $baseurl.$modulePathg.'edit.php?sub=edit&id='.$row["id"];
+				
+				?>
+		<a href="<?php echo $baseurl . $modulePathg . "edit.php?sub=edit&id=". $row['id']?>" title="Edit">
+			<tr style="cursor:pointer; " onmouseover="ChangeBackgroundColor(this)" onmouseout="RestoreBackgroundColor(this)" onclick="location.href='<?php echo $baseurl1;?>'">
+						<td width="0%"><input type="hidden" value="<?php echo $j;?>" > </td>
+						<td width="6%" style="text-align:right;"><?php echo $row['id'];?></td>
+						<td width="08%"><?php echo date('d-m-Y', strtotime($row['received_date']));?></td>
+						<td width="23%"><?php echo $supplier_name;?></td>
+						<td width="09%"><?php echo $row['supplier_invoice_no'];?></td>
+						<td width="17%"><?php echo $our_po_ref_no;?></td>					
+						<td width="10%"><?php echo $row['transport_lr_no'];?></td>
+						<td width="08%"><?php echo $row['draft_by'];?></td>
+						<td width="10%"><?php echo $row['approval_status'];?></td>
+						<td width="10%"><?php echo $row['changed_by'];?></td>
+				
+			</tr>
+		</a>
+				<?php } ?>
+				
+                
+                </tbody>
+              </table>
+            </div>
+		
+          <!-- /.box -->
+	
+	<?php						
+		$comid  = $_SESSION['comid'];
+		$role	= $_SESSION['role'];
+		$user_category	= $_SESSION['user_category'];
+		$sql = "SELECT * from sma_workflow where doc_type= 'PR' and user_category = '$user_category' ";
+					$result = mysqli_query($con, $sql);
+					$row = mysqli_fetch_array($result);
+					$from_value 		= $row['from_value'];
+					$to_value 			= $row['to_value'];
+					$project_manager	= $row['project_manager'];
+					$project_incharge 	= $row['project_incharge'];
+					$coo_cxo 			= $row['coo_cxo'];
+					
+		//echo $role."<<<>>>";			
+		$rowcount = 0;
+		
+			if ($role =='Checker' || $role =='Project Manager' || $role == 'Project Incharge' || $role == 'CXO' || $role =='COO' ){
+
+				$sql="SELECT * from sma_grn_srn where   approval_status in('Rejected') 
+				and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'GS') 
+				or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'GS') or draft_by = '$user' )  order by id desc ";
+			}
+			else {
+				$sql = "SELECT * FROM `sma_grn_srn` where  approval_status = 'Rejected' and draft_by = '$user' order by id desc ";
+			}		
+			if($user == 'Admin'){
+				$sql = "SELECT * FROM `sma_grn_srn` where  approval_status in('Rejected')  order by id desc ";
+			}
+			$result = mysqli_query($con, $sql);
+			echo mysqli_error($con);
+			$rowcount=mysqli_num_rows($result);
+
+			$modulePathg = "grnsrn/";
+	?>
+
+           <div class="tab-pane" id="tab_3GS">
+								
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="prtable1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+					<th>SrNo.</th>
+					<th>Dated</th>
+					<th>Supplier Name</th>
+					<th>Supp.Inv.No.</th>
+					<th>Our PO Ref.NO.</th>
+					<th>Transport LR No.</th>
+					<th>Created By</th>
+					<th>Decision</th>
+					<th>By</th>
+				
+				</tr>
+                </thead>
+                <tbody>
+			<?php
+					while($row = mysqli_fetch_array($result)){
+						
+										
+						$supplier_id = $row['supplier_name'];
+						$sql="SELECT * from sma_party_mst where id = '$supplier_id' ";
+						$q2 = mysqli_query($con, $sql);
+						$r2 = mysqli_fetch_array($q2);
+						$supplier_name = $r2['party_name'];
+						
+						$our_po_ref_no = $row['our_po_ref_no'];
+						$sql="SELECT * from sma_purchase_order where id = '$our_po_ref_no' ";
+						$q2 = mysqli_query($con, $sql);
+						$r2 = mysqli_fetch_array($q2);
+						$our_po_ref_no = $r2['po_number'];
+						
+						
+						$baseurl1 = $baseurl.$modulePathg.'edit.php?sub=edit&id='.$row["id"];
+						$j=$j+1;						
+						
+						$baseurl1 = $baseurl.$modulePathg.'edit.php?sub=edit&id='.$row["id"];
+				
+				?>
+		<a href="<?php echo $baseurl . $modulePathg . "edit.php?sub=edit&id=". $row['id']?>" title="Edit">
+			<tr style="cursor:pointer; " onmouseover="ChangeBackgroundColor(this)" onmouseout="RestoreBackgroundColor(this)" onclick="location.href='<?php echo $baseurl1;?>'">
+						<td width="0%"><input type="hidden" value="<?php echo $j;?>" > </td>
+						<td width="6%" style="text-align:right;"><?php echo $row['id'];?></td>
+						<td width="08%"><?php echo date('d-m-Y', strtotime($row['received_date']));?></td>
+						<td width="23%"><?php echo $supplier_name;?></td>
+						<td width="09%"><?php echo $row['supplier_invoice_no'];?></td>
+						<td width="17%"><?php echo $our_po_ref_no;?></td>					
+						<td width="10%"><?php echo $row['transport_lr_no'];?></td>
+						<td width="08%"><?php echo $row['draft_by'];?></td>
+						<td width="10%"><?php echo $row['approval_status'];?></td>
+						<td width="10%"><?php echo $row['changed_by'];?></td>
+			</tr>
+		</a>
+				<?php } ?>
+				
+                </tbody>
+              </table>
+            </div>
+		</div>				
+       </div>
+	</div>
+  </div>
+</div>
+</div>
+
+<!-- GRN DASHBOARD -->
+	
+
+
+  <!-- /.box -->
+<!----IPC DASHBOARD-->
+
+<div class="row">
+      <div class="col-xs-12">
+          <div class="box">
+		  
+		  <div class="box-body">
+		  
+							<?php
+								$pcnt = 0;
+								if ( $role =='Maker'){
+									$sql="SELECT approval_status, count(*) as cnt from sma_ipc where sma_comp_id in ( $comid ) and  approval_status in('Pending', 'Prepared') 
+										and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'IP') 
+										or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'IP') or draft_by = '$user' ) group by approval_status ";
+								}
+								else {
+									$sql = "SELECT approval_status, count(*) as cnt FROM `sma_ipc` where sma_comp_id in ($comid) and approval_status in('Pending', 'Prepared')  and draft_by = '$user' group by approval_status";
+								}
+//					echo $sql;			
+								$res = mysqli_query($con, $sql);
+								while($r1 = mysqli_fetch_array($res)){
+									$sts = $r1['approval_status'];
+									$pcnt = $r1['cnt'];
+								}
+									
+								$acnt = 0;
+								if ($role =='Maker'){
+									$sql="SELECT approval_status, count(*) as cnt from sma_ipc where sma_comp_id in ( $comid ) and  approval_status in('Approved') 
+										and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'IP') 
+										or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'IP') or draft_by = '$user' )  group by approval_status ";
+								}
+								else {
+									$sql = "SELECT approval_status, count(*) as cnt FROM `sma_ipc` where sma_comp_id in ($comid) and approval_status = 'Approved' and draft_by = '$user' group by approval_status";
+								}
+								//$sql = "SELECT approval_status, count(*) as cnt FROM `sma_ipc` where approval_status = 'Approved'  and draft_by = '$user'  group by approval_status";
+								$res = mysqli_query($con, $sql);
+								while($r1 = mysqli_fetch_array($res)){
+									$sts = $r1['approval_status'];
+									$acnt = $r1['cnt'];
+								}
+								
+								$rcnt = 0;
+								if ($role =='Maker'){
+									$sql="SELECT approval_status, count(*) as cnt from sma_ipc where sma_comp_id in ( $comid ) and  approval_status in('Rejected') 
+										and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'IP') 
+										or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'IP') or draft_by = '$user' ) group by approval_status ";
+								}
+								else {
+									$sql = "SELECT approval_status, count(*) as cnt FROM `sma_ipc` where sma_comp_id in ($comid) and approval_status = 'Rejected' and draft_by = '$user' group by approval_status";
+								}
+								//$sql = "SELECT approval_status, count(*) as cnt FROM `sma_ipc` where approval_status = 'Rejected' and draft_by = '$user'  group by approval_status";
+								$res = mysqli_query($con, $sql);
+								while($r1 = mysqli_fetch_array($res)){
+									$sts = $r1['approval_status'];
+									$rcnt = $r1['cnt'];
+								}
+							?>		
+		
+		  <ul class="nav nav-tabs">
+              <li class="active"><a href="#tab_1IPC" data-toggle="tab" id="first_tab" > Pending <span class="btn btn-info" ><?php echo $pcnt; ?></span></a></li>
+              <li><a href="#tab_2IPC" data-toggle="tab" id="second_tab">Approved <span class="btn btn-success" ><?php echo $acnt; ?></span></a></li>
+              <li><a href="#tab_3IPC" data-toggle="tab" id="third_tab">Rejected <span class="btn btn-danger" ><?php echo $rcnt; ?></span></a></li>
+			  <h3 style="text-align:right;">IPC</h3>
+		</ul>
+		  
+			<div class="tab-content">
+				<div class="tab-pane active" id="tab_1IPC">
+						
+            <!-- /.box-header -->
+		<?php
+			
+			$modulePathi = "ipc/";
+		
+			//$sql="SELECT * from sma_ipc where  approval_status in('Pending') and company in ( $comid ) and draft_by = '$user' ";
+			if ($role =='Maker'){
+				$sql="SELECT * from sma_ipc where sma_comp_id in ( $comid ) and  approval_status in('Pending', 'Prepared')  
+				and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'IP') 
+				or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'IP') or draft_by = '$user' )  order by id desc ";
+			}
+			else {
+				$sql = "SELECT * FROM `sma_ipc` where sma_comp_id in ($comid) and approval_status in('Pending', 'Prepared')  and draft_by = '$user' order by id desc ";
+			}
+			
+//echo $sql;			
+			$result = mysqli_query($con, $sql);
+			echo mysqli_error($con);
+			$rowcount=mysqli_num_rows($result);
+		?>
+              <table id="prtable1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+					<th>Company</th>
+					<th>Party</th>
+					<th>PO.Number</th>
+					<th>Invoice No.</th>
+					<th>PO Amount</th>
+					<th>Invoice Amount</th>
+					<th>Created By</th>
+					<th>Decision</th>
+					<th>By</th>
+				
+				</tr>
+                </thead>
+                <tbody>
+			<?php
+					while($row = mysqli_fetch_array($result)){						
+
+						$sma_vendor_id = $row['sma_vendor_id'];
+						$sql = "select * from sma_party_mst where id = '$sma_vendor_id' ";
+						$q2  = mysqli_query($con, $sql);
+						$r2  = mysqli_fetch_array($q2);
+						$sma_vendor_name = $r2['party_name'];
+						
+						$sma_comp_id = $row['sma_comp_id'];
+						$sql = "select * from company where comp_id = '$sma_comp_id' ";
+						$q2  = mysqli_query($con, $sql);
+						$r2  = mysqli_fetch_array($q2);
+						$comp_name = $r2['comp_name'];
+						
+						$sma_po_no = $row['sma_po_no'];
+						$sql = "select * from sma_purchase_order where id = '$sma_po_no' ";
+						$q2  = mysqli_query($con, $sql);
+						$r2  = mysqli_fetch_array($q2);
+						$po_number = $r2['po_number'];
+						
+						$sma_invoice_no = $row['sma_invoice_no'];
+						$sql = "select * from sma_supplier_invoice where id = '$sma_invoice_no' ";
+						$q2  = mysqli_query($con, $sql);
+						$r2  = mysqli_fetch_array($q2);
+						$sma_invoice_no = $r2['supplier_invoice_no'];
+						
+						$baseurl1 = $baseurl.$modulePath.'ipc.php?sub=edit&id='.$row["id"];	
+						$j=$j+1;						
+						
+				$baseurl1 = $baseurl.$modulePathi.'ipc.php?sub=edit&id='.$row["id"];
+				
+				?>
+		<a href="<?php echo $baseurl . $modulePathi . "ipc.php?sub=edit&id=". $row['id']?>" title="Edit">
+			<tr style="cursor:pointer; " onmouseover="ChangeBackgroundColor(this)" onmouseout="RestoreBackgroundColor(this)" onclick="location.href='<?php echo $baseurl1;?>'">
+					<td width="20%"><?php echo $comp_name;?></td>
+					<td width="20%"><?php echo $sma_vendor_name;?></td>
+					<td width="10%"><?php echo $po_number;?></td>
+					<td width="10%"><?php echo $sma_invoice_no;?></td>
+					<td width="10%"><?php echo $row['sma_po_amount'];?></td>
+					<td width="10%"><?php echo $row['sma_invoice_amount'];?></td>
+					<td width="08%"><?php echo $row['draft_by'];?></td>
+					<td width="10%"><?php echo $row['approval_status'];?></td>
+					<td width="10%"><?php echo $row['changed_by'];?></td>
+					
+			</tr>
+		</a>
+				<?php } ?>
+				
+                </tbody>
+              </table>
+            </div>
+		
+			 
+					
+<!---------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+	<?php						
+		$comid  = $_SESSION['comid'];
+		$role	= $_SESSION['role'];
+		$user_category	= $_SESSION['user_category'];
+		$sql = "SELECT * from sma_workflow where doc_type= 'PR' and user_category = '$user_category' ";
+					$result = mysqli_query($con, $sql);
+					$row = mysqli_fetch_array($result);
+					$from_value 		= $row['from_value'];
+					$to_value 			= $row['to_value'];
+					$project_manager	= $row['project_manager'];
+					$project_incharge 	= $row['project_incharge'];
+					$coo_cxo 			= $row['coo_cxo'];
+					
+		//echo $role."<<<>>>";			
+		$rowcount = 0;
+		
+			//$sql="SELECT * from sma_ipc where  approval_status in('Approved') and company in ( $comid ) and draft_by = '$user' ";
+			if ($role =='Maker'){
+				$sql="SELECT * from sma_ipc where sma_comp_id in ( $comid ) and  approval_status in('Approved') 
+				and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'IP') 
+				or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'IP') or draft_by = '$user' )  order by id desc ";
+			}
+			else {
+				$sql = "SELECT * FROM `sma_ipc` where sma_comp_id in ($comid) and approval_status = 'Approved' and draft_by = '$user' order by id desc";
+			}
+//echo $sql;
+		
+			$result = mysqli_query($con, $sql);
+			echo mysqli_error($con);
+			$rowcount=mysqli_num_rows($result);
+		
+			$modulePathi = "ipc/";
+	?>
+
+
+		  <!-- Step 1 -->
+            <div class="tab-pane" id="tab_2IPC">
+
+            <!-- /.box-header -->
+     
+			   
+            <!-- /.box-header -->
+              <table id="prtable1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+					<th>Company</th>
+					<th>Party</th>
+					<th>PO.Number</th>
+					<th>Invoice No.</th>
+					<th>PO Amount</th>
+					<th>Invoice Amount</th>
+					<th>Created By</th>
+					<th>Decision</th>
+					<th>By</th>
+					
+				</tr>
+                </thead>
+                <tbody>
+			<?php
+					while($row = mysqli_fetch_array($result)){
+						
+
+						$sma_vendor_id = $row['sma_vendor_id'];
+						$sql = "select * from sma_party_mst where id = '$sma_vendor_id' ";
+						$q2  = mysqli_query($con, $sql);
+						$r2  = mysqli_fetch_array($q2);
+						$sma_vendor_name = $r2['party_name'];
+						
+						$sma_comp_id = $row['sma_comp_id'];
+						$sql = "select * from company where comp_id = '$sma_comp_id' ";
+						$q2  = mysqli_query($con, $sql);
+						$r2  = mysqli_fetch_array($q2);
+						$comp_name = $r2['comp_name'];
+						
+						$sma_po_no = $row['sma_po_no'];
+						$sql = "select * from sma_purchase_order where id = '$sma_po_no' ";
+						$q2  = mysqli_query($con, $sql);
+						$r2  = mysqli_fetch_array($q2);
+						$po_number = $r2['po_number'];
+						
+						$sma_invoice_no = $row['sma_invoice_no'];
+						$sql = "select * from sma_supplier_invoice where id = '$sma_invoice_no' ";
+						$q2  = mysqli_query($con, $sql);
+						$r2  = mysqli_fetch_array($q2);
+						$sma_invoice_no = $r2['supplier_invoice_no'];
+						
+						$baseurl1 = $baseurl.$modulePath.'ipc.php?sub=edit&id='.$row["id"];	
+						$j=$j+1;						
+						
+				$baseurl1 = $baseurl.$modulePathi.'ipc.php?sub=edit&id='.$row["id"];
+				
+				?>
+		<a href="<?php echo $baseurl . $modulePath1 . "edit.php?sub=edit&id=". $row['id']?>" title="Edit">
+			<tr style="cursor:pointer; " onmouseover="ChangeBackgroundColor(this)" onmouseout="RestoreBackgroundColor(this)" onclick="location.href='<?php echo $baseurl1;?>'">
+						<td width="20%"><?php echo $comp_name;?></td>
+						<td width="20%"><?php echo $sma_vendor_name;?></td>
+						<td width="10%"><?php echo $po_number;?></td>
+						<td width="10%"><?php echo $sma_invoice_no;?></td>
+						<td width="10%"><?php echo $row['sma_po_amount'];?></td>
+						<td width="10%"><?php echo $row['sma_invoice_amount'];?></td>
+						<td width="08%"><?php echo $row['draft_by'];?></td>
+						<td width="10%"><?php echo $row['approval_status'];?></td>
+						<td width="10%"><?php echo $row['changed_by'];?></td>
+				
+			</tr>
+		</a>
+				<?php } ?>
+				
+                
+                </tbody>
+              </table>
+            </div>
+		
+          <!-- /.box -->
+	
+	<?php						
+		$comid  = $_SESSION['comid'];
+		$role	= $_SESSION['role'];
+		$user_category	= $_SESSION['user_category'];
+		$sql = "SELECT * from sma_workflow where doc_type= 'PR' and user_category = '$user_category' ";
+					$result = mysqli_query($con, $sql);
+					$row = mysqli_fetch_array($result);
+					$from_value 		= $row['from_value'];
+					$to_value 			= $row['to_value'];
+					$project_manager	= $row['project_manager'];
+					$project_incharge 	= $row['project_incharge'];
+					$coo_cxo 			= $row['coo_cxo'];
+					
+		//echo $role."<<<>>>";			
+		$rowcount = 0;
+		
+//			$sql="SELECT * from sma_ipc where  approval_status in('Rejected') and company in ( $comid ) and draft_by = '$user' ";
+			if ($role =='Maker'){
+				$sql="SELECT * from sma_ipc where sma_comp_id in ( $comid ) and  approval_status in('Rejected') 
+				and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'IP') 
+				or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'IP') or draft_by = '$user' )  order by id desc ";
+			}
+			else {
+				$sql = "SELECT * FROM `sma_ipc` where sma_comp_id in ($comid) and approval_status = 'Rejected' and draft_by = '$user' order by id desc ";
+			}		
+			$result = mysqli_query($con, $sql);
+			echo mysqli_error($con);
+			$rowcount=mysqli_num_rows($result);
+
+			$modulePathi = "ipc/";
+	?>
+
+           <div class="tab-pane" id="tab_3IPC">
+								
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="prtable1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+					<th>Company</th>
+					<th>Party</th>
+					<th>PO.Number</th>
+					<th>Invoice No.</th>
+					<th>PO Amount</th>
+					<th>Invoice Amount</th>
+					<th>Created By</th>
+					<th>Decision</th>
+					<th>By</th>
+				
+				</tr>
+                </thead>
+                <tbody>
+			<?php
+					while($row = mysqli_fetch_array($result)){
+						
+										
+						$sma_vendor_id = $row['sma_vendor_id'];
+						$sql = "select * from sma_party_mst where id = '$sma_vendor_id' ";
+						$q2  = mysqli_query($con, $sql);
+						$r2  = mysqli_fetch_array($q2);
+						$sma_vendor_name = $r2['party_name'];
+						
+						$sma_comp_id = $row['sma_comp_id'];
+						$sql = "select * from company where comp_id = '$sma_comp_id' ";
+						$q2  = mysqli_query($con, $sql);
+						$r2  = mysqli_fetch_array($q2);
+						$comp_name = $r2['comp_name'];
+						
+						$sma_po_no = $row['sma_po_no'];
+						$sql = "select * from sma_purchase_order where id = '$sma_po_no' ";
+						$q2  = mysqli_query($con, $sql);
+						$r2  = mysqli_fetch_array($q2);
+						$po_number = $r2['po_number'];
+						
+						$sma_invoice_no = $row['sma_invoice_no'];
+						$sql = "select * from sma_supplier_invoice where id = '$sma_invoice_no' ";
+						$q2  = mysqli_query($con, $sql);
+						$r2  = mysqli_fetch_array($q2);
+						$sma_invoice_no = $r2['supplier_invoice_no'];
+						
+						$baseurl1 = $baseurl.$modulePath.'ipc.php?sub=edit&id='.$row["id"];
+						$j=$j+1;						
+						
+				$baseurl1 = $baseurl.$modulePathi.'ipc.php?sub=edit&id='.$row["id"];
+				
+				?>
+		<a href="<?php echo $baseurl . $modulePath1 . "edit.php?sub=edit&id=". $row['id']?>" title="Edit">
+			<tr style="cursor:pointer; " onmouseover="ChangeBackgroundColor(this)" onmouseout="RestoreBackgroundColor(this)" onclick="location.href='<?php echo $baseurl1;?>'">
+					<td width="20%"><?php echo $comp_name;?></td>
+						<td width="20%"><?php echo $sma_vendor_name;?></td>
+						<td width="10%"><?php echo $po_number;?></td>
+						<td width="10%"><?php echo $sma_invoice_no;?></td>
+						<td width="10%"><?php echo $row['sma_po_amount'];?></td>
+						<td width="10%"><?php echo $row['sma_invoice_amount'];?></td>
+						<td width="10%"><?php echo $row['changed_by'];?></td>
+						<td width="08%"><?php echo $row['draft_by'];?></td>
+						<td width="10%"><?php echo $row['approval_status'];?></td>
+						<td width="10%"><?php echo $row['changed_by'];?></td>
+			</tr>
+		</a>
+				<?php } ?>
+				
+                </tbody>
+              </table>
+            </div>
+		</div>				
+       </div>
+	</div>
+  </div>
+</div>
+</div>
+
+<!-- IPC DASHBOARD -->
+        
+
+    <?php 
+	
+		$rowcount =0;	
+//		if ($rowcount > 0){
+			$modulePath2 = "payment/";
+	?>
+	
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+		  
+		  <div class="box-body">
+		  
+								<?php
+								$pcnt = 0;
+								if ($role =='Accountant' || $role =='Checker - Account' || $role =='HOD - Account' || $role =='Checker'  || $role =='Maker' ){
+									$sql="SELECT approval_status, count(*) as cnt from payment_header where company_id in ( $comid ) and  approval_status in('Pending', 'Verified')  
+										and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'PY') 
+										or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'PY') or draft_by = '$user' ) group by approval_status ";
+								}
+								else {
+									$sql = "SELECT approval_status, count(*) as cnt FROM `payment_header` where company_id in ($comid) and approval_status in('Pending', 'Verified')  and draft_by = '$user' group by approval_status";
+								}
+//echo $sql."<BR>";
+								//$sql = "SELECT approval_status, count(*) as cnt FROM `payment_header` where approval_status = 'Pending' group by approval_status";
+								$res = mysqli_query($con, $sql);
+								while($r1 = mysqli_fetch_array($res)){
+									$sts = $r1['approval_status'];
+									$pcnt = $r1['cnt'];
+								}
+								?> 
+								<?php	
+								$acnt = 0;
+								if ($role =='Accountant' || $role =='Checker - Account' || $role =='HOD - Account' || $role =='Checker'  || $role =='Maker' ){
+									$sql="SELECT approval_status, count(*) as cnt from payment_header where company_id in ( $comid ) and  approval_status in('Approved') 
+										and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'PY') 
+										or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'PY') or draft_by = '$user' )  group by approval_status ";
+								}
+								else {
+									$sql = "SELECT approval_status, count(*) as cnt FROM `payment_header` where company_id in ($comid) and approval_status = 'Approved'  and draft_by = '$user' group by approval_status";
+								}
+								
+								$res = mysqli_query($con, $sql);
+								while($r1 = mysqli_fetch_array($res)){
+									$sts = $r1['approval_status'];
+									$acnt = $r1['cnt'];
+								}
+									?>
+								
+								<?php
+								$rcnt = 0;
+								
+								if ($role =='Accountant' || $role =='Checker - Account' || $role =='HOD - Account' || $role =='Checker'  || $role =='Maker' ){
+									$sql="SELECT approval_status, count(*) as cnt from payment_header where company_id in ( $comid ) and  approval_status in('Rejected') 
+										and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'PY')
+										or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'PY') or draft_by = '$user' )  group by approval_status ";
+								}
+								else {
+									$sql = "SELECT approval_status, count(*) as cnt FROM `payment_header` where company_id in ( $comid ) and approval_status = 'Rejected'  and draft_by = '$user' group by approval_status";
+								}
+			
+								$res = mysqli_query($con, $sql);
+								while($r1 = mysqli_fetch_array($res)){
+									$sts = $r1['approval_status'];
+									$rcnt = $r1['cnt'];
+								}
+									?> 
+
+		  <!-- Step 1 -->
+
+		<ul class="nav nav-tabs">
+              <li class="active"><a href="#tab_B1" data-toggle="tab" id="first_tab" > Pending <span class="btn btn-info" ><?php echo $pcnt; ?></span></a></li>
+              <li><a href="#tab_B2" data-toggle="tab" id="second_tab">Approved <span class="btn btn-success" ><?php echo $acnt; ?></span></a></li>
+              <li><a href="#tab_B3" data-toggle="tab" id="third_tab">Rejected <span class="btn btn-danger" ><?php echo $rcnt; ?></span></a></li>
+			  <h3 style="text-align:right;">Payment</h3>
+		</ul>
+		  
+		  <div class="tab-content">
+			   <div class="tab-pane active" id="tab_B1">
+    
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="prtable1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th></th>
+					<th>Paid Date</th>
+					<th>Paid via</th>
+					<th>Cheque Number</th>
+					<th>Dated.</th>
+					<th style="text-align:right;">Amount Paid</th>
+					<th>Created By</th>
+					<th>Decision</th>
+					<th>By</th>
+					
+					<th style="text-align:right;">Action</th>
+				
+				</tr>
+                </thead>
+                <tbody>
+	<?php
+		if ($role =='Accountant' || $role =='Checker - Account' || $role =='HOD - Account'  || $role =='Checker'  || $role =='Maker' ){
+			$sql="SELECT * from payment_header where company_id in ( $comid ) and  approval_status in('Pending', 'Verified')  
+				and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'PY') 
+				or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'PY') or draft_by = '$user' )  order by id desc ";
+		}
+		else {
+			$sql = "SELECT * FROM `payment_header` where company_id in ($comid) and approval_status in('Pending', 'Verified')  and draft_by = '$user' order by id desc ";
+		}
+								
+		$result = mysqli_query($con, $sql);
+		echo mysqli_error($con);
+		$rowcount=mysqli_num_rows($result);
+	
+	while($row = mysqli_fetch_array($result)){
+
+		$cash_bank_name = $row['cash_bank_name'];
+		$sql 	= "select * from account_mst where id = '$cash_bank_name' ";
+		$q2 	= mysqli_query($con, $sql);
+		$r2 	= mysqli_fetch_array($q2);
+		$cash_bank_name = $r2['account_name'];
+		
+		$dated = date('d-m-Y', strtotime($row['dated']));
+		if($dated =='01-01-1970'){
+			$dated = '';
+		}
+	
+		$deduction_amt		= $row["tds_amount"];
+		$total_amount_paid	= $row['total_amount_paid'];
+		$actual_paid		= $total_amount_paid ;
+
+		$baseurl1 = $baseurl.$modulePath2.'edit.php?sub=edit&id='.$row["id"];						
+		
+		?>
+		
+	<a href="<?php echo $baseurl1;?>" title="Edit">
+	<tr style="cursor:pointer; "onclick="location.href='<?php echo $baseurl1;?>'">
+
+		<td width="1%"><input type="hidden" value="<?php echo $row['id'];?>"></td>
+		<td width="10%"><?php echo date('d-m-Y', strtotime($row['paid_date']));?></td>
+		<td width="10%"><?php echo $cash_bank_name;?></td>
+		<td width="10%"><?php echo $row['cheque_no'];?></td>
+		<td width="10%"><?php echo $dated;?></td>
+		<td width="10%" style="text-align:right;"><?php echo number_format($actual_paid,2);?></td>
+		<td width="08%"><?php echo $row['draft_by'];?></td>
+		<td width="10%"><?php echo $row['approval_status'];?></td>
+		<td width="10%"><?php echo $row['changed_by'];?></td>
+		
+		<td width="5%" style="text-align:right;">
+		<a href="<?php echo $baseurl . $modulePath2;?>edit.php?sub=edit&id=<?php echo $row['id'];?>" name="btnEdit" title="Edit" placeholder="top center"><i class="fa fa-edit"></i>&nbsp;&nbsp;</a>
+		<!--<a href="edit.php?sub=delete&id=<?php echo $row['id'];?>" title="Delete" onclick="return confirm('Are you sure you want to delete?');"><i class="fa fa-remove"></i></a>-->
+		</td>
+    </tr>
+	</a>
+		<?php } ?>
+				
+                
+                </tbody>
+                <tfoot>
+                
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.box-body -->
+		</div>	
+          
+	
+	<?php
+	$rowcount =0;	
+		$modulePath2 = "payment/";
+	?>
+	
+	<div class="tab-pane" id="tab_B2">
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="prtable1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th></th>
+					<th>Paid Date</th>
+					<th>Paid via</th>
+					<th>Cheque Number</th>
+					<th>Dated.</th>
+					<th style="text-align:right;">Amount Paid</th>
+					<th>Created By</th>
+					<th>Decision</th>
+					<th>By</th>
+					
+					<th style="text-align:right;">Action</th>
+				
+				</tr>
+                </thead>
+                <tbody>
+	<?php
+		if ($role =='Accountant' || $role =='Checker - Account' || $role =='HOD - Account'  || $role =='Checker'  || $role =='Maker' ){
+			$sql="SELECT * from payment_header where company_id in ( $comid ) and  approval_status in('Approved') 
+				and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'PY') 
+				or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'PY') or draft_by = '$user' )  order by id desc ";
+		}
+		else {
+			$sql = "SELECT * FROM `payment_header` where company_id in ($comid) and approval_status = 'Approved' and draft_by = '$user' order by id desc ";
+		}
+		
+	//	$sql="SELECT * from payment_header where company_id in ($comid) and approval_status in('Approved') and draft_by = '$user' order by id desc ";
+		$result = mysqli_query($con, $sql);
+		echo mysqli_error($con);
+		$rowcount=mysqli_num_rows($result);
+//echo $sql."<BR>";		
+		
+	while($row = mysqli_fetch_array($result)){
+		
+		$cash_bank_name = $row['cash_bank_name'];
+		$sql 	= "select * from account_mst where id = '$cash_bank_name' ";
+		$q2 	= mysqli_query($con, $sql);
+		$r2 	= mysqli_fetch_array($q2);
+		$cash_bank_name = $r2['account_name'];
+		
+		$dated = date('d-m-Y', strtotime($row['dated']));
+		if($dated =='01-01-1970'){
+			$dated = '';
+		}
+		
+		$deduction_amt		= $row["tds_amount"];
+		$total_amount_paid	= $row['total_amount_paid'];
+		$actual_paid		= $total_amount_paid - $deduction_amt;
+				
+		$baseurl1 = $baseurl.$modulePath2.'edit.php?sub=edit&id='.$row["id"];						
+		
+		?>
+		
+	<a href="<?php echo $baseurl1;?>" title="Edit">
+	<tr style="cursor:pointer; "onclick="location.href='<?php echo $baseurl1;?>'">
+
+		<td width="1%"><input type="hidden" value="<?php echo $row['id'];?>"></td>
+		<td width="10%"><?php echo date('d-m-Y', strtotime($row['paid_date']));?></td>
+		<td width="10%"><?php echo $cash_bank_name;?></td>
+		<td width="10%"><?php echo $row['cheque_no'];?></td>
+		<td width="10%"><?php echo $dated;?></td>
+		<td width="10%" style="text-align:right;"><?php echo number_format($actual_paid,2);?></td>
+		<td width="08%"><?php echo $row['draft_by'];?></td>
+		<td width="10%"><?php echo $row['approval_status'];?></td>
+		<td width="10%"><?php echo $row['changed_by'];?></td>
+		
+		<td width="5%" style="text-align:right;">
+		<a href="<?php echo $baseurl . $modulePath2;?>edit.php?sub=edit&id=<?php echo $row['id'];?>" name="btnEdit" title="Edit" placeholder="top center"><i class="fa fa-edit"></i>&nbsp;&nbsp;</a>
+		<!--<a href="edit.php?sub=delete&id=<?php echo $row['id'];?>" title="Delete" onclick="return confirm('Are you sure you want to delete?');"><i class="fa fa-remove"></i></a>-->
+		</td>
+    </tr>
+	</a>
+				<?php } ?>
+				
+                
+                </tbody>
+                <tfoot>
+                
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+		 
+	<?php
+	$rowcount =0;	
+		$modulePath2 = "payment/";
+	?>
+		<div class="tab-pane" id="tab_B3">
+		
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="prtable1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th></th>
+					<th>Paid Date</th>
+					<th>Paid via</th>
+					<th>Cheque Number</th>
+					<th>Dated.</th>
+					<th style="text-align:right;">Amount Paid</th>
+					<th>Created By</th>
+					<th>Decision</th>
+					<th>By</th>
+					
+					<th style="text-align:right;">Action</th>
+				
+				</tr>
+                </thead>
+                <tbody>
+	<?php
+		if ($role =='Accountant' || $role =='Checker - Account' || $role =='HOD - Account' || $role =='Checker'  || $role =='Maker' ){
+			$sql="SELECT * from payment_header where company_id in ( $comid ) and  approval_status in('Rejected') 
+				and (id in (SELECT doc_id FROM `workflow_history` where create_by = '$usrid' and doc_Type = 'PO') 
+				or id in (SELECT doc_id FROM `workflow_history` where reviewed_by = '$usrid' and doc_type = 'PO') or draft_by = '$user' )  order by id desc ";
+		}
+		else {
+			$sql = "SELECT * FROM `payment_header` where company_id in ($comid) and approval_status = 'Rejected' and draft_by = '$user' order by id desc ";
+		}
+		
+//$sql="SELECT * from payment_header where company_id in ($comid) and approval_status in('Rejected') and draft_by = '$user' order by id desc ";
+		$result = mysqli_query($con, $sql);
+		echo mysqli_error($con);
+		$rowcount=mysqli_num_rows($result);
+//echo $sql."<br>";				
+	while($row = mysqli_fetch_array($result)){
+		
+		$cash_bank_name = $row['cash_bank_name'];
+		$sql 	= "select * from account_mst where id = '$cash_bank_name' ";
+		$q2 	= mysqli_query($con, $sql);
+		$r2 	= mysqli_fetch_array($q2);
+		$cash_bank_name = $r2['account_name'];
+		
+		$dated = date('d-m-Y', strtotime($row['dated']));
+		if($dated =='01-01-1970'){
+			$dated = '';
+		}
+		
+		$deduction_amt		= $row["tds_amount"];
+		$total_amount_paid	= $row['total_amount_paid'];
+		$actual_paid		= $total_amount_paid - $deduction_amt;
+				
+		$baseurl1 = $baseurl.$modulePath2.'edit.php?sub=edit&id='.$row["id"];						
+		
+		?>
+		
+	<a href="<?php echo $baseurl1;?>" title="Edit">
+	<tr style="cursor:pointer; "onclick="location.href='<?php echo $baseurl1;?>'">
+
+		<td width="1%"><input type="hidden" value="<?php echo $row['id'];?>"></td>
+		<td width="10%"><?php echo date('d-m-Y', strtotime($row['paid_date']));?></td>
+		<td width="10%"><?php echo $cash_bank_name;?></td>
+		<td width="10%"><?php echo $row['cheque_no'];?></td>
+		<td width="10%"><?php echo $dated;?></td>
+		<td width="10%" style="text-align:right;"><?php echo number_format($actual_paid,2);?></td>
+		<td width="08%"><?php echo $row['draft_by'];?></td>
+		<td width="10%"><?php echo $row['approval_status'];?></td>
+		<td width="10%"><?php echo $row['changed_by'];?></td>
+		
+		<td width="5%" style="text-align:right;">
+		<a href="<?php echo $baseurl . $modulePath2;?>edit.php?sub=edit&id=<?php echo $row['id'];?>" name="btnEdit" title="Edit" placeholder="top center"><i class="fa fa-edit"></i>&nbsp;&nbsp;</a>
+		<!--<a href="edit.php?sub=delete&id=<?php echo $row['id'];?>" title="Delete" onclick="return confirm('Are you sure you want to delete?');"><i class="fa fa-remove"></i></a>-->
+		</td>
+    </tr>
+	</a>
+				<?php } ?>
+				
+                
+                </tbody>
+                <tfoot>
+                
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+		 </div>
+	     </div>
+		</div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+
+<!-- End Payment And SI -->
+
+	  
+	  </section>
+    <!-- /.content -->
+  </div>
+
+  <!-- /.content-wrapper -->
+
+</div>
+<!-- ./wrapper -->
+<?php
+//include("footer.php");
+?>
+
+<!-- DataTables -->
+<script src="<?php echo $baseurl . "plugins/datatables/jquery.dataTables.js"?>"></script>
+<script src="<?php echo $baseurl . "plugins/datatables/dataTables.bootstrap.js"?>"></script>
+
+<script>
+    $(function () {
+        $("#prtable").DataTable();
+    });
+</script>
+
+</body>
+</html>
+
