@@ -1,286 +1,366 @@
 <?php
-if($_GET['sub'] == 'pdf'){
-
+if(isset($_GET['sub']) && $_GET['sub'] == 'pdf'){
 	session_start();
 	include "../dbcon.php";
 	include "../baseurl.php";
+	require_once "../excel_libs/SimpleXLSXGen.php";
 
-//echo dirname(__FILE__);
-//exit();
+	$prn = "excel";
+	$from_date_raw = $_POST['from_date'] ?? $_SESSION['start_date'] ?? '';
+	$to_date_raw   = $_POST['to_date'] ?? $_SESSION['end_date'] ?? '';
+	$department_id = $_POST['department'] ?? '';
+	$company_id    = $_POST['company_id'] ?? '';
 
-/**
- * HTML2PDF Librairy - example
- *
- * HTML => PDF convertor
- * distributed under the LGPL License
- *
- * @author      Laurent MINGUET <webmaster@html2pdf.fr>
- *
- * isset($_GET['vuehtml']) is not mandatory
- * it allow to display the result in the HTML format
- */
-	//$message="<table><tr><td>Table</td></tr></table>";
+	$from_date = (!empty($from_date_raw) && $from_date_raw != '1970-01-01' && $from_date_raw != '0000-00-00') ? date('Y-m-d', strtotime($from_date_raw)) : '';
+	$to_date   = (!empty($to_date_raw) && $to_date_raw != '1970-01-01' && $to_date_raw != '0000-00-00') ? date('Y-m-d', strtotime($to_date_raw)) : '';
 
-	$prn		= "excel";
-	$from_date	= date('Y-m-d', strtotime($_POST['from_date']));
-	$to_date	= date('Y-m-d', strtotime($_POST['to_date']));
-	$department = $_POST['department'];	
-	$company_id = $_POST['company_id'];	
-		
-	$message ='';
-	
-	$message .= "<table border='1' cellspacing='0' style='width: 100%; text-align: center; font-size: 12pt;'>
-			<tr><th style='width: 100%;' colspan='11'> Pending NOA Register </th></tr></table>";		
-	
-		$message .= "<table border='1' cellspacing='0' style='width: 100%; border: solid 1px black; text-align: center; font-size: 12pt;'>
-				<tr><td style='width: 10%;'> SPV Name </td>
-					<td style='width: 10%;text-align: left;'> NOA No.</td>
-					<td style='width: 10%;text-align: left;'> Dated </td>
-					<td style='width: 10%;text-align: left;'> Supplier Name </td>
-					<td style='width: 10%;text-align: left;'> Description </td>
-					<td style='width: 10%;text-align: right;'> Amount </td>
-					<td style='width: 10%;text-align: left;'> Created By </td>
-					<td style='width: 10%;text-align: left;'> Pending for Approval by </td>
-					<td style='width: 10%;text-align: left;'> Status </td>
-				</tr>
-			</table>";
-				
-		$message .= "<table border='1' cellspacing='0' style='width: 100%; border: solid 1px black; text-align: left; font-size: 10pt;vertical-align: top;'>";
-				
-	$id				= $_GET['id'];
-	
-	$tableName	= "sma_approval_memo";
-	
-	$sql 		= " SELECT * FROM $tableName where status = 'Completed' and dated >= '$from_date' and dated <= '$to_date' ";
-	
-	if (!empty($company_id)){
-		$sql  .= " and project = '$company_id' ";
+	$from_date_dmy = (!empty($from_date_raw) && $from_date_raw != '1970-01-01' && $from_date_raw != '0000-00-00') ? date('d-m-Y', strtotime($from_date_raw)) : '';
+	$to_date_dmy   = (!empty($to_date_raw) && $to_date_raw != '1970-01-01' && $to_date_raw != '0000-00-00') ? date('d-m-Y', strtotime($to_date_raw)) : '';
+
+	if (!empty($from_date_dmy) && !empty($to_date_dmy)) {
+		$title_banner = 'Pending NOA Register from ' . $from_date_dmy . ' TO ' . $to_date_dmy;
+	} else if (!empty($from_date_dmy)) {
+		$title_banner = 'Pending NOA Register from ' . $from_date_dmy;
+	} else if (!empty($to_date_dmy)) {
+		$title_banner = 'Pending NOA Register up to ' . $to_date_dmy;
+	} else {
+		$title_banner = 'Pending NOA Register';
 	}
-	
-	if (!empty($department)){
-		$sql  .= " and department = '$department' ";
-	}
-	
-	$sql = $_SESSION['sqlex']; //. " AND status in ('Submitted', 'Completed', 'Draft' ) "
 
-	$result = mysqli_query($con,$sql);
-    $error  = mysqli_error($con);
+	$excel_rows = [];
+	$excel_rows[] = [$title_banner];
+	$excel_rows[] = [
+		'Sr.No.',
+		'SPV Name',
+		'Department',
+		'Location',
+		'NOA No.',
+		'Dated',
+		'Budget Group',
+		'Budget Sub Group',
+		'Budget Code',
+		'Supplier Name',
+		'Description',
+		'Amount',
+		'Created By',
+		'Pending for Approval by',
+		'Status'
+	];
+
+	if (!empty($_SESSION['sqlex'])) {
+		$sql = $_SESSION['sqlex'];
+	} else {
+		$sql = "SELECT * FROM sma_approval_memo WHERE del != 'Y'";
+		if (!empty($from_date) && !empty($to_date)) {
+			$sql .= " AND dated >= '$from_date' AND dated <= '$to_date'";
+		}
+		if (!empty($company_id)) {
+			$sql .= " AND (company = '$company_id' OR project = '$company_id')";
+		}
+		if (!empty($department_id)) {
+			$sql .= " AND department = '$department_id'";
+		}
+	}
+
+	// Remove pagination limit if present
+	$sql = preg_replace('/\s+LIMIT\s+\d+(\s*,\s*\d+)?/i', '', $sql);
+	if (stripos($sql, 'order by') === false) {
+		$sql .= ' ORDER BY dated DESC, id DESC';
+	}
+
+	$result = mysqli_query($con, $sql);
+	$error  = mysqli_error($con);
 	if(!empty($error)){ echo "ERROR : " . $error; exit();}
+
+	$ln = 0;
 	while($row = mysqli_fetch_array($result)){
-		$app_id					= $row['id'];
-		$ap_number				= $row['ap_number'];
-		$dated  				= date('d-m-Y', strtotime($row['dated']));
-		//$account_year  			= $row['account_year'];
-		$company_id				= $row['company'];
-		$department				= $row['department'];
-		$location				= $row['location'];
-		$subject				= $row['subject'];
-		$trans_type				= $row['trans_type'];
-		$status                 = $row['status'];
-		//$budget_head 			= $row['budget_head'];
-		$budget_available		= $row['budget_available'];
-		$background				= $row['background'];
-		$scope_of_work			= $row['scope_of_work'];
-		$deviations_from_sop	= $row['deviations_from_sop'];
-		$important_terms_conditions		= $row['important_terms_conditions'];
-		$additional_costs		= $row['additional_costs'];	
-		$cost 					= $row['cost'];
-		$draft_by               = $row['draft_by'];
-	
-	    $sql = "SELECT * FROM `sma_user` where userid = '$draft_by' ";
-		$comresult 	    = mysqli_query($con,$sql);
-		$com 		    = mysqli_fetch_array($comresult);
-		$draft_by 		= $com['username'];
-		
-		$approver_1			= $row['approver_1'];
-				$approver_2			= $row['approver_2'];
-				$approver_3			= $row['approver_3'];
-				$approver_4			= $row['approver_4'];
-				$approver_5			= $row['approver_5'];
-				$approver_6			= $row['approver_6'];
-				$approver_7			= $row['approver_7'];
-				$approver_8			= $row['approver_8'];
-				
-				$approver_1_status	= $row['approver_1_status'];
-				$approver_2_status	= $row['approver_2_status'];
-				$approver_3_status	= $row['approver_3_status'];
-				$approver_4_status	= $row['approver_4_status'];
-				$approver_5_status	= $row['approver_5_status'];
-				$approver_6_status	= $row['approver_6_status'];
-				$approver_7_status	= $row['approver_7_status'];
-				$approver_8_status	= $row['approver_8_status'];
-				$pending_by  = '';
-				if($approver_1_status == 'Submitted'){
-					$pending_by  = $approver_1;	
-				}
-				if($approver_2_status == 'Submitted'){
-					$pending_by  = $approver_2;	
-				}
-				if($approver_3_status == 'Submitted'){
-					$pending_by  = $approver_3;	
-				}
-				if($approver_4_status == 'Submitted'){
-					$pending_by  = $approver_4;	
-				}
-				if($approver_5_status == 'Submitted'){
-					$pending_by  = $approver_5;	
-				}
-				if($approver_6_status == 'Submitted'){
-					$pending_by  = $approver_6;	
-				}
-				if($approver_7_status == 'Submitted'){
-					$pending_by  = $approver_7;	
-				}
-				if($approver_8_status == 'Submitted'){
-					$pending_by  = $approver_8;	
-				}
-				if(!empty($pending_by)){
-				$sql = "select * from sma_user where id = '$pending_by' ";
-				$q2  = mysqli_query($con, $sql);
-				$r2 = mysqli_fetch_array($q2);
-				$pending_by  =  $r2['username'];
-				}
-				
-		$sql 	= "SELECT * FROM `sma_location` where id = '$location'";
-		$res = mysqli_query($con,$sql);
-		$error  = mysqli_error($con);
-		if(!empty($error)){ echo "ERROR : " . $error; exit();}
-		$lc 	= mysqli_fetch_array($res);
-		$loc_name    = $lc['loc_name'];
-		
-		$sql = "SELECT * FROM `company` where comp_id = '$company_id' ";
-		$comresult 	= mysqli_query($con,$sql);
-		$com 		= mysqli_fetch_array($comresult);
-		$comp_name 		= $com['comp_name'];
-		
-		$sql = "SELECT * FROM `sma_department` where id = '$department' ";
-		$dep 	= mysqli_query($con,$sql);
-		$deps 		= mysqli_fetch_array($dep);
-		$department = $deps['name'];
+		$ln++;
+		$app_id            = $row['id'] ?? '';
+		$ap_number         = $row['ap_number'] ?? '';
+		$dated_raw         = $row['dated'] ?? '';
+		$company_id_row    = $row['company'] ?? '';
+		$department_id_row = $row['department'] ?? '';
+		$location_id_row   = $row['location'] ?? '';
+		$project_id_row    = $row['project'] ?? '';
+		$against_indent_no = $row['against_indent_no'] ?? '';
+		$memo_budget_head  = $row['budget_head'] ?? '';
+		$subject           = $row['subject'] ?? '';
+		$status            = $row['status'] ?? '';
+		$cost              = $row['cost'] ?? '';
+		$draft_by          = $row['draft_by'] ?? '';
 
-		$sql = "SELECT * FROM `sma_workflow_type` where id = '$trans_type' ";
-		$dep 	= mysqli_query($con,$sql);
-		$deps 		= mysqli_fetch_array($dep);
-		$workflow_type = $deps['workflow_type'];
-		
+		$dated = (!empty($dated_raw) && $dated_raw != '1970-01-01' && $dated_raw != '0000-00-00') ? date('d-m-Y', strtotime($dated_raw)) : '';
 
-		$sql = "SELECT * FROM `workflow_history` where doc_id = '$app_id' and doc_type = 'AP' and status = 'Approved' order by id desc ";
-		$dep 		= mysqli_query($con,$sql);
-		$deps 		= mysqli_fetch_array($dep);
-		$completed_date = date('d-m-Y', strtotime($deps['approved_date']));
-			
-		$sql="SELECT * from sma_approval_items where approval_hdr_id = '$app_id' ";
-		$res = mysqli_query($con, $sql);
-		echo mysqli_error($con);
-		$r2 = mysqli_fetch_array($res);
-		$budget_id 		= $r2['budget_id'];
-//echo $sql. "<BR>";			
-		$sql="SELECT a.budget_head, a.budget_code, b.name as budget_name , a.account_year
-				FROM sma_budget a, sma_budget_name b 
-				WHERE a.id = '$budget_id' and a.budget_name = b.id ";
-			
-		$res = mysqli_query($con, $sql);
-		echo mysqli_error($con);
-		$r2 = mysqli_fetch_array($res);
-		$budget_name 		= $r2['budget_name'];
-		$budget_head 		= $r2['budget_head'];
-		$budget_code 		= $r2['budget_code'];
-		$account_year 		= $r2['account_year'];
-													
-		$sql = " SELECT * FROM sma_budget_subgroup WHERE id = '$budget_head' ";
-		$res = mysqli_query($con, $sql);
-		echo mysqli_error($con);
-		$r2 = mysqli_fetch_array($res);
-		$budget_head 		= $r2['budget_head'];
-		
-		$sql 	= "SELECT * FROM sma_approval_details where 1 and vendor_selected = 'Y' and approval_hdr_id = '$app_id' ";
-		$i = 0 ;
-		$res = mysqli_query($con,$sql);
-		$row_affected = mysqli_affected_rows($con);
-		
-		if($row_affected = 0){
-			$message ="</tr>";
-			continue;
-		}
-		
-		$error  = mysqli_error($con);
-		if(!empty($error)){ echo "ERROR : " . $error; exit();}
-		while($rw = mysqli_fetch_array($res)){
-		
-			$supplier_name		= $rw['supplier_name'];
-			$quote_ref_no		= $rw['quote_ref_no'];
-			$vendor_selected	= $rw['vendor_selected'];
-			$values				= $rw['values'];
-
-			$sql = "SELECT * FROM `sma_party_mst` where id = '$supplier_name' ";
-			$dep 			= mysqli_query($con,$sql);
-			$deps 			= mysqli_fetch_array($dep);
-			$supplier_name  = $deps['party_name'];
-			
-			$vselected = '';
-			if($vendor_selected=='Y'){
-				$vselected = 'Selected';
+		// Draft By lookup
+		$draft_by_name = $draft_by;
+		if (!empty($draft_by)) {
+			$sql_u = "SELECT username FROM `sma_user` WHERE userid = '$draft_by' OR id = '$draft_by'";
+			$res_u = mysqli_query($con, $sql_u);
+			if ($res_u && $com = mysqli_fetch_array($res_u)) {
+				$draft_by_name = $com['username'] ?? $draft_by;
 			}
+		}
 
-			++$i;
-		
+		// Pending approver lookup
+		$pending_by = '';
+		for ($i = 1; $i <= 8; $i++) {
+			if (($row['approver_' . $i . '_status'] ?? '') == 'Submitted') {
+				$pending_by = $row['approver_' . $i] ?? '';
+				break;
+			}
 		}
-		
-			$message .= "<tr>
-					<td>".$comp_name."</td>
-					<td>".$ap_number ."</td>
-					<td>".$dated."</td>
-					<td style='width: 10%;text-align: left;'> " . $supplier_name . " </td>
-					<td>".$subject."</td>
-					<td style='width: 10%;text-align: right;'> ".$values." </td>
-					<td style='width: 10%;text-align: left;word-wrap:break-word;'> ".$draft_by." </td>
-					<td style='width: 10%;text-align: left;word-wrap:break-word;'> ".$pending_by." </td>
-					<td style='width: 10%;text-align: left;'> ".$status." </td>
-					</tr>";
-					
-	}
-	
-	$message .= "</tr></table>";
-	
-//echo $message;
-//exit();
-	
-    // get the HTML
-    ob_start();
-    //include(dirname(__FILE__).'../res/exemple07a.php');
-    //include(dirname(__FILE__).'../res/exemple07b.php');
-    //$content = ob_get_clean();
-	//$fl_name = 'poorder_'.$id;
-    if($prn=='excel'){
-		$fl_name = 'pending_noa'.'_'.date('Y-m-d').'.xls';
-		header("Content-type: application/xls");
-		header("Content-Type:'application/force-download'");
-		Header("Content-Disposition: attachment; filename=$fl_name");
-	
-		print $message;
+		$pending_by_name = '';
+		if (!empty($pending_by)) {
+			$sql_p = "SELECT username FROM `sma_user` WHERE id = '$pending_by' OR userid = '$pending_by'";
+			$res_p = mysqli_query($con, $sql_p);
+			if ($res_p && $r2 = mysqli_fetch_array($res_p)) {
+				$pending_by_name = $r2['username'] ?? '';
+			}
+		}
+
+		// Company lookup
+		$comp_name = '';
+		$c_id = !empty($company_id_row) ? $company_id_row : $project_id_row;
+		if (!empty($c_id)) {
+			$sql_c = "SELECT comp_code, comp_name FROM `company` WHERE comp_id = '$c_id'";
+			$res_c = mysqli_query($con, $sql_c);
+			if ($res_c && $com = mysqli_fetch_array($res_c)) {
+				$comp_name = !empty($com['comp_code']) ? $com['comp_code'] : ($com['comp_name'] ?? '');
+			}
+		}
+		if (empty($comp_name) && !empty($against_indent_no)) {
+			$sql_c2 = "SELECT b.comp_code, b.comp_name FROM `sma_purchase_req` a LEFT JOIN `company` b ON a.company_id = b.comp_id WHERE a.id = '$against_indent_no'";
+			$res_c2 = mysqli_query($con, $sql_c2);
+			if ($res_c2 && $com2 = mysqli_fetch_array($res_c2)) {
+				$comp_name = !empty($com2['comp_code']) ? $com2['comp_code'] : ($com2['comp_name'] ?? '');
+			}
+		}
+
+		// Department lookup
+		$department_name = '';
+		if (!empty($department_id_row)) {
+			$sql_d = "SELECT name FROM `sma_department` WHERE id = '$department_id_row'";
+			$res_d = mysqli_query($con, $sql_d);
+			if ($res_d && $deps = mysqli_fetch_array($res_d)) {
+				$department_name = $deps['name'] ?? '';
+			}
+		}
+		if (empty($department_name) && !empty($against_indent_no)) {
+			$sql_d2 = "SELECT b.name FROM `sma_purchase_req` a LEFT JOIN `sma_department` b ON a.department_id = b.id WHERE a.id = '$against_indent_no'";
+			$res_d2 = mysqli_query($con, $sql_d2);
+			if ($res_d2 && $deps2 = mysqli_fetch_array($res_d2)) {
+				$department_name = $deps2['name'] ?? '';
+			}
+		}
+
+		// Location lookup
+		$loc_name = '';
+		$loc_id = !empty($location_id_row) ? $location_id_row : $project_id_row;
+		if (!empty($loc_id)) {
+			$sql_l = "SELECT loc_name FROM `sma_location` WHERE id = '$loc_id'";
+			$res_l = mysqli_query($con, $sql_l);
+			if ($res_l && $lc = mysqli_fetch_array($res_l)) {
+				$loc_name = $lc['loc_name'] ?? '';
+			}
+		}
+		if (empty($loc_name) && !empty($against_indent_no)) {
+			$sql_l2 = "SELECT b.loc_name FROM `sma_purchase_req` a LEFT JOIN `sma_location` b ON a.project_id = b.id WHERE a.id = '$against_indent_no'";
+			$res_l2 = mysqli_query($con, $sql_l2);
+			if ($res_l2 && $lc2 = mysqli_fetch_array($res_l2)) {
+				$loc_name = $lc2['loc_name'] ?? '';
+			}
+		}
+
+		// Budget Group & Budget Sub Group & Budget Code (Comprehensive Multi-Tier Fallback)
+		$budget_name = '';
+		$budget_head = '';
+		$budget_code = '';
+
+		// 1. From sma_approval_items
+		if (!empty($app_id)) {
+			$sql_ai = "SELECT budget_id, product_id FROM `sma_approval_items` WHERE approval_hdr_id = '$app_id' AND (budget_id > 0 OR product_id > 0) ORDER BY (budget_id > 0) DESC LIMIT 1";
+			$res_ai = mysqli_query($con, $sql_ai);
+			if ($res_ai && $r_ai = mysqli_fetch_array($res_ai)) {
+				$b_id    = $r_ai['budget_id'] ?? 0;
+				$prod_id = $r_ai['product_id'] ?? 0;
+
+				if (!empty($b_id)) {
+					$sql_b = "SELECT a.budget_head, a.budget_code, b.name AS budget_name 
+					          FROM `sma_budget` a 
+					          LEFT JOIN `sma_budget_name` b ON a.budget_name = b.id 
+					          WHERE a.id = '$b_id'";
+					$res_b = mysqli_query($con, $sql_b);
+					if ($res_b && $r_b = mysqli_fetch_array($res_b)) {
+						$budget_name = $r_b['budget_name'] ?? '';
+						$b_sub_id    = $r_b['budget_head'] ?? '';
+						$budget_code = $r_b['budget_code'] ?? '';
+
+						if (!empty($b_sub_id)) {
+							$sql_sub = "SELECT budget_head, budget_name FROM `sma_budget_subgroup` WHERE id = '$b_sub_id'";
+							$res_sub = mysqli_query($con, $sql_sub);
+							if ($res_sub && $r_sub = mysqli_fetch_array($res_sub)) {
+								$budget_head = $r_sub['budget_head'] ?? '';
+								if (empty($budget_name) && !empty($r_sub['budget_name'])) {
+									$sub_bn_id = $r_sub['budget_name'];
+									$sql_bn = "SELECT name FROM `sma_budget_name` WHERE id = '$sub_bn_id'";
+									$res_bn = mysqli_query($con, $sql_bn);
+									if ($res_bn && $r_bn = mysqli_fetch_array($res_bn)) {
+										$budget_name = $r_bn['name'] ?? '';
+									}
+								}
+							}
+						}
+					}
+				}
+
+				if ((empty($budget_name) || empty($budget_head)) && !empty($prod_id)) {
+					$sql_p = "SELECT budget_head, budget_name FROM `sma_product` WHERE id = '$prod_id'";
+					$res_p = mysqli_query($con, $sql_p);
+					if ($res_p && $r_p = mysqli_fetch_array($res_p)) {
+						$p_head = $r_p['budget_head'] ?? '';
+						$p_name = $r_p['budget_name'] ?? '';
+
+						if (empty($budget_head) && !empty($p_head)) {
+							$sql_sub = "SELECT budget_head, budget_name FROM `sma_budget_subgroup` WHERE id = '$p_head'";
+							$res_sub = mysqli_query($con, $sql_sub);
+							if ($res_sub && $r_sub = mysqli_fetch_array($res_sub)) {
+								$budget_head = $r_sub['budget_head'] ?? '';
+								if (empty($p_name) && !empty($r_sub['budget_name'])) {
+									$p_name = $r_sub['budget_name'];
+								}
+							}
+						}
+						if (empty($budget_name) && !empty($p_name)) {
+							$sql_bn = "SELECT name FROM `sma_budget_name` WHERE id = '$p_name'";
+							$res_bn = mysqli_query($con, $sql_bn);
+							if ($res_bn && $r_bn = mysqli_fetch_array($res_bn)) {
+								$budget_name = $r_bn['name'] ?? '';
+							}
+						}
+					}
+				}
+			}
+		}
+
+		// 2. From Linked Purchase Requisition (against_indent_no)
+		if ((empty($budget_name) || empty($budget_head)) && !empty($against_indent_no)) {
+			$sql_pri = "SELECT p.budget_head, p.budget_name 
+			            FROM `sma_purchase_req_items` pri 
+			            LEFT JOIN `sma_product` p ON pri.product_id = p.id 
+			            WHERE pri.purchase_req_id = '$against_indent_no' AND (p.budget_head > 0 OR p.budget_name > 0) 
+			            LIMIT 1";
+			$res_pri = mysqli_query($con, $sql_pri);
+			if ($res_pri && $r_pri = mysqli_fetch_array($res_pri)) {
+				$p_head = $r_pri['budget_head'] ?? '';
+				$p_name = $r_pri['budget_name'] ?? '';
+
+				if (empty($budget_head) && !empty($p_head)) {
+					$sql_sub = "SELECT budget_head, budget_name FROM `sma_budget_subgroup` WHERE id = '$p_head'";
+					$res_sub = mysqli_query($con, $sql_sub);
+					if ($res_sub && $r_sub = mysqli_fetch_array($res_sub)) {
+						$budget_head = $r_sub['budget_head'] ?? '';
+						if (empty($p_name) && !empty($r_sub['budget_name'])) {
+							$p_name = $r_sub['budget_name'];
+						}
+					}
+				}
+				if (empty($budget_name) && !empty($p_name)) {
+					$sql_bn = "SELECT name FROM `sma_budget_name` WHERE id = '$p_name'";
+					$res_bn = mysqli_query($con, $sql_bn);
+					if ($res_bn && $r_bn = mysqli_fetch_array($res_bn)) {
+						$budget_name = $r_bn['name'] ?? '';
+					}
+				}
+			}
+		}
+
+		// 3. From sma_approval_memo.budget_head
+		if ((empty($budget_name) || empty($budget_head)) && !empty($memo_budget_head)) {
+			$sql_sub = "SELECT budget_head, budget_name FROM `sma_budget_subgroup` WHERE id = '$memo_budget_head'";
+			$res_sub = mysqli_query($con, $sql_sub);
+			if ($res_sub && $r_sub = mysqli_fetch_array($res_sub)) {
+				if (empty($budget_head)) {
+					$budget_head = $r_sub['budget_head'] ?? '';
+				}
+				if (empty($budget_name) && !empty($r_sub['budget_name'])) {
+					$sub_bn_id = $r_sub['budget_name'];
+					$sql_bn = "SELECT name FROM `sma_budget_name` WHERE id = '$sub_bn_id'";
+					$res_bn = mysqli_query($con, $sql_bn);
+					if ($res_bn && $r_bn = mysqli_fetch_array($res_bn)) {
+						$budget_name = $r_bn['name'] ?? '';
+					}
+				}
+			}
+		}
+
+		// Supplier Name & Quoted Amount lookup
+		$supplier_name = '';
+		$quoted_amount = 0;
+		if (!empty($app_id)) {
+			$sql_ad = "SELECT d.supplier_name, d.values, d.vendor_selected, p.party_name 
+			           FROM `sma_approval_details` d 
+			           LEFT JOIN `sma_party_mst` p ON d.supplier_name = p.id 
+			           WHERE d.approval_hdr_id = '$app_id' AND d.vendor_selected = 'Y'";
+			$res_ad = mysqli_query($con, $sql_ad);
+			$p_names = [];
+			while ($r_ad = mysqli_fetch_array($res_ad)) {
+				if (!empty($r_ad['party_name'])) {
+					$p_names[] = $r_ad['party_name'];
+				}
+				$quoted_amount += floatval($r_ad['values'] ?? 0);
+			}
+			if (!empty($p_names)) {
+				$supplier_name = implode(', ', $p_names);
+			} else {
+				$sql_ad2 = "SELECT d.supplier_name, d.values, p.party_name 
+				            FROM `sma_approval_details` d 
+				            LEFT JOIN `sma_party_mst` p ON d.supplier_name = p.id 
+				            WHERE d.approval_hdr_id = '$app_id' 
+				            LIMIT 1";
+				$res_ad2 = mysqli_query($con, $sql_ad2);
+				if ($res_ad2 && $r_ad2 = mysqli_fetch_array($res_ad2)) {
+					$supplier_name = !empty($r_ad2['party_name']) ? $r_ad2['party_name'] : ($r_ad2['supplier_name'] ?? '');
+					$quoted_amount = floatval($r_ad2['values'] ?? 0);
+				}
+			}
+		}
+		if (empty($quoted_amount) && !empty($app_id)) {
+			$sql_ai = "SELECT quantity, unit_rate, gst FROM `sma_approval_items` WHERE approval_hdr_id = '$app_id'";
+			$res_ai = mysqli_query($con, $sql_ai);
+			while ($r_ai = mysqli_fetch_array($res_ai)) {
+				$qty  = floatval($r_ai['quantity'] ?? 0);
+				$rate = floatval($r_ai['unit_rate'] ?? 0);
+				$gst  = floatval($r_ai['gst'] ?? 0);
+				$quoted_amount += round(($qty * $rate) + ((($qty * $rate) * $gst) / 100), 2);
+			}
+		}
+		if (empty($quoted_amount) && !empty($cost)) {
+			$quoted_amount = floatval($cost);
+		}
+
+		$excel_rows[] = [
+			$ln,
+			$comp_name,
+			$department_name,
+			$loc_name,
+			$ap_number,
+			$dated,
+			$budget_name,
+			$budget_head,
+			$budget_code,
+			$supplier_name,
+			$subject,
+			$quoted_amount,
+			$draft_by_name,
+			$pending_by_name,
+			$status
+		];
 	}
 
-	
-    // convert to PDF
-	if($prn=='pdf'){
-	//$baseurl
-		$dirname = 'C:\xampp\htdocs\hc_template';
-		//require_once(dirname(__FILE__).'/html2pdf/html2pdf.class.php');
-		require_once($dirname.'/html2pdf/html2pdf.class.php');
-		try
-		{
-			$fl_name = 'pending_noa.pdf';
-			$html2pdf = new HTML2PDF('P', 'A4', 'fr');
-			$html2pdf->pdf->SetDisplayMode('fullpage');
-	//      $html2pdf->pdf->SetProtection(array('print'), 'spipu');
-		   // $html2pdf->writeHTML($content, isset($_GET['vuehtml']));
-			$html2pdf->writeHTML($message);
-			$html2pdf->Output($fl_name);
-			
-		}
-		catch(HTML2PDF_exception $e) {
-			echo $e;
-			exit;
-		}
+	if ($prn == 'excel') {
+		$fl_name = 'pending_noa_' . date('Y-m-d') . '.xlsx';
+		\Shuchkin\SimpleXLSXGen::fromArray($excel_rows)->downloadAs($fl_name);
+		exit();
 	}
 }
+?>

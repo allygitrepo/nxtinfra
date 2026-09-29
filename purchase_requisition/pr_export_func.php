@@ -1,203 +1,236 @@
 <?php
-if($_GET['sub'] == 'pdf'){
-
+if(isset($_GET['sub']) && $_GET['sub'] == 'pdf'){
+	session_start();
 	include "../dbcon.php";
 	include "../baseurl.php";
+	require_once "../excel_libs/SimpleXLSXGen.php";
 
-//echo dirname(__FILE__);
-//exit();
+	$prn = "excel";
+	$from_date_raw = $_POST['from_date'] ?? $_SESSION['start_date'] ?? '';
+	$to_date_raw   = $_POST['to_date'] ?? $_SESSION['end_date'] ?? '';
+	$department_id = $_POST['department'] ?? '';
+	$company_id    = $_POST['company_id'] ?? '';
 
-/**
- * HTML2PDF Librairy - example
- *
- * HTML => PDF convertor
- * distributed under the LGPL License
- *
- * @author      Laurent MINGUET <webmaster@html2pdf.fr>
- *
- * isset($_GET['vuehtml']) is not mandatory
- * it allow to display the result in the HTML format
- */
-	//$message="<table><tr><td>Table</td></tr></table>";
+	$from_date = (!empty($from_date_raw) && $from_date_raw != '1970-01-01' && $from_date_raw != '0000-00-00') ? date('Y-m-d', strtotime($from_date_raw)) : '';
+	$to_date   = (!empty($to_date_raw) && $to_date_raw != '1970-01-01' && $to_date_raw != '0000-00-00') ? date('Y-m-d', strtotime($to_date_raw)) : '';
 
-	$prn		= "excel";
-	$from_date	= date('Y-m-d', strtotime($_POST['from_date']));
-	$to_date	= date('Y-m-d', strtotime($_POST['to_date']));
-	$department = $_POST['department'];	
-	$company_id = $_POST['company_id'];	
-		
-	$message ='';
-	
-	$message .= "<table border='1' cellspacing='0' style='width: 100%; text-align: center; font-size: 12pt;'>
-			<tr><th style='width: 100%;' colspan='11'> Purchase Requisition Register from ". $_POST['from_date'] . " TO ". $_POST['to_date'] . "</th></tr></table>";		
-	
-		$message .= "<table border='1' cellspacing='0' style='width: 100%; border: solid 1px black; text-align: center; font-size: 12pt;'>
-				<tr><td style='width: 6%;'> Company </td>
-					<td style='width: 6%;'> Location </td>
-					<td style='width: 6%;'> Department </td>
+	$from_date_dmy = (!empty($from_date_raw) && $from_date_raw != '1970-01-01' && $from_date_raw != '0000-00-00') ? date('d-m-Y', strtotime($from_date_raw)) : '';
+	$to_date_dmy   = (!empty($to_date_raw) && $to_date_raw != '1970-01-01' && $to_date_raw != '0000-00-00') ? date('d-m-Y', strtotime($to_date_raw)) : '';
 
-					<td style='width: 06%;text-align: left;'> PR.Number</td>
-					<td style='width: 10%;text-align: left;'> Dated </td>
-					<td style='width: 10%;text-align: left;'> Req.Dated </td>
-					
-					<td style='width: 08%;'>Delivery Loc.</td>
-					<td style='width: 08%;text-align: right;'> Reason</td>
-					
-					<td style='width: 5%;text-align: left;'> Sr.No.</td>
-					<td style='width: 25%;'> Description </td>
-					<td style='width: 6%;'> Unit </td>
-					<td style='width: 08%;text-align: right;'> Qty. </td>
-				</tr></table>";
-
-		$message .= "<table border='1' cellspacing='0' style='width: 100%; border: solid 1px black; text-align: left; font-size: 10pt;'>";
-				
-	$id				= $_GET['id'];
-	
-	$tableName	= "sma_purchase_req";
-	
-	$sql 		= " SELECT * FROM $tableName where date >= '$from_date' and date <= '$to_date' ";
-	
-	if (!empty($company_id)){
-		$sql  .= " and company_id = '$company_id' ";
+	if (!empty($from_date_dmy) && !empty($to_date_dmy)) {
+		$title_banner = 'Purchase Requisition Register from ' . $from_date_dmy . ' TO ' . $to_date_dmy;
+	} else if (!empty($from_date_dmy)) {
+		$title_banner = 'Purchase Requisition Register from ' . $from_date_dmy;
+	} else if (!empty($to_date_dmy)) {
+		$title_banner = 'Purchase Requisition Register up to ' . $to_date_dmy;
+	} else {
+		$title_banner = 'Purchase Requisition Register';
 	}
-	
-	if (!empty($department)){
-		$sql  .= " and department_id = '$department' ";
+
+	$excel_rows = [];
+	$excel_rows[] = [$title_banner];
+	$excel_rows[] = [
+		'Sr.No.',
+		'Company',
+		'Location',
+		'Department',
+		'PR.Number',
+		'Dated',
+		'Req.Dated',
+		'Delivery Loc.',
+		'Reason / Subject',
+		'Item Sr.No.',
+		'Material / Description',
+		'Unit',
+		'Qty.',
+		'Budget Group',
+		'Budget Sub Group',
+		'Status',
+		'Pending With'
+	];
+
+	$sql = "SELECT * FROM sma_purchase_req WHERE del != 'Y'";
+	if (!empty($from_date) && !empty($to_date)) {
+		$sql .= " AND date >= '$from_date' AND date <= '$to_date'";
 	}
-	
-//	echo $sql;
-//	exit();
-	
-	$result = mysqli_query($con,$sql);
-    $error  = mysqli_error($con);
+	if (!empty($company_id)) {
+		$sql .= " AND company_id = '$company_id'";
+	}
+	if (!empty($department_id)) {
+		$sql .= " AND department_id = '$department_id'";
+	}
+	$sql .= " ORDER BY date DESC, id DESC";
+
+	$result = mysqli_query($con, $sql);
+	$error  = mysqli_error($con);
 	if(!empty($error)){ echo "ERROR : " . $error; exit();}
+
+	$ln = 0;
 	while($row = mysqli_fetch_array($result)){
-		$pur_id					= $row['id'];
-		$dated  				= date('d-m-Y', strtotime($row['date']));
-		$readate  				= date('d-m-Y', strtotime($row['reqDate']));
-		$company_id				= $row['company_id'];
-		$department				= $row['department_id'];
-		$delivery_location_id	= $row['delivery_location_id'];
+		$ln++;
+		$pur_id               = $row['id'] ?? '';
+		$pr_number            = $row['pr_number'] ?? '';
+		$dated_raw            = $row['date'] ?? '';
+		$reqdate_raw          = $row['reqDate'] ?? '';
+		$comp_id              = $row['company_id'] ?? '';
+		$dept_id              = $row['department_id'] ?? '';
+		$delivery_location_id = $row['delivery_location_id'] ?? '';
+		$project_id           = $row['project_id'] ?? '';
+		$reason               = $row['reason'] ?? '';
+		$status               = $row['status'] ?? '';
 
-		$location	 			= $row['project_id'];
-		$reason 				= $row['reason'];
-	
-		$sql 	= "SELECT * FROM `sma_location` where id = '$location'";
-		$res = mysqli_query($con,$sql);
-		$error  = mysqli_error($con);
-		if(!empty($error)){ echo "ERROR : " . $error; exit();}
-		$lc 	= mysqli_fetch_array($res);
-		$loc_name    = $lc['loc_name'];
-		
-		$sql = "SELECT * FROM `company` where comp_id = '$company_id' ";
-		$comresult 	= mysqli_query($con,$sql);
-		$com 		= mysqli_fetch_array($comresult);
-		$comp_name 		= $com['comp_name'];
-		
-		$sql = "SELECT * FROM `sma_department` where id = '$department' ";
-		$dep 	= mysqli_query($con,$sql);
-		$deps 		= mysqli_fetch_array($dep);
-		$department = $deps['name'];
-		
-		$message .= "<tr>
-					<td>".$comp_name."</td>
-					<td>".$loc_name."</td>
-					<td>".$department."</td>
-					<td>".$pur_id ."</td>
-					<td>".$dated."</td>
-					<td>".$reqdate."</td>
-					<td>".$delivery_location_id."</td>
-					<td>".$reason."</td>";
-				
+		$dated   = (!empty($dated_raw) && $dated_raw != '1970-01-01' && $dated_raw != '0000-00-00') ? date('d-m-Y', strtotime($dated_raw)) : '';
+		$reqdate = (!empty($reqdate_raw) && $reqdate_raw != '1970-01-01' && $reqdate_raw != '0000-00-00') ? date('d-m-Y', strtotime($reqdate_raw)) : '';
 
-		$sql 	= "SELECT * FROM sma_purchase_req_items where purchase_req_id = '$pur_id'";
-	
-		$i = 0 ;
-		$res = mysqli_query($con,$sql);
-		$row_affected = mysqli_affected_rows($con);
-		
-		if($row_affected = 0){
-			$message ="</tr>";
-			continue;
-		}
-		
-		$error  = mysqli_error($con);
-		if(!empty($error)){ echo "ERROR : " . $error; exit();}
-		while($rw = mysqli_fetch_array($res)){
-		
-			$quantity		= $rw['quantity'];
-			$unit			= $rw['unit'];
-			$description	= $rw['description'];
-			
-
-			++$i;
-		if($i > 1){	
-			$message .= "<tr><td colspan='08'>&nbsp;</td>
-						<td style='width: 6%;text-align: Center;'> ".$i." </td>
-						<td style='width: 25%;text-align: left;'> " . $description . " </td>
-						<td style='width: 6%;text-align: left;'> " . $unit . " </td>
-						<td style='width: 8%;text-align: right;'> ".$quantity." </td>
-					</tr>";
-			}
-			else {
-			$message .= "<td style='width: 6%;text-align: Center;'> ".$i." </td>
-						<td style='width: 25%;text-align: left;'> " . $description . " </td>
-						<td style='width: 6%;text-align: left;'> " . $unit . " </td>
-						<td style='width: 8%;text-align: right;'> ".$quantity." </td>
-				";
+		// Location lookup
+		$loc_name = '';
+		if (!empty($project_id)) {
+			$sql_l = "SELECT loc_name FROM `sma_location` WHERE id = '$project_id'";
+			$res_l = mysqli_query($con, $sql_l);
+			if ($res_l && $lc = mysqli_fetch_array($res_l)) {
+				$loc_name = $lc['loc_name'] ?? '';
 			}
 		}
-	}
-	
-	$message .= "</tr></table>";
-	
-    // get the HTML
-    ob_start();
-    //include(dirname(__FILE__).'../res/exemple07a.php');
-    //include(dirname(__FILE__).'../res/exemple07b.php');
-    //$content = ob_get_clean();
-	//$fl_name = 'poorder_'.$id;
-    if($prn=='excel'){
-		$fl_name = 'pur_requisition.xls';
-		//header("Content-type: application/xls");
-		//header("Content-Type:'application/force-download'");
-		//Header("Content-Disposition: attachment; filename=$fl_name");
-	
-		//print $message;
-		
-		$flname = 'pur_requisition.xls';
-		$fp = fopen($flname, 'w');
-		fwrite($fp,$message);
-		fclose($fp);
-		
-		echo '<a href="'.$flname.'" target="_blank"> Process Done...Click here for download file</a>';
-		echo '<br><br><br>';
-		$baseurl1 = $baseurl."dashboard.php";
-		echo "<a href='$baseurl1' > Go to Dashboard...Back</a>";
-		
+
+		// Company lookup
+		$comp_name = '';
+		if (!empty($comp_id)) {
+			$sql_c = "SELECT comp_code, comp_name FROM `company` WHERE comp_id = '$comp_id'";
+			$res_c = mysqli_query($con, $sql_c);
+			if ($res_c && $com = mysqli_fetch_array($res_c)) {
+				$comp_name = !empty($com['comp_code']) ? $com['comp_code'] : ($com['comp_name'] ?? '');
+			}
+		}
+
+		// Department lookup
+		$dept_name = '';
+		if (!empty($dept_id)) {
+			$sql_d = "SELECT name FROM `sma_department` WHERE id = '$dept_id'";
+			$res_d = mysqli_query($con, $sql_d);
+			if ($res_d && $deps = mysqli_fetch_array($res_d)) {
+				$dept_name = $deps['name'] ?? '';
+			}
+		}
+
+		// Pending Approver
+		$pending_by = '';
+		for ($i = 1; $i <= 8; $i++) {
+			if (($row['approver_' . $i . '_status'] ?? '') == 'Submitted') {
+				$pending_by = $row['approver_' . $i] ?? '';
+				break;
+			}
+		}
+		$pending_by_name = '';
+		if (!empty($pending_by)) {
+			$sql_p = "SELECT username FROM `sma_user` WHERE id = '$pending_by' OR userid = '$pending_by'";
+			$res_p = mysqli_query($con, $sql_p);
+			if ($res_p && $r_p = mysqli_fetch_array($res_p)) {
+				$pending_by_name = 'To ' . ($r_p['username'] ?? '');
+			}
+		}
+
+		// Line items
+		$sql_items = "SELECT * FROM `sma_purchase_req_items` WHERE purchase_req_id = '$pur_id'";
+		$res_items = mysqli_query($con, $sql_items);
+		$has_items = false;
+		$item_idx = 0;
+
+		if ($res_items && mysqli_num_rows($res_items) > 0) {
+			while($rw = mysqli_fetch_array($res_items)) {
+				$has_items = true;
+				$item_idx++;
+				$product_id  = $rw['product_id'] ?? '';
+				$description = $rw['description'] ?? '';
+				$qty         = (float)($rw['quantity'] ?? 0);
+				$unit        = $rw['unit'] ?? '';
+
+				$budget_name = '';
+				$budget_head = '';
+
+				if (!empty($product_id)) {
+					$sql_pr = "SELECT name, uom, budget_head, budget_name FROM `sma_product` WHERE id = '$product_id'";
+					$res_pr = mysqli_query($con, $sql_pr);
+					if ($res_pr && $r_pr = mysqli_fetch_array($res_pr)) {
+						if (!empty($r_pr['name'])) {
+							$description = $r_pr['name'] . (!empty($description) ? ' - ' . $description : '');
+						}
+						if (empty($unit)) {
+							$unit = $r_pr['uom'] ?? '';
+						}
+
+						$b_head_id = $r_pr['budget_head'] ?? '';
+						$b_name_id = $r_pr['budget_name'] ?? '';
+
+						if (!empty($b_head_id)) {
+							$sql_sub = "SELECT budget_head, budget_name FROM `sma_budget_subgroup` WHERE id = '$b_head_id'";
+							$res_sub = mysqli_query($con, $sql_sub);
+							if ($res_sub && $r_sub = mysqli_fetch_array($res_sub)) {
+								$budget_head = $r_sub['budget_head'] ?? '';
+								if (empty($b_name_id) && !empty($r_sub['budget_name'])) {
+									$b_name_id = $r_sub['budget_name'];
+								}
+							}
+						}
+
+						if (!empty($b_name_id)) {
+							$sql_bn = "SELECT name FROM `sma_budget_name` WHERE id = '$b_name_id'";
+							$res_bn = mysqli_query($con, $sql_bn);
+							if ($res_bn && $r_bn = mysqli_fetch_array($res_bn)) {
+								$budget_name = $r_bn['name'] ?? '';
+							}
+						}
+					}
+				}
+
+				$excel_rows[] = [
+					$ln,
+					$comp_name,
+					$loc_name,
+					$dept_name,
+					$pr_number,
+					$dated,
+					$reqdate,
+					$delivery_location_id,
+					$reason,
+					$item_idx,
+					$description,
+					$unit,
+					$qty,
+					$budget_name,
+					$budget_head,
+					$status,
+					$pending_by_name
+				];
+			}
+		}
+
+		if (!$has_items) {
+			$excel_rows[] = [
+				$ln,
+				$comp_name,
+				$loc_name,
+				$dept_name,
+				$pr_number,
+				$dated,
+				$reqdate,
+				$delivery_location_id,
+				$reason,
+				'',
+				'',
+				'',
+				'',
+				'',
+				'',
+				$status,
+				$pending_by_name
+			];
+		}
 	}
 
-	
-    // convert to PDF
-	if($prn=='pdf'){
-	//$baseurl
-		$dirname = 'C:\xampp\htdocs\hc_template';
-		//require_once(dirname(__FILE__).'/html2pdf/html2pdf.class.php');
-		require_once($dirname.'/html2pdf/html2pdf.class.php');
-		try
-		{
-			$fl_name = 'pur_requisition.pdf';
-			$html2pdf = new HTML2PDF('P', 'A4', 'fr');
-			$html2pdf->pdf->SetDisplayMode('fullpage');
-	//      $html2pdf->pdf->SetProtection(array('print'), 'spipu');
-		   // $html2pdf->writeHTML($content, isset($_GET['vuehtml']));
-			$html2pdf->writeHTML($message);
-			$html2pdf->Output($fl_name);
-			
-		}
-		catch(HTML2PDF_exception $e) {
-			echo $e;
-			exit;
-		}
+	if ($prn == 'excel') {
+		$fl_name = 'Purchase_Requisition_Item_Register_' . date('Y-m-d') . '.xlsx';
+		\Shuchkin\SimpleXLSXGen::fromArray($excel_rows)->downloadAs($fl_name);
+		exit();
 	}
 }
+?>
