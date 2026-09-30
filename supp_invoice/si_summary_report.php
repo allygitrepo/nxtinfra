@@ -1,307 +1,386 @@
 <?php
 session_start();
 
-if($_GET['sub'] == 'pdf'){
-
+if(isset($_GET['sub']) && $_GET['sub'] == 'pdf'){
 	include "../dbcon.php";
 	include "../baseurl.php";
+	require_once "../excel_libs/SimpleXLSXGen.php";
 
-//echo dirname(__FILE__);
-//exit();
+	$prn = "excel";
+	$from_date_raw = $_POST['from_date'] ?? $_SESSION['start_date'] ?? '';
+	$to_date_raw   = $_POST['to_date'] ?? $_SESSION['end_date'] ?? '';
+	$supplier_id   = $_POST['supplier_id'] ?? '';
+	$company_id    = $_POST['company_id'] ?? '';
 
-/**
- * HTML2PDF Librairy - example
- *
- * HTML => PDF convertor
- * distributed under the LGPL License
- *
- * @author      Laurent MINGUET <webmaster@html2pdf.fr>
- *
- * isset($_GET['vuehtml']) is not mandatory
- * it allow to display the result in the HTML format
- */
-	//$message="<table><tr><td>Table</td></tr></table>";
+	$from_date = (!empty($from_date_raw) && $from_date_raw != '1970-01-01' && $from_date_raw != '0000-00-00') ? date('Y-m-d', strtotime($from_date_raw)) : '';
+	$to_date   = (!empty($to_date_raw) && $to_date_raw != '1970-01-01' && $to_date_raw != '0000-00-00') ? date('Y-m-d', strtotime($to_date_raw)) : '';
 
-	$prn		= "excel";
-	$from_date	= ' From ' . date('Y-m-d', strtotime($_POST['from_date']));
-	$to_date	= ' To ' . date('Y-m-d', strtotime($_POST['to_date']));
-	$supplier_id = $_POST['supplier_id'];	
-	
-	$hdr = '';
-	
-	$message ='';
-	
-	$message .= "<table border='1' cellspacing='0' style='width: 100%; text-align: center; font-size: 12pt;'>
-			<tr><th style='width: 100%;' colspan='11'> Supplier Invoice Register  " . $hdr . "</th></tr></table>";		
+	$from_date_dmy = (!empty($from_date_raw) && $from_date_raw != '1970-01-01' && $from_date_raw != '0000-00-00') ? date('d-m-Y', strtotime($from_date_raw)) : '';
+	$to_date_dmy   = (!empty($to_date_raw) && $to_date_raw != '1970-01-01' && $to_date_raw != '0000-00-00') ? date('d-m-Y', strtotime($to_date_raw)) : '';
 
-				
-		$message .= "<table border='1' cellspacing='0' style='width: 100%; border: solid 1px black; text-align: center; font-size: 12pt;'>
-				<tr><td style='width: 6%;'> SI.No. </td>
-					<td style='width: 10%;text-align: left;'> Supplier Name</td>
-					<td style='width: 10%;text-align: left;'> PAN</td>
-					<td style='width: 10%;text-align: left;'> GST</td>
-					<td style='width: 10%;text-align: left;'> MSME</td>
-					
-					<td style='width: 6%;'> Supplier Inv.No. </td>
-					<td style='width: 06%;text-align: left;'> Invoice Date</td>
-					<td style='width: 6%;'> PO.Ref.No. </td>
-					<td style='width: 10%;text-align: left;'> credit Days </td>
-					<td style='width: 06%;text-align: left;'> Due Date</td>
-					
-					<td style='width: 25%;'> GRN No. </td>
-					<td style='width: 25%;'> Material Name </td>
-					<td style='width: 25%;'> Description </td>
-					<td style='width: 25%;'> Account Year </td>
-					<td style='width: 25%;'> Company </td>
-					<td style='width: 25%;'> Budget Name </td>
-					<td style='width: 25%;'> Budget Head </td>
-					
-					<td style='width: 08%;text-align: right;'> Total. </td>
-					<td style='width: 08%;text-align: left;'> Approved By </td>
-					<th>Workflow Type</th>
-				</tr></table>";
-
-		$message .= "<table border='1' cellspacing='0' style='width: 100%; border: solid 1px black; text-align: left; font-size: 10pt;'>";
-				
-		$comid = $_SESSION['comid'];	
-		$id				= $_GET['id'];
-	
-	$tableName	= "sma_supplier_invoice";
-	
-	$sql 		= " SELECT * FROM $tableName where invoice_date >= '$from_date' and invoice_date <= '$to_date' ";
-	
-	if (!empty($supplier_id)){
-		$sql  .= " and suplier_name = '$supplier_id' ";
+	if (!empty($from_date_dmy) && !empty($to_date_dmy)) {
+		$title_banner = 'Supplier Invoice Summary Register from ' . $from_date_dmy . ' TO ' . $to_date_dmy;
+	} else if (!empty($from_date_dmy)) {
+		$title_banner = 'Supplier Invoice Summary Register from ' . $from_date_dmy;
+	} else if (!empty($to_date_dmy)) {
+		$title_banner = 'Supplier Invoice Summary Register up to ' . $to_date_dmy;
+	} else {
+		$title_banner = 'Supplier Invoice Summary Register';
 	}
-	
-	$sql = $_SESSION['sqlex'];
-	
-//echo $sql. "<BR>";
-//exit();
-	
-	$result = mysqli_query($con,$sql);
-    $error  = mysqli_error($con);
+
+	$excel_rows = [];
+	$excel_rows[] = [$title_banner];
+	$excel_rows[] = [
+		'Sr.No.',
+		'SI.No.',
+		'Supplier Name',
+		'PAN',
+		'GST',
+		'MSME',
+		'Supplier Inv.No.',
+		'Invoice Date',
+		'PO.Ref.No.',
+		'Credit Days',
+		'Due Date',
+		'GRN No.',
+		'Material Name',
+		'Description',
+		'Account Year',
+		'Company',
+		'Budget Group',
+		'Budget Sub Group',
+		'Budget Code',
+		'Unit',
+		'Qty.',
+		'Rate',
+		'GST%',
+		'Total',
+		'Approved By',
+		'Workflow Type',
+		'Status'
+	];
+
+	if (!empty($_SESSION['sqlex'])) {
+		$sql = $_SESSION['sqlex'];
+	} else {
+		$comid = $_SESSION['comid'] ?? '';
+		$sql = "SELECT * FROM sma_supplier_invoice WHERE del != 'Y'";
+		if (!empty($from_date) && !empty($to_date)) {
+			$sql .= " AND invoice_date >= '$from_date' AND invoice_date <= '$to_date'";
+		}
+		if (!empty($supplier_id)) {
+			$sql .= " AND suplier_name = '$supplier_id'";
+		}
+	}
+
+	// Remove pagination limit if present
+	$sql = preg_replace('/\s+LIMIT\s+\d+(\s*,\s*\d+)?/i', '', $sql);
+	if (stripos($sql, 'order by') === false) {
+		$sql .= ' ORDER BY invoice_date DESC, id DESC';
+	}
+
+	$result = mysqli_query($con, $sql);
+	$error  = mysqli_error($con);
 	if(!empty($error)){ echo "ERROR : " . $error; exit();}
+
+	$ln = 0;
 	while($row = mysqli_fetch_array($result)){
-		
-		$del					= $row['del'];
-		$status					= $row['status'];
-		
-		if($del=='Y' ){
+		$del    = $row['del'] ?? '';
+		$status = $row['status'] ?? '';
+		if ($del == 'Y') {
 			continue;
 		}
-		if($status	!= 'Completed'){
-			continue;
-		}
-		
-		$si_id					= $row['id'];
-		$invoice_date  			= date('d-m-Y', strtotime($row['invoice_date']));
-		$due_date  				= date('d-m-Y', strtotime($row['due_date']));
-		
-		if($due_date=='01-01-1970'){
-			$due_date ='';	
-		}
-		
-		$supplier_id			= $row['suplier_name'];
-		$supplier_invoice_no	= $row['supplier_invoice_no'];
-		
-		$credit_days	 		= $row['credit_days'];
-		$trans_type	 			= $row['trans_type'];
-		
-		if($credit_days==0){
-			$credit_days ='';	
-		}	
-		$sql = "SELECT * FROM `sma_workflow_type` where id = '$trans_type' ";
-		$comresult 	= mysqli_query($con,$sql);
-		$com 		= mysqli_fetch_array($comresult);
-		$workflow_type 		= $com['workflow_type'];
-		
-		$sql = "SELECT * FROM `sma_party_mst` where id = '$supplier_id' ";
-		$comresult 	= mysqli_query($con,$sql);
-		$com 		= mysqli_fetch_array($comresult);
-		$supplier_name 		= $com['party_name'];
-		$party_pan_number 		= $com['party_pan_number'];
-		$party_gst_number  		= $com['party_gst_number'];
-		$party_msme_number 		= $com['party_msme_number'];
-		
-		$our_po_ref_no = $row['our_po_ref_no'];
-		$sql="SELECT * from sma_purchase_order where id = '$our_po_ref_no' ";
-		$q2 = mysqli_query($con, $sql);
-		$r2 = mysqli_fetch_array($q2);
-		$our_po_ref_no = $r2['po_number'];
-		
-		$sql = "SELECT * FROM `workflow_history` where doc_type = 'SI' and doc_id = '$si_id' and status in ('Approved', 'Submitted') order by id desc ";
-		$comresult 	= mysqli_query($con,$sql);
-		$com 		= mysqli_fetch_array($comresult);
-		$create_by 		= $com['create_by'];
-		
-		$sql = "SELECT * FROM `sma_user` where id = '$create_by' ";
-		$comresult 	= mysqli_query($con,$sql);
-		$com 		= mysqli_fetch_array($comresult);
-		$approver_name 		= $com['username'];
-		
-		$transport_lr_no = $row['transport_lr_no'];
-		$transport_name  = $row['transporter_name'];
-		
 
-		$sql 	= "SELECT * FROM sma_supplier_invoice_details where qty > 0 and si_hdr_id = '$si_id'";
-		if($user != 'Admin'){
-			$sql .= " and company_id in ( $comid ) ";
+		$si_id               = $row['id'] ?? '';
+		$invoice_date_raw    = $row['invoice_date'] ?? '';
+		$due_date_raw        = $row['due_date'] ?? '';
+		$supplier_id_row     = $row['suplier_name'] ?? '';
+		$supplier_invoice_no = $row['supplier_invoice_no'] ?? '';
+		$credit_days         = $row['credit_days'] ?? '';
+		$trans_type          = $row['trans_type'] ?? '';
+		$our_po_ref_no       = $row['our_po_ref_no'] ?? '';
+
+		$invoice_date = (!empty($invoice_date_raw) && $invoice_date_raw != '1970-01-01' && $invoice_date_raw != '0000-00-00') ? date('d-m-Y', strtotime($invoice_date_raw)) : '';
+		$due_date     = (!empty($due_date_raw) && $due_date_raw != '1970-01-01' && $due_date_raw != '0000-00-00') ? date('d-m-Y', strtotime($due_date_raw)) : '';
+		if ($credit_days == '0') {
+			$credit_days = '';
 		}
-		
-		$i = 0 ;
-		$res = mysqli_query($con,$sql);
-		$row_affected = mysqli_affected_rows($con);
-		
-		if($row_affected = 0){
-			//$message ="</tr>";
-			continue;
-		}
-		
-		$error  = mysqli_error($con);
-		if(!empty($error)){ echo "ERROR : " . $error; exit();}
-		while($rw = mysqli_fetch_array($res)){
-		
-			$grn_no			= $rw['grn_no'];
-			$qty			= $rw['qty'];
-			
-			if($qty==0){
-				continue;
+
+		// Workflow Type lookup
+		$workflow_type = '';
+		if (!empty($trans_type)) {
+			$sql_wf = "SELECT workflow_type FROM `sma_workflow_type` WHERE id = '$trans_type'";
+			$res_wf = mysqli_query($con, $sql_wf);
+			if ($res_wf && $r_wf = mysqli_fetch_array($res_wf)) {
+				$workflow_type = $r_wf['workflow_type'] ?? '';
 			}
-			
-			$unit			= $rw['unit'];
-			$description	= $rw['description'];
-			
-			$account_year	= $rw['account_year'];
-			if($account_year == '1'){$account_year = '2017-2018'; }
-			else if($account_year == '2'){$account_year = '2018-2019'; }
-			else if($account_year == '3'){$account_year = '2019-2020'; }
-			else if($account_year == '4'){$account_year = '2020-2021'; }
-			else if($account_year == '5'){$account_year = '2021-2022'; }
-			else if($account_year == '6'){$account_year = '2022-2023'; }
-			else if($account_year == '7'){$account_year = '2023-2024'; }
-			else if($account_year == '8'){$account_year = '2024-2025'; }
-			
-			$company_id		= $rw['company_id'];
-			$sql="SELECT * FROM `company` where comp_id = '$company_id' ";
-			$comresult 	= mysqli_query($con,$sql);
-			$com 				= mysqli_fetch_array($comresult);
-			$comp_name 			= $com['comp_name'];
-				
-			$budget_id	= $rw['budget_id'];
-			$sql = "SELECT * FROM `sma_budget`  where id = '$budget_id' ";
-			$comresult 	= mysqli_query($con,$sql);
-			$com 		= mysqli_fetch_array($comresult);
-			$budget_name 		= $com['budget_name'];
-			$budget_head		= $com['budget_head'];	
-			$account_year		= $com['account_year'];	
-			
-			$sql = "SELECT * FROM `sma_budget_name`  where id = '$budget_name' ";
-			$comresult 	= mysqli_query($con,$sql);
-			$com 		= mysqli_fetch_array($comresult);
-			$budget_name 		= $com['name'];
-			
-			$sql = "SELECT * FROM `sma_budget_subgroup`  where id = '$budget_head' ";
-			$comresult 	= mysqli_query($con,$sql);
-			$com 		= mysqli_fetch_array($comresult);
-			$budget_head 		= $com['budget_head'];
-			
-			$product_id = $rw['material_id'];
-			$sql="Select * from sma_product where id = '$product_id'";
-			$output = mysqli_query($con,$sql);
-			echo mysqli_error($con);
-			$r2 = mysqli_fetch_array($output);
+		}
 
-			$product_name = $r2['name'];
-			$unit		  = $r2['uom'];
-			$hsn_code	  = $r2['hsn_code'];
-			
-			$unit_rate		= round($rw['rate'],2);
-			$gst			= $rw['gst'];
-			
-			$tot_qty		= $qty;
-			$actual_amt     = $qty * $unit_rate;
-			$total_amt		= $total_amt + $actual_amt;
-			
-			$net_amt  		= round($actual_amt + ($actual_amt * $gst / 100),0);
-			
-			$total_net_amt	= $total_net_amt + $net_amt;
-		
-			
+		// Supplier lookup
+		$supplier_name     = '';
+		$party_pan_number  = '';
+		$party_gst_number  = '';
+		$party_msme_number = '';
+		if (!empty($supplier_id_row)) {
+			$sql_sup = "SELECT party_name, party_pan_number, party_gst_number, party_msme_number FROM `sma_party_mst` WHERE id = '$supplier_id_row'";
+			$res_sup = mysqli_query($con, $sql_sup);
+			if ($res_sup && $r_sup = mysqli_fetch_array($res_sup)) {
+				$supplier_name     = $r_sup['party_name'] ?? '';
+				$party_pan_number  = $r_sup['party_pan_number'] ?? '';
+				$party_gst_number  = $r_sup['party_gst_number'] ?? '';
+				$party_msme_number = $r_sup['party_msme_number'] ?? '';
+			}
 		}
-		
-			++$i;
-			//if($i > 1){	
-				$message .= "<tr>
-						<td>".$si_id."</td>
-						<td>".$supplier_name."</td>
-						<td>".$party_pan_number."</td>
-						<td>".$party_gst_number."</td>
-						<td>".$party_msme_number."</td>
-						<td>".$supplier_invoice_no."</td>
-						<td>".$invoice_date."</td>
-						<td>".$our_po_ref_no ."</td>
-						<td>".$credit_days."</td>
-						<td>".$due_date."</td>
-						
-						<td style='width: 25%;text-align: left;'> " . $grn_no . " </td>
-						<td style='width: 25%;text-align: left;'> " . $product_name . " </td>
-						<td style='width: 25%;text-align: left;'> " . $description . " </td>
-						<td style='width: 25%;text-align: left;'> " . $account_year . " </td>
-						<td style='width: 25%;text-align: left;'> " . $comp_name . " </td>
-						<td style='width: 25%;text-align: left;'> " . $budget_name . " </td>
-						<td style='width: 25%;text-align: left;'> " . $budget_head . " </td>
-						
-						<td style='width: 8%;text-align: right;'> ".$total_net_amt." </td>
-						<td style='width: 8%;text-align: left;'> ".$approver_name." </td>
-						<td style='width: 8%;text-align: left;'> ".$workflow_type." </td>
-					</tr>";
-					
-		$total_net_amt =0;
-		
-	}
-	
-	$message .= "</tr></table>";
-	
-//echo $message;
-//exit();
-	
-    // get the HTML
-    ob_start();
-    //include(dirname(__FILE__).'../res/exemple07a.php');
-    //include(dirname(__FILE__).'../res/exemple07b.php');
-    //$content = ob_get_clean();
-	//$fl_name = 'poorder_'.$id;
-    if($prn=='excel'){
-		$fl_name = 'supplier_invoice.xls';
-		header("Content-type: application/xls");
-		header("Content-Type:'application/force-download'");
-		Header("Content-Disposition: attachment; filename=$fl_name");
-	
-		print $message;
+
+		// PO number & info lookup
+		$po_number_display = $our_po_ref_no;
+		$po_memo_ref = '';
+		if (!empty($our_po_ref_no)) {
+			$sql_po = "SELECT id, po_number, approval_memo_ref FROM `sma_purchase_order` WHERE id = '$our_po_ref_no'";
+			$res_po = mysqli_query($con, $sql_po);
+			if ($res_po && $r_po = mysqli_fetch_array($res_po)) {
+				$po_number_display = $r_po['po_number'] ?? $our_po_ref_no;
+				$po_memo_ref       = $r_po['approval_memo_ref'] ?? '';
+			}
+		}
+
+		// Approved By lookup
+		$approver_name = '';
+		if (!empty($si_id)) {
+			$sql_ap = "SELECT create_by FROM `workflow_history` WHERE doc_type = 'SI' AND doc_id = '$si_id' AND status IN ('Approved', 'Submitted') ORDER BY id DESC LIMIT 1";
+			$res_ap = mysqli_query($con, $sql_ap);
+			if ($res_ap && $r_ap = mysqli_fetch_array($res_ap)) {
+				$c_by = $r_ap['create_by'] ?? '';
+				if (!empty($c_by)) {
+					$sql_u = "SELECT username FROM `sma_user` WHERE id = '$c_by' OR userid = '$c_by'";
+					$res_u = mysqli_query($con, $sql_u);
+					if ($res_u && $r_u = mysqli_fetch_array($res_u)) {
+						$approver_name = $r_u['username'] ?? '';
+					}
+				}
+			}
+		}
+
+		// Invoice Details
+		$sql_dtl = "SELECT * FROM `sma_supplier_invoice_details` WHERE si_hdr_id = '$si_id' AND qty > 0";
+		$res_dtl = mysqli_query($con, $sql_dtl);
+		$has_dtl = false;
+
+		while ($rw = mysqli_fetch_array($res_dtl)) {
+			$has_dtl = true;
+			$ln++;
+			$grn_no         = $rw['grn_no'] ?? '';
+			$qty            = floatval($rw['qty'] ?? 0);
+			$unit_rate      = floatval($rw['rate'] ?? 0);
+			$gst            = floatval($rw['gst'] ?? 0);
+			$unit           = $rw['unit'] ?? '';
+			$description    = $rw['description'] ?? '';
+			$account_year_r = $rw['account_year'] ?? '';
+			$company_id_dtl = $rw['company_id'] ?? '';
+			$budget_id      = $rw['budget_id'] ?? 0;
+			$material_id    = $rw['material_id'] ?? 0;
+
+			$account_year_map = [
+				'1' => '2017-2018', '2' => '2018-2019', '3' => '2019-2020',
+				'4' => '2020-2021', '5' => '2021-2022', '6' => '2022-2023',
+				'7' => '2023-2024', '8' => '2024-2025', '9' => '2025-2026', '10' => '2026-2027'
+			];
+			$account_year = $account_year_map[$account_year_r] ?? $account_year_r;
+
+			$total_amt = round(($qty * $unit_rate) + (($qty * $unit_rate) * $gst / 100), 2);
+
+			// Company lookup
+			$comp_name = '';
+			if (!empty($company_id_dtl)) {
+				$sql_c = "SELECT comp_code, comp_name FROM `company` WHERE comp_id = '$company_id_dtl'";
+				$res_c = mysqli_query($con, $sql_c);
+				if ($res_c && $r_c = mysqli_fetch_array($res_c)) {
+					$comp_name = !empty($r_c['comp_code']) ? $r_c['comp_code'] : ($r_c['comp_name'] ?? '');
+				}
+			}
+
+			// Material / Product lookup
+			$product_name = '';
+			$prod_b_head = '';
+			$prod_b_name = '';
+			if (!empty($material_id)) {
+				$sql_mat = "SELECT name, uom, budget_head, budget_name FROM `sma_product` WHERE id = '$material_id'";
+				$res_mat = mysqli_query($con, $sql_mat);
+				if ($res_mat && $r_mat = mysqli_fetch_array($res_mat)) {
+					$product_name = $r_mat['name'] ?? '';
+					if (empty($unit)) {
+						$unit = $r_mat['uom'] ?? '';
+					}
+					$prod_b_head = $r_mat['budget_head'] ?? '';
+					$prod_b_name = $r_mat['budget_name'] ?? '';
+				}
+			}
+
+			// Budget Group & Budget Sub Group (Comprehensive Multi-Tier Fallback)
+			$budget_name = '';
+			$budget_head = '';
+			$budget_code = '';
+
+			// 1. From sma_budget via budget_id
+			if (!empty($budget_id)) {
+				$sql_b = "SELECT a.budget_head, a.budget_code, a.account_year, b.name AS budget_name 
+				          FROM `sma_budget` a 
+				          LEFT JOIN `sma_budget_name` b ON a.budget_name = b.id 
+				          WHERE a.id = '$budget_id'";
+				$res_b = mysqli_query($con, $sql_b);
+				if ($res_b && $r_b = mysqli_fetch_array($res_b)) {
+					$budget_name = $r_b['budget_name'] ?? '';
+					$b_sub_id    = $r_b['budget_head'] ?? '';
+					$budget_code = $r_b['budget_code'] ?? '';
+					if (empty($account_year) && !empty($r_b['account_year'])) {
+						$account_year = $r_b['account_year'];
+					}
+
+					if (!empty($b_sub_id)) {
+						$sql_sub = "SELECT budget_head, budget_name FROM `sma_budget_subgroup` WHERE id = '$b_sub_id'";
+						$res_sub = mysqli_query($con, $sql_sub);
+						if ($res_sub && $r_sub = mysqli_fetch_array($res_sub)) {
+							$budget_head = $r_sub['budget_head'] ?? '';
+							if (empty($budget_name) && !empty($r_sub['budget_name'])) {
+								$sub_bn_id = $r_sub['budget_name'];
+								$sql_bn = "SELECT name FROM `sma_budget_name` WHERE id = '$sub_bn_id'";
+								$res_bn = mysqli_query($con, $sql_bn);
+								if ($res_bn && $r_bn = mysqli_fetch_array($res_bn)) {
+									$budget_name = $r_bn['name'] ?? '';
+								}
+							}
+						}
+					}
+				}
+			}
+
+			// 2. From Product master
+			if ((empty($budget_name) || empty($budget_head)) && !empty($prod_b_head)) {
+				$sql_sub = "SELECT budget_head, budget_name FROM `sma_budget_subgroup` WHERE id = '$prod_b_head'";
+				$res_sub = mysqli_query($con, $sql_sub);
+				if ($res_sub && $r_sub = mysqli_fetch_array($res_sub)) {
+					$budget_head = $r_sub['budget_head'] ?? '';
+					if (empty($budget_name) && !empty($r_sub['budget_name'])) {
+						$prod_b_name = $r_sub['budget_name'];
+					}
+				}
+				if (empty($budget_name) && !empty($prod_b_name)) {
+					$sql_bn = "SELECT name FROM `sma_budget_name` WHERE id = '$prod_b_name'";
+					$res_bn = mysqli_query($con, $sql_bn);
+					if ($res_bn && $r_bn = mysqli_fetch_array($res_bn)) {
+						$budget_name = $r_bn['name'] ?? '';
+					}
+				}
+			}
+
+			// 3. Fallback from Linked PO -> NOA -> PR
+			if ((empty($budget_name) || empty($budget_head)) && !empty($our_po_ref_no)) {
+				$sql_poi = "SELECT budget_id, product_id FROM `sma_po_items` WHERE purchase_id = '$our_po_ref_no' AND (budget_id > 0 OR product_id > 0) ORDER BY (budget_id > 0) DESC LIMIT 1";
+				$res_poi = mysqli_query($con, $sql_poi);
+				if ($res_poi && $r_poi = mysqli_fetch_array($res_poi)) {
+					$p_bid  = $r_poi['budget_id'] ?? 0;
+					$p_prid = $r_poi['product_id'] ?? 0;
+
+					if (!empty($p_bid)) {
+						$sql_b = "SELECT a.budget_head, a.budget_code, b.name AS budget_name 
+						          FROM `sma_budget` a 
+						          LEFT JOIN `sma_budget_name` b ON a.budget_name = b.id 
+						          WHERE a.id = '$p_bid'";
+						$res_b = mysqli_query($con, $sql_b);
+						if ($res_b && $r_b = mysqli_fetch_array($res_b)) {
+							$budget_name = $r_b['budget_name'] ?? '';
+							$b_sub_id    = $r_b['budget_head'] ?? '';
+							$budget_code = $r_b['budget_code'] ?? '';
+
+							if (!empty($b_sub_id)) {
+								$sql_sub = "SELECT budget_head, budget_name FROM `sma_budget_subgroup` WHERE id = '$b_sub_id'";
+								$res_sub = mysqli_query($con, $sql_sub);
+								if ($res_sub && $r_sub = mysqli_fetch_array($res_sub)) {
+									$budget_head = $r_sub['budget_head'] ?? '';
+									if (empty($budget_name) && !empty($r_sub['budget_name'])) {
+										$sub_bn_id = $r_sub['budget_name'];
+										$sql_bn = "SELECT name FROM `sma_budget_name` WHERE id = '$sub_bn_id'";
+										$res_bn = mysqli_query($con, $sql_bn);
+										if ($res_bn && $r_bn = mysqli_fetch_array($res_bn)) {
+											$budget_name = $r_bn['name'] ?? '';
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			$excel_rows[] = [
+				$ln,
+				$si_id,
+				$supplier_name,
+				$party_pan_number,
+				$party_gst_number,
+				$party_msme_number,
+				$supplier_invoice_no,
+				$invoice_date,
+				$po_number_display,
+				$credit_days,
+				$due_date,
+				$grn_no,
+				$product_name,
+				$description,
+				$account_year,
+				$comp_name,
+				$budget_name,
+				$budget_head,
+				$budget_code,
+				$unit,
+				$qty,
+				$unit_rate,
+				$gst,
+				$total_amt,
+				$approver_name,
+				$workflow_type,
+				$status
+			];
+		}
+
+		if (!$has_dtl) {
+			$ln++;
+			$excel_rows[] = [
+				$ln,
+				$si_id,
+				$supplier_name,
+				$party_pan_number,
+				$party_gst_number,
+				$party_msme_number,
+				$supplier_invoice_no,
+				$invoice_date,
+				$po_number_display,
+				$credit_days,
+				$due_date,
+				'',
+				'',
+				'',
+				'',
+				'',
+				'',
+				'',
+				'',
+				'',
+				'',
+				'',
+				'',
+				'',
+				$approver_name,
+				$workflow_type,
+				$status
+			];
+		}
 	}
 
-	
-    // convert to PDF
-	if($prn=='pdf'){
-	//$baseurl
-		$dirname = 'C:\xampp\htdocs\hc_template';
-		//require_once(dirname(__FILE__).'/html2pdf/html2pdf.class.php');
-		require_once($dirname.'/html2pdf/html2pdf.class.php');
-		try
-		{
-			$fl_name = 'supplier_invoice.pdf';
-			$html2pdf = new HTML2PDF('P', 'A4', 'fr');
-			$html2pdf->pdf->SetDisplayMode('fullpage');
-	//      $html2pdf->pdf->SetProtection(array('print'), 'spipu');
-		   // $html2pdf->writeHTML($content, isset($_GET['vuehtml']));
-			$html2pdf->writeHTML($message);
-			$html2pdf->Output($fl_name);
-			
-		}
-		catch(HTML2PDF_exception $e) {
-			echo $e;
-			exit;
-		}
+	if ($prn == 'excel') {
+		$fl_name = 'Supplier_Invoice_Summary_' . date('Y-m-d') . '.xlsx';
+		\Shuchkin\SimpleXLSXGen::fromArray($excel_rows)->downloadAs($fl_name);
+		exit();
 	}
 }
+?>

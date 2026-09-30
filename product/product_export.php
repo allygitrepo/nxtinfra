@@ -1,286 +1,187 @@
-<?php if($_GET['sub'] == 'list'){
+<?php
+session_start();
+ini_set('max_execution_time', 0);
 
-	
+if($_GET['sub'] == 'list'){
 	include("../dbcon.php");
+	require_once "../excel_libs/SimpleXLSXGen.php";
 
-	
-	$prn='excel';
-		
-	$message = '';
-	$message .= "<table border='0' cellspacing='0' style='width: 100%; text-align: center; font-size: 12pt;font-family: Arial, Helvetica, sans-serif;'>
-			<tr><td style='width: 80%;;'>Product Master  </td><td> Date:" . date('d-m-Y') ."</td></tr></table>";	
-	
-	$message .= "<table border='1' cellspacing='0' style='width: 100%; ; font-size: 12pt;font-family: Arial, Helvetica, sans-serif;'>
-			<tr>
-				<th style='width: 5%;text-align: right;'>Sr.No.</th>
-				<th style='width: 8%;text-align: left;'>Product Name</th>
-				<th style='width: 10%;text-align: left;'>Product Group</th>
-				<th style='width: 10%;text-align: left;'>Budget Name</th>
-				<th style='width: 10%;text-align: left;'>Budget Head</th>
-				<th style='width: 10%;text-align: left;'>PO Threashold</th>
-				<th style='width: 10%;text-align: left;'>Category</th>
-				<th style='width: 10%;text-align: left;'>Tolarance Level</th>
-				<th style='width: 10%;text-align: left;'>GST Type</th>
-				<th style='width: 10%;text-align: left;'>UOM</th>
-				<th style='width: 8%;text-align: left;'>HSN Code</th>
-				
-			</tr>
-			</table>";
-		
-		$message .= "<table border='1' cellspacing='0' style='width: 100%; ; font-size: 12pt;font-family: Arial, Helvetica, sans-serif;'>";
-		$i =0;
-		$sql ='';
-		$sql="SELECT * from sma_product where 1 order by vertical_type, product_group, category, name ";
+	$excel_rows = [];
+	$excel_rows[] = ['Product Master'];
+	$excel_rows[] = [
+		'Sr.No.',
+		'Product Name',
+		'Product Group',
+		'Budget Group',
+		'Budget Head',
+		'Category',
+		'UOM',
+		'PO Threshold',
+		'Tolerance Level',
+		'GST Type',
+		'HSN Code',
+		'Active'
+	];
 
-		$result = mysqli_query($con,$sql);
-		while($row = mysqli_fetch_array($result)){
-						
-			$name			= $row['name'];
-			$group			= $row['product_group'];
-			$po_threashold	= $row['po_threashold'];
-			$category		= $row['category'];
-			$uom			= $row['uom'];
-			$tolerance_level= $row['tolerance_level'];
-			$gst_type		= $row['gst_type'];
-			$hsn_code		= $row['hsn_code'];
-			$exp_flag		= $row['exp_flag'];
-			$budget_head		= $row['budget_head'];
-			$budget_name		= $row['budget_name'];
-			
-			$sql= "SELECT * FROM sma_budget_name where id = '$budget_name' ";
-    		$q2 = mysqli_query($con, $sql);
-    		$r2 = mysqli_fetch_array($q2);
-    		$budget_name = $r2['name'];
-		
-    		$sql= "SELECT * FROM sma_budget_subgroup where id = '$budget_head' ";
-    		$q2 = mysqli_query($con, $sql);
-    		$r2 = mysqli_fetch_array($q2);
-    		$budget_head = $r2['budget_head'];
-		
-			if($exp_flag=='Y'){
-				$exp_flag = 'Yes';	
-			}	
-			
-			if($category=='M'){
-				$category = 'Material';
-			}
-			else if($category=='S'){
-				$category = 'Service';
-			}
-			
-			if($po_threashold=='Q'){
-				$po_threashold = 'Qty';
-			}
-			else if($po_threashold=='V'){
-				$po_threashold='Value';
-			}	
-			
-			$product_group = $row['product_group'];
-			$sql= "SELECT * FROM sma_product_group where id = '$product_group' ";
-			$q2 = mysqli_query($con, $sql);
-			$r2 = mysqli_fetch_array($q2);
-			$product_group = $r2['product_group'];
-			
-			$sql = "select * from gst_mst where id = '$gst_type' ";
-			$q22 = mysqli_query($con, $sql);
-			$r22 = mysqli_fetch_array($q22);
-			$gst_name =  $r22['gst_name'];
-			
-			$i = $i +1;	
-			$message .= "<tr>
-				<td style='width: 5%;text-align: right;'>".$i."</td>
-				<td style='width: 25%'>".$name."</td>
-				<td style='width: 15%'>". $product_group."</td>
-				<td style='width: 15%'>". $budget_name."</td>
-				<td style='width: 15%'>". $budget_head."</td>
-				<td style='width:10%' >". $po_threashold."</td>
-				<td style='width:10%' >". $category."</td>
-				<td style='width:10%' >". $tolerance_level."</td>
-				<td style='width:10%' >". $gst_name."</td>
-				<td style='width:10%;text-align:left'>". $uom."</td>
-				<td style='width:10%' >". $hsn_code."</td>	
-				
-				</tr>";
+	// Pre-fetch maps
+	$pg_map = [];
+	$res_pg = mysqli_query($con, "SELECT id, product_group FROM sma_product_group");
+	while ($rpg = mysqli_fetch_array($res_pg)) {
+		$pg_map[$rpg['id']] = $rpg['product_group'];
 	}
-			
-		$message .= "</table>";
-	
-//echo $message;
-//exit();
 
-    // get the HTML
-    ob_start();
-    //include(dirname(__FILE__).'../res/exemple07a.php');
-    //include(dirname(__FILE__).'../res/exemple07b.php');
-    //$content = ob_get_clean();
-
-	if($prn=='excel'){
-		header("Content-type: application/xls");
-		Header("Content-Disposition: attachment; filename=product_master.xls");
-		print $message;
-		
-		/* $flname = 'product_master.xls';
-		$fp = fopen($flname, 'w');
-		fwrite($fp,$message);
-		fclose($fp);
-		 */
-		/* echo '<a href="'.$flname.'" target="_blank"> Process Done...Click here for download file</a>';
-		echo '<br><br><br>';
-		$baseurl1 = $baseurl."dashboard.php";
-		echo "<a href='$baseurl1' > Go to Dashboard...Back</a>"; */
-		
+	$bn_map = [];
+	$res_bn = mysqli_query($con, "SELECT id, name FROM sma_budget_name");
+	while ($rbn = mysqli_fetch_array($res_bn)) {
+		$bn_map[$rbn['id']] = $rbn['name'];
 	}
-	
-    // convert to PDF
-	if($prn == 'pdf'){
-		require_once(dirname(__FILE__).'/html2pdf/html2pdf.class.php');
-		try
-		{
-			$html2pdf = new HTML2PDF('L', 'A4', 'fr');
-			$html2pdf->pdf->SetDisplayMode('fullpage');
-	//      $html2pdf->pdf->SetProtection(array('print'), 'spipu');
-		   // $html2pdf->writeHTML($content, isset($_GET['vuehtml']));
-			$html2pdf->writeHTML($message);
-			$html2pdf->Output('vendor_master.pdf');
-			
+
+	$bs_map = [];
+	$res_bs = mysqli_query($con, "SELECT id, budget_head, budget_name, budget_code FROM sma_budget_subgroup");
+	while ($rbs = mysqli_fetch_array($res_bs)) {
+		$bs_map[$rbs['id']] = [
+			'head' => $rbs['budget_head'],
+			'name_id' => $rbs['budget_name']
+		];
+	}
+
+	$gst_map = [];
+	$res_gst = mysqli_query($con, "SELECT id, gst_name FROM gst_mst");
+	while ($rgst = mysqli_fetch_array($res_gst)) {
+		$gst_map[$rgst['id']] = $rgst['gst_name'];
+	}
+
+	$search        = $_SESSION['search'] ?? '';
+	$product_group = $_SESSION['product_group'] ?? '';
+	$category_fltr = $_SESSION['category'] ?? '';
+
+	$sql = "SELECT * FROM sma_product WHERE 1";
+	if (!empty($product_group)) {
+		$sql .= " AND product_group = '$product_group'";
+	}
+	if (!empty($search)) {
+		$sql .= " AND name LIKE '%$search%'";
+	}
+	if (!empty($category_fltr)) {
+		$sql .= " AND category = '$category_fltr'";
+	}
+	$sql .= " ORDER BY vertical_type, product_group, category, name";
+
+	$result = mysqli_query($con, $sql);
+	$i = 0;
+	while($row = mysqli_fetch_array($result)){
+		$i++;
+		$name            = $row['name'] ?? '';
+		$group_id        = $row['product_group'] ?? '';
+		$group_name      = $pg_map[$group_id] ?? $group_id;
+
+		$bgt_name_id     = $row['budget_name'] ?? 0;
+		$bgt_head_id     = $row['budget_head'] ?? 0;
+
+		$budget_head_val = '';
+		$budget_group_val = '';
+
+		if (!empty($bgt_head_id) && isset($bs_map[$bgt_head_id])) {
+			$budget_head_val = $bs_map[$bgt_head_id]['head'];
+			if (empty($bgt_name_id)) {
+				$bgt_name_id = $bs_map[$bgt_head_id]['name_id'];
+			}
 		}
-		catch(HTML2PDF_exception $e) {
-			echo $e;
-			exit;
+		if (!empty($bgt_name_id) && isset($bn_map[$bgt_name_id])) {
+			$budget_group_val = $bn_map[$bgt_name_id];
 		}
+
+		$category_val    = $row['category'] ?? '';
+		$category_text   = ($category_val == 'M') ? 'Material' : (($category_val == 'S') ? 'Service' : $category_val);
+		$uom             = $row['uom'] ?? '';
+		$po_threshold    = $row['po_threashold'] ?? '';
+		if ($po_threshold == 'Q') {
+			$po_thresh_text = 'Qty';
+		} else if ($po_threshold == 'V') {
+			$po_thresh_text = 'Value';
+		} else {
+			$po_thresh_text = '';
+		}
+		$tolerance_level = $row['tolerance_level'] ?? '';
+		$gst_id          = $row['gst_type'] ?? '';
+		$gst_name        = $gst_map[$gst_id] ?? $gst_id;
+		$hsn_code        = $row['hsn_code'] ?? '';
+		$active_raw      = $row['active'] ?? '';
+		$active_text     = ($active_raw == 'N' || $active_raw == '0' || strtolower($active_raw) == 'no') ? 'No' : 'Yes';
+
+		$excel_rows[] = [
+			$i,
+			$name,
+			$group_name,
+			$budget_group_val,
+			$budget_head_val,
+			$category_text,
+			$uom,
+			$po_thresh_text,
+			$tolerance_level,
+			$gst_name,
+			$hsn_code,
+			$active_text
+		];
 	}
- }
- 
+
+	$fl_name = 'Product_Master.xlsx';
+	\Shuchkin\SimpleXLSXGen::fromArray($excel_rows)->downloadAs($fl_name);
+	exit();
+}
+
  //Ruchi started
  if($_GET['sub'] == 'progrp'){
-
-	
 	include("../dbcon.php");
+	require_once "../excel_libs/SimpleXLSXGen.php";
 
-	
-	$prn='excel';
-		
-	$message = '';
-		
-	$message.= "<table border='1' cellspacing='0' style='width: 100%; ; font-size: 12px;'>
-			<tr>
-				<th style='width:20%;text-align: right;'>Product Group</th>
-							</tr>
-			</table>";
-		
-		$message.= "<table border='1' cellspacing='0' style='width: 100%; ; font-size: 12px;'>";
-		
-		$sql="SELECT * from sma_product_group";
+	$excel_rows = [];
+	$excel_rows[] = ['Product Group List'];
+	$excel_rows[] = [
+		'Sr.No.',
+		'Product Group'
+	];
 
-		$result = mysqli_query($con,$sql);
-		while($row = mysqli_fetch_array($result)){
-						
-			$message.= "<tr>
-				<td width=20%>".$row['product_group']."</td>
-				
-				</tr>";
+	$sql = "SELECT * FROM sma_product_group ORDER BY product_group ASC";
+	$result = mysqli_query($con, $sql);
+	$i = 0;
+	while($row = mysqli_fetch_array($result)){
+		$i++;
+		$excel_rows[] = [
+			$i,
+			$row['product_group'] ?? ''
+		];
 	}
-			
-		$message.= "</table>";
-	
-	//echo $message;
 
-    ob_start();
-    
-
-	if($prn=='excel'){
-		header("Content-type: application/xls");
-		Header("Content-Disposition: attachment; filename=Product Group.xls");
-		print $message;
-		
-		
-		
-	}
-	
-    // convert to PDF
-	if($prn == 'pdf'){
-		require_once(dirname(__FILE__).'/html2pdf/html2pdf.class.php');
-		try
-		{
-			$html2pdf = new HTML2PDF('L', 'A4', 'fr');
-			$html2pdf->pdf->SetDisplayMode('fullpage');
-	//      $html2pdf->pdf->SetProtection(array('print'), 'spipu');
-		   // $html2pdf->writeHTML($content, isset($_GET['vuehtml']));
-			$html2pdf->writeHTML($message);
-			$html2pdf->Output('vendor_master.pdf');
-			
-		}
-		catch(HTML2PDF_exception $e) {
-			echo $e;
-			exit;
-		}
-	}
+	$fl_name = 'Product_Group_List.xlsx';
+	\Shuchkin\SimpleXLSXGen::fromArray($excel_rows)->downloadAs($fl_name);
+	exit();
  }
  
  if($_GET['sub'] == 'unit'){
-
-	
 	include("../dbcon.php");
+	require_once "../excel_libs/SimpleXLSXGen.php";
 
-	
-	$prn='excel';
-		
-	$message = '';
-	
-	
-	$message .= "<table border='1' cellspacing='0' style='width: 100%; ; font-size: 12px;'>
-			<tr>
-				<th style='width:20%;text-align: right;'>Units</th>
-							</tr>
-			</table>";
-		
-		$message .= "<table border='1' cellspacing='0' style='width: 100%; ; font-size: 12px;'>";
-		
-		$sql="SELECT * from sma_units";
+	$excel_rows = [];
+	$excel_rows[] = ['Units List'];
+	$excel_rows[] = [
+		'Sr.No.',
+		'Units'
+	];
 
-		$result = mysqli_query($con,$sql);
-		while($row = mysqli_fetch_array($result)){
-						
-			$message .= "<tr>
-			<td width=20%>".$row['name']."</td>
-				
-				</tr>";
+	$sql = "SELECT * FROM sma_units ORDER BY name ASC";
+	$result = mysqli_query($con, $sql);
+	$i = 0;
+	while($row = mysqli_fetch_array($result)){
+		$i++;
+		$excel_rows[] = [
+			$i,
+			$row['name'] ?? ''
+		];
 	}
-			
-		$message .= "</table>";
-	
-//echo $message;
 
-    ob_start();
-    
-
-	if($prn=='excel'){
-		header("Content-type: application/xls");
-		Header("Content-Disposition: attachment; filename=Unit.xls");
-		print $message;
-		
-		
-		
-	}
-	
-    // convert to PDF
-	if($prn == 'pdf'){
-		require_once(dirname(__FILE__).'/html2pdf/html2pdf.class.php');
-		try
-		{
-			$html2pdf = new HTML2PDF('L', 'A4', 'fr');
-			$html2pdf->pdf->SetDisplayMode('fullpage');
-	//      $html2pdf->pdf->SetProtection(array('print'), 'spipu');
-		   // $html2pdf->writeHTML($content, isset($_GET['vuehtml']));
-			$html2pdf->writeHTML($message);
-			$html2pdf->Output('vendor_master.pdf');
-			
-		}
-		catch(HTML2PDF_exception $e) {
-			echo $e;
-			exit;
-		}
-	}
+	$fl_name = 'Units_List.xlsx';
+	\Shuchkin\SimpleXLSXGen::fromArray($excel_rows)->downloadAs($fl_name);
+	exit();
  }
  ?>
-<!-- Ruchi ended-->

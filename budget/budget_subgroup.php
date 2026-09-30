@@ -29,6 +29,9 @@ $modulePath = "budget_subgroup.php?sub=list";
             <div class="box-header">
               <h3 class="box-title">List of Budget Sub Group</h3>
                 <span class="pull-right"><a href="budget_subgroup.php?sub=add" name="btnAdd" class="btn btn-info"><i class="splashy-document_letter_add"></i>&nbsp;&nbsp;Create Budget Sub Group </a></span>
+				<span class="pull-right">
+					<a href="budget_export_func.php?sub=subgroup" name="btnExport" target="_blank" class="btn btn-info"><i class="splashy-document_letter_add"></i>Export</a>&nbsp;&nbsp;&nbsp;&nbsp;
+				</span>
             </div>
             <!-- /.box-header -->
             <div class="box-body">

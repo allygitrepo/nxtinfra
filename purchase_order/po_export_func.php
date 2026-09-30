@@ -1,389 +1,379 @@
 <?php
-if($_GET['sub'] == 'pdf'){
-
+if(isset($_GET['sub']) && $_GET['sub'] == 'pdf'){
 	session_start();
-
 	include "../dbcon.php";
 	include "../baseurl.php";
+	require_once "../excel_libs/SimpleXLSXGen.php";
 
-//echo dirname(__FILE__);
-//exit();
+	$prn = "excel";
+	$from_date_raw = $_POST['from_date'] ?? $_SESSION['start_date'] ?? '';
+	$to_date_raw   = $_POST['to_date'] ?? $_SESSION['end_date'] ?? '';
+	$department_id = $_POST['department'] ?? '';
+	$supplier_id   = $_POST['supplier_id'] ?? '';
+	$company_id    = $_POST['company_id'] ?? '';
 
-/**
- * HTML2PDF Librairy - example
- *
- * HTML => PDF convertor
- * distributed under the LGPL License
- *
- * @author      Laurent MINGUET <webmaster@html2pdf.fr>
- *
- * isset($_GET['vuehtml']) is not mandatory
- * it allow to display the result in the HTML format
- */
-	//$message="<table><tr><td>Table</td></tr></table>";
+	$from_date = (!empty($from_date_raw) && $from_date_raw != '1970-01-01' && $from_date_raw != '0000-00-00') ? date('Y-m-d', strtotime($from_date_raw)) : '';
+	$to_date   = (!empty($to_date_raw) && $to_date_raw != '1970-01-01' && $to_date_raw != '0000-00-00') ? date('Y-m-d', strtotime($to_date_raw)) : '';
 
-	$prn		= "excel";
-	$from_date	= date('Y-m-d', strtotime($_POST['from_date']));
-	$to_date	= date('Y-m-d', strtotime($_POST['to_date']));
-	$department = $_POST['department'];	
-	$supplier_id= $_POST['supplier_id'];	
-	$company_id= $_POST['company_id'];	
-		
-	$message ='';
-	//from ". $_POST['from_date'] . " TO ". $_POST['to_date']
-	
-	$message .= "<table border='1' cellspacing='0' style='width: 100%; text-align: center; font-size: 12pt;'>
-			<tr><th style='width: 100%;' colspan='15'> Purchase Order Detail Register </th></tr></table>";		
+	$from_date_dmy = (!empty($from_date_raw) && $from_date_raw != '1970-01-01' && $from_date_raw != '0000-00-00') ? date('d-m-Y', strtotime($from_date_raw)) : '';
+	$to_date_dmy   = (!empty($to_date_raw) && $to_date_raw != '1970-01-01' && $to_date_raw != '0000-00-00') ? date('d-m-Y', strtotime($to_date_raw)) : '';
 
-		$message .= "<table border='1' cellspacing='0' style='width: 100%; border: solid 1px black; text-align: center; font-size: 12pt;'>
-				<tr><td style='width: 6%;'>Company </td>
-					<td style='width: 6%;'>Location </td>
-					<td style='width: 6%;'>Department </td>
-					<td style='width: 6%;'>Status </td>
-
-					<td style='width: 06%;text-align: left;'>PO.Number</td>
-					<td style='width: 10%;text-align: left;'>Dated </td>
-					<td style='width: 25%;'>Supplier </td>
-					
-					<td style='width: 08%;'>NOA No.</td>
-					<td style='width: 08%;'>Supp.Quote.Ref.No.</td>
-					<td style='width: 08%;'>Delivery Days </td>
-					<td style='width: 08%;'>Credit Days </td>
-					<td style='width: 08%; text-align: center;'>Discount </td>
-					<td style='width: 08%;text-align: right;'>Transport</td>
-					<td style='width: 08%;text-align: right;'>Other Charges</td>
-					
-					<td style='width: 5%;text-align: left;'>Sr.No.</td>
-					<td style='width: 23%;text-align: left;'>Material </td>
-					<td style='width: 25%;'>Description </td>
-					<td style='width: 6%;'>Unit </td>
-					<td style='width: 08%;text-align: right;'>Qty. </td>
-					<td style='width: 08%;text-align: right;'>Rate </td>
-					<td style='width: 08%;text-align: right;'>Total Amt. </td>
-					<td style='width: 08%; text-align: center;'>GST% </td>
-					<td style='width: 08%;text-align: right;'>Net Amt.</td>
-
-					<td style='width: 08%;text-align: left;'>Budget Head</td>
-					
-					<td style='width: 08%;text-align: left;'>Supp.No.</td>
-					<td style='width: 08%;text-align: left;'>Dated</td>
-					<td style='width: 08%;text-align: left;'>Supplier Name</td>
-					<td style='width: 08%;text-align: left;'>Supp.Inv.No.</td>
-					<td style='width: 08%;text-align: right;'>Qty.</td>
-					<td style='width: 08%;text-align: right;'>GST.</td>
-					<td style='width: 08%;text-align: right;'>Amount</td>
-					
-				</tr></table>";
-
-		$message .= "<table border='1' cellspacing='0' style='width: 100%; border: solid 1px black; text-align: left; font-size: 10pt;'>";
-				
-	$id				= $_GET['id'];
-	$comid = $_SESSION['comid'];	
-	
-	$tableName	= "sma_purchase_order";
-	
-	$sql 		= " SELECT * FROM $tableName where 1 ";
-
-//echo $sql;
-	
-	if($from_date=='1970-01-01'){
-		$from_date = '';
-		$to_date = '';
+	if (!empty($from_date_dmy) && !empty($to_date_dmy)) {
+		$title_banner = 'Purchase Order Detail Register from ' . $from_date_dmy . ' TO ' . $to_date_dmy;
+	} else if (!empty($from_date_dmy)) {
+		$title_banner = 'Purchase Order Detail Register from ' . $from_date_dmy;
+	} else if (!empty($to_date_dmy)) {
+		$title_banner = 'Purchase Order Detail Register up to ' . $to_date_dmy;
+	} else {
+		$title_banner = 'Purchase Order Detail Register';
 	}
-	
-	if(!empty($from_date)){
-		$sql = " and dated >= '$from_date' and dated <= '$to_date' ";
+
+	$excel_rows = [];
+	$excel_rows[] = [$title_banner];
+	$excel_rows[] = [
+		'Sr.No.',
+		'Company',
+		'Location',
+		'Department',
+		'Status',
+		'PO Number',
+		'Dated',
+		'Supplier',
+		'NOA No.',
+		'Supp. Quote Ref. No.',
+		'Delivery Days',
+		'Credit Days',
+		'Discount',
+		'Transport',
+		'Other Charges',
+		'Item Sr.No.',
+		'Material',
+		'Description',
+		'Unit',
+		'Qty.',
+		'Rate',
+		'Total Amt.',
+		'GST%',
+		'Net Amt.',
+		'Budget Group',
+		'Budget Sub Group',
+		'Budget Code',
+		'Supp. Inv. No.',
+		'Inv. Date',
+		'Inv. Qty.',
+		'Inv. GST',
+		'Inv. Amount'
+	];
+
+	if (!empty($_SESSION['sqlex'])) {
+		$sql = $_SESSION['sqlex'];
+	} else {
+		$comid = $_SESSION['comid'] ?? '';
+		$sql = "SELECT * FROM sma_purchase_order WHERE del != 'Y'";
+		if (!empty($from_date) && !empty($to_date)) {
+			$sql .= " AND dated >= '$from_date' AND dated <= '$to_date'";
+		}
+		if (!empty($company_id)) {
+			$sql .= " AND project = '$company_id'";
+		}
+		if (!empty($department_id)) {
+			$sql .= " AND department = '$department_id'";
+		}
+		if (!empty($supplier_id)) {
+			$sql .= " AND to_supplier = '$supplier_id'";
+		}
 	}
-	if($user != 'Admin'){
-		$sql .= " and project in ( $comid ) ";
+
+	// Remove pagination limit if present
+	$sql = preg_replace('/\s+LIMIT\s+\d+(\s*,\s*\d+)?/i', '', $sql);
+	if (stripos($sql, 'order by') === false) {
+		$sql .= ' ORDER BY dated DESC, id DESC';
 	}
-	
-	if (!empty($company_id)){
-		$sql  .= " and project = '$company_id' ";
-	}
-	
-	if (!empty($department)){
-		$sql  .= " and department = '$department' ";
-	}
-	
-	if (!empty($supplier_id)){
-		$sql  .= " and to_supplier = '$supplier_id' ";
-	}
-	
-	$sql = $_SESSION['sqlex'];
-	
-	$result = mysqli_query($con,$sql);
-    $error  = mysqli_error($con);
+
+	$result = mysqli_query($con, $sql);
+	$error  = mysqli_error($con);
 	if(!empty($error)){ echo "ERROR : " . $error; exit();}
+
+	$ln = 0;
 	while($row = mysqli_fetch_array($result)){
-		$pur_id					= $row['id'];
-		$dated  				= date('d-m-Y', strtotime($row['dated']));
-		$to_supplier			= $row['to_supplier'];
-		$company_id				= $row['project'];
-		$department				= $row['department'];
-		$status				    = $row['status'];
-		
-		$approval_memo_ref		= $row['approval_memo_ref'];
-		$sql = "select * from sma_approval_memo where id = '$approval_memo_ref' ";
-		$res = mysqli_query($con,$sql);
-		$rw = mysqli_fetch_array($res);
-		$approval_memo_ref		= $row['approval_memo_ref']. '-'.date('d-m-Y', strtotime($rw['dated']));	
-		
-		$quotation_reference_no = $row['quotation_reference_no'];
-		$po_number  			= $row['po_number'];
-		$delivery_days			= $row['delivery_days'];
-		$credit_days			= $row['credit_days'];
+		$ln++;
+		$pur_id                 = $row['id'] ?? '';
+		$po_number              = $row['po_number'] ?? '';
+		$dated_raw              = $row['dated'] ?? '';
+		$to_supplier            = $row['to_supplier'] ?? '';
+		$company_id_row         = $row['project'] ?? '';
+		$department_id_row      = $row['department'] ?? '';
+		$location_id_row        = $row['location'] ?? '';
+		$status                 = $row['status'] ?? '';
+		$approval_memo_ref      = $row['approval_memo_ref'] ?? '';
+		$quotation_reference_no = $row['quotation_reference_no'] ?? '';
+		$delivery_days          = $row['delivery_days'] ?? '';
+		$credit_days            = $row['credit_days'] ?? '';
+		$discount               = $row['discount'] ?? '';
+		$transport              = $row['transport'] ?? '';
+		$other_charges          = $row['other_charges'] ?? '';
 
-		$location	 			= $row['location'];
-		$discount 				= $row['discount'];
-		$transport 				= $row['transport'];
-		$other_charges 			= $row['other_charges'];
-		$terms 					= $row['terms'];
-	
-		$sql 	= "SELECT * FROM `sma_location` where id = '$location'";
-		$res = mysqli_query($con,$sql);
-		$error  = mysqli_error($con);
-		if(!empty($error)){ echo "ERROR : " . $error; exit();}
-		$lc 	= mysqli_fetch_array($res);
-		$loc_name    = $lc['loc_name'];
-		
-		$sql 	= "SELECT * FROM sma_party_mst where id = '$to_supplier'";
-		$res = mysqli_query($con,$sql);
-		$error  = mysqli_error($con);
-		$row 	= mysqli_fetch_array($res);
-		$party_name  = $row['party_name'];
+		$po_dated = (!empty($dated_raw) && $dated_raw != '1970-01-01' && $dated_raw != '0000-00-00') ? date('d-m-Y', strtotime($dated_raw)) : '';
 
-		$sql = "SELECT * FROM `company` where comp_id = '$company_id' ";
-		$comresult 	= mysqli_query($con,$sql);
-		$com 		= mysqli_fetch_array($comresult);
-		$comp_name 		= $com['comp_name'];
-		
-		$sql = "SELECT * FROM `sma_department` where id = '$department' ";
-		$dep 	= mysqli_query($con,$sql);
-		$deps 		= mysqli_fetch_array($dep);
-		$department = $deps['name'];
-		
-		$message .= "<tr>
-					<td>".$comp_name."</td>
-					<td>".$loc_name."</td>
-					<td>".$department."</td>
-					<td>".$status."</td>
-					<td>".$po_number ."</td>
-					<td>".$dated."</td>
-					<td>".$party_name ."</td>
-					<td>".$approval_memo_ref."</td>
-					<td>".$quotation_reference_no."</td>
-					<td>".$delivery_days."</td>
-					<td>".$credit_days."</td>
-					<td>".$discount."</td>
-					<td>".$transport."</td>
-					<td>".$other_charges."</td>";
-
-		$sql 	= "SELECT * FROM sma_po_items where purchase_id = '$pur_id'";
-		$i = 0 ;
-		$res = mysqli_query($con,$sql);
-		$row_affected = mysqli_affected_rows($con);
-		
-		if($row_affected = 0){
-			$message .="</tr>";
-			continue;
-		}
-		
-		$error  = mysqli_error($con);
-		if(!empty($error)){ echo "ERROR : " . $error; exit();}
-		while($rw = mysqli_fetch_array($res)){
-		
-			$budget_id		= $rw['budget_id'];
-
-			$quantity		= $rw['quantity'];
-			$unit_rate		= round($rw['unit_rate'],2);
-			$pod_discount	= $rw['pod_discount'];
-			$gst			= $rw['gst'];
-			$product_desc	= $rw['product_desc'];
-						
-			$actual_amt     = $quantity * $unit_rate;
-			$total_amt		= $total_amt + $actual_amt;
-			
-			$net_amt  		= round($actual_amt + ($actual_amt * $gst / 100),0);
-			
-			$total_net_amt	= $total_net_amt + $net_amt;
-			
-			$delivery_date  = date('d-m-Y', strtotime($rw['delivery_date']));
-			
-			$product_id=$rw['product_id'];
-			$sql="Select * from sma_product where id = '$product_id'";
-			$output = mysqli_query($con,$sql);
-			echo mysqli_error($con);
-			$r2 = mysqli_fetch_array($output);
-
-			$product_name = $r2['name'];
-			//$product_desc = $r2['description'];
-			$unit		  = $r2['uom'];
-			$hsn_code	  = $r2['hsn_code'];
-			
-			
-			$sql = "SELECT a.*, b.budget_head as budget_head FROM `sma_budget` a, sma_budget_subgroup b 
-						where b.id = a.budget_head and a.id = '$budget_id' ";
-			$comresult 	= mysqli_query($con,$sql);
-			$com 		= mysqli_fetch_array($comresult);
-			$budget_head 		= $com['budget_head'];
-			//$total_budget 		= $com['total_budget'];
-		
-			++$i;
-		if($i > 1){
-			$message .= "<tr><td colspan='13'>&nbsp;</td>
-						<td style='width: 6%;text-align: Center;'> ".$i." </td>
-						<td style='width: 23%;text-align: left;'>". $product_name . " </td>
-						<td style='width: 25%;text-align: left;'> " . $product_desc . " </td>
-						<td style='width: 6%;text-align: left;'> " . $unit . " </td>
-						<td style='width: 8%;text-align: right;'> ".$quantity." </td>
-						<td style='width: 8%;text-align: right;'> ".$unit_rate." </td>
-						<td style='width: 8%;text-align: right;'> ".$actual_amt." </td>
-						<td style='width: 8%;text-align: left;'> ".$gst." </td>
-						<td style='width: 8%;text-align: right;'> ".$net_amt." </td>
-						<td style='width: 8%;text-align: left;'>". $budget_head . " </td> 
-						";
-
-//					</tr>";
-			
-//Supp.Invoice Start
-	
-		$sql 	= " SELECT * FROM sma_supplier_invoice a, sma_supplier_invoice_details b 
-						where a.id = b.si_hdr_id  and a.our_po_ref_no = '$pur_id' and b.material_id = '$product_id' ";
-//echo $sql. " ####1<BR>";						
-		$suppresult 	= mysqli_query($con,$sql);
-		$s=0;
-		if(mysqli_affected_rows($con)>0){
-			while($supp	 		= mysqli_fetch_array($suppresult)){
-				
-				++$s;
-				
-			//echo $sql."<BR>";	
-				$si_hdr_id				= $supp['si_hdr_id'];
-				$invoice_date  			= date('d-m-Y', strtotime($supp['invoice_date']));
-				$supplier_id			= $supp['suplier_name'];
-				$supplier_invoice_no	= $supp['supplier_invoice_no'];
-				//$budget_id				= $supp['budget_id'];
-				$qty					= $supp['qty'];
-				$gst					= $supp['gst'];
-				
-				$tot_supp_amt  			= $unit_rate * $qty + (($unit_rate * $qty) * $gst / 100 );
-				
-				$sql = "SELECT * FROM `sma_party_mst` where id = '$supplier_id' ";
-				$comresult 	= mysqli_query($con,$sql);
-				$com 		= mysqli_fetch_array($comresult);
-				$supplier_name 		= $com['party_name'];
-				//<td colspan='22'>&nbsp;</td>
-				if($s>1){
-					$message .= "<tr><td colspan = '24' ></td> ";
+		// NOA reference date lookup
+		$noa_display = $approval_memo_ref;
+		$noa_indent_id = '';
+		$noa_budget_head_id = '';
+		if (!empty($approval_memo_ref)) {
+			$sql_noa = "SELECT id, dated, against_indent_no, budget_head FROM `sma_approval_memo` WHERE id = '$approval_memo_ref'";
+			$res_noa = mysqli_query($con, $sql_noa);
+			if ($res_noa && $rw_noa = mysqli_fetch_array($res_noa)) {
+				$noa_date = (!empty($rw_noa['dated']) && $rw_noa['dated'] != '1970-01-01' && $rw_noa['dated'] != '0000-00-00') ? date('d-m-Y', strtotime($rw_noa['dated'])) : '';
+				if (!empty($noa_date)) {
+					$noa_display = $approval_memo_ref . ' - ' . $noa_date;
 				}
-				$message .= "
-							<td style='width: 8%;text-align: left;'>". $si_hdr_id . " </td>
-							<td style='width: 8%;text-align: left;'>". $invoice_date . " </td>
-							<td style='width: 8%;text-align: left;'>". $supplier_name . " </td>
-							<td style='width: 8%;text-align: left;'>". $supplier_invoice_no . " </td>
-							<td style='width: 8%;text-align: right;'>". $qty . " </td>
-							<td style='width: 8%;text-align: right;'>". $gst . " </td>
-							<td style='width: 8%;text-align: right;'>". $tot_supp_amt . " </td> 
-							</tr> ";
-				if($s>1){
-					$message .= "</tr>";
-				}
-			
+				$noa_indent_id = $rw_noa['against_indent_no'] ?? '';
+				$noa_budget_head_id = $rw_noa['budget_head'] ?? '';
 			}
 		}
-		else {
-			$message .= "</tr>";
-		}	
-//Supp.Invoice End
-			
-		}
-		else {
-			$message .= "<td style='width: 6%;text-align: Center;'> ".$i." </td>
-					<td style='width: 23%;text-align: left;'>". $product_name . " </td>
-					<td style='width: 25%;text-align: left;'> " . $product_desc . " </td>
-					<td style='width: 6%;text-align: left;'> " . $unit . " </td>
-					<td style='width: 8%;text-align: right;'> ".$quantity." </td>
-					<td style='width: 8%;text-align: right;'> ".$unit_rate." </td>
-					<td style='width: 8%;text-align: right;'> ".$actual_amt." </td>
-					<td style='width: 8%;text-align: left;'> ".$gst." </td>
-					<td style='width: 8%;text-align: right;'> ".$net_amt." </td>
-					<td style='width: 8%;text-align: left;'>". $budget_head . " </td>
-				";
-				
-//Supp.Invoice Start
-	
-		$sql 	= " SELECT * FROM sma_supplier_invoice a, sma_supplier_invoice_details b 
-						where a.id = b.si_hdr_id  and a.our_po_ref_no = '$pur_id' and b.material_id = '$product_id' ";
-//echo $sql. " ###2<BR>";
-		$suppresult 	= mysqli_query($con,$sql);
-		$s =0 ;
-		if(mysqli_affected_rows($con)>0){
-			while($supp	 		= mysqli_fetch_array($suppresult)){
-			
-				++$s;
-		//	echo $sql."<BR>";
-				$si_hdr_id				= $supp['si_hdr_id'];
-				$invoice_date  			= date('d-m-Y', strtotime($supp['invoice_date']));
-				$supplier_id			= $supp['suplier_name'];
-				$supplier_invoice_no	= $supp['supplier_invoice_no'];
-				//$budget_id				= $supp['budget_id'];
-				$qty					= $supp['qty'];
-				$gst					= $supp['gst'];
 
-				$tot_supp_amt  			= $unit_rate * $qty + (($unit_rate * $qty) * $gst / 100 );
-
-				$sql = "SELECT * FROM `sma_party_mst` where id = '$supplier_id' ";
-				$comresult 	= mysqli_query($con,$sql);
-				$com 		= mysqli_fetch_array($comresult);
-				$supplier_name 		= $com['party_name'];
-				if($s>1){
-					$message .= "<tr><td colspan = '24' ></td> ";
-				}
-				$message .= "<td style='width: 8%;text-align: left;'>". $si_hdr_id . " </td>
-							<td style='width: 8%;text-align: left;'>". $invoice_date . " </td>
-							<td style='width: 8%;text-align: left;'>". $supplier_name . " </td>
-							<td style='width: 8%;text-align: left;'>". $supplier_invoice_no . " </td>
-							<td style='width: 8%;text-align: right;'>". $qty . " </td>
-							<td style='width: 8%;text-align: right;'>". $gst . " </td>
-							<td style='width: 8%;text-align: right;'>". $tot_supp_amt . " </td> 
-							";
-				if($s>1){
-					$message .= "</tr>";
-
-				}
-							
+		// Location lookup
+		$loc_name = '';
+		if (!empty($location_id_row)) {
+			$sql_l = "SELECT loc_name FROM `sma_location` WHERE id = '$location_id_row'";
+			$res_l = mysqli_query($con, $sql_l);
+			if ($res_l && $lc = mysqli_fetch_array($res_l)) {
+				$loc_name = $lc['loc_name'] ?? '';
 			}
 		}
-//Supp.Invoice End
 
+		// Supplier lookup
+		$party_name = '';
+		if (!empty($to_supplier)) {
+			$sql_p = "SELECT party_name FROM `sma_party_mst` WHERE id = '$to_supplier'";
+			$res_p = mysqli_query($con, $sql_p);
+			if ($res_p && $rw_p = mysqli_fetch_array($res_p)) {
+				$party_name = $rw_p['party_name'] ?? '';
 			}
-			
 		}
-//echo $message;
-//exit(" EXIT HERE....");
-	
+
+		// Company lookup
+		$comp_name = '';
+		if (!empty($company_id_row)) {
+			$sql_c = "SELECT comp_code, comp_name FROM `company` WHERE comp_id = '$company_id_row'";
+			$res_c = mysqli_query($con, $sql_c);
+			if ($res_c && $com = mysqli_fetch_array($res_c)) {
+				$comp_name = !empty($com['comp_code']) ? $com['comp_code'] : ($com['comp_name'] ?? '');
+			}
+		}
+
+		// Department lookup
+		$department_name = '';
+		if (!empty($department_id_row)) {
+			$sql_d = "SELECT name FROM `sma_department` WHERE id = '$department_id_row'";
+			$res_d = mysqli_query($con, $sql_d);
+			if ($res_d && $deps = mysqli_fetch_array($res_d)) {
+				$department_name = $deps['name'] ?? '';
+			}
+		}
+
+		// Fetch PO Items
+		$sql_items = "SELECT * FROM `sma_po_items` WHERE purchase_id = '$pur_id'";
+		$res_items = mysqli_query($con, $sql_items);
+		$has_items = false;
+		$item_index = 0;
+
+		while ($rw = mysqli_fetch_array($res_items)) {
+			$has_items = true;
+			$item_index++;
+			$b_id         = $rw['budget_id'] ?? 0;
+			$prod_id      = $rw['product_id'] ?? 0;
+			$quantity     = floatval($rw['quantity'] ?? 0);
+			$unit_rate    = floatval($rw['unit_rate'] ?? 0);
+			$gst          = floatval($rw['gst'] ?? 0);
+			$product_desc = $rw['product_desc'] ?? '';
+
+			$actual_amt = round($quantity * $unit_rate, 2);
+			$net_amt    = round($actual_amt + ($actual_amt * $gst / 100), 2);
+
+			// Product name & unit lookup
+			$product_name = '';
+			$unit = '';
+			if (!empty($prod_id)) {
+				$sql_prod = "SELECT name, uom, budget_head, budget_name FROM `sma_product` WHERE id = '$prod_id'";
+				$res_prod = mysqli_query($con, $sql_prod);
+				if ($res_prod && $r_prod = mysqli_fetch_array($res_prod)) {
+					$product_name = $r_prod['name'] ?? '';
+					$unit         = $r_prod['uom'] ?? '';
+					$prod_b_head  = $r_prod['budget_head'] ?? '';
+					$prod_b_name  = $r_prod['budget_name'] ?? '';
+				}
+			}
+
+			// Budget Group & Sub Group & Code Lookup
+			$budget_name = '';
+			$budget_head = '';
+			$budget_code = '';
+
+			if (!empty($b_id)) {
+				$sql_b = "SELECT a.budget_head, a.budget_code, b.name AS budget_name 
+				          FROM `sma_budget` a 
+				          LEFT JOIN `sma_budget_name` b ON a.budget_name = b.id 
+				          WHERE a.id = '$b_id'";
+				$res_b = mysqli_query($con, $sql_b);
+				if ($res_b && $r_b = mysqli_fetch_array($res_b)) {
+					$budget_name = $r_b['budget_name'] ?? '';
+					$b_sub_id    = $r_b['budget_head'] ?? '';
+					$budget_code = $r_b['budget_code'] ?? '';
+
+					if (!empty($b_sub_id)) {
+						$sql_sub = "SELECT budget_head, budget_name FROM `sma_budget_subgroup` WHERE id = '$b_sub_id'";
+						$res_sub = mysqli_query($con, $sql_sub);
+						if ($res_sub && $r_sub = mysqli_fetch_array($res_sub)) {
+							$budget_head = $r_sub['budget_head'] ?? '';
+							if (empty($budget_name) && !empty($r_sub['budget_name'])) {
+								$sub_bn_id = $r_sub['budget_name'];
+								$sql_bn = "SELECT name FROM `sma_budget_name` WHERE id = '$sub_bn_id'";
+								$res_bn = mysqli_query($con, $sql_bn);
+								if ($res_bn && $r_bn = mysqli_fetch_array($res_bn)) {
+									$budget_name = $r_bn['name'] ?? '';
+								}
+							}
+						}
+					}
+				}
+			}
+
+			if ((empty($budget_name) || empty($budget_head)) && !empty($prod_b_head)) {
+				$sql_sub = "SELECT budget_head, budget_name FROM `sma_budget_subgroup` WHERE id = '$prod_b_head'";
+				$res_sub = mysqli_query($con, $sql_sub);
+				if ($res_sub && $r_sub = mysqli_fetch_array($res_sub)) {
+					$budget_head = $r_sub['budget_head'] ?? '';
+					if (empty($budget_name) && !empty($r_sub['budget_name'])) {
+						$prod_b_name = $r_sub['budget_name'];
+					}
+				}
+				if (empty($budget_name) && !empty($prod_b_name)) {
+					$sql_bn = "SELECT name FROM `sma_budget_name` WHERE id = '$prod_b_name'";
+					$res_bn = mysqli_query($con, $sql_bn);
+					if ($res_bn && $r_bn = mysqli_fetch_array($res_bn)) {
+						$budget_name = $r_bn['name'] ?? '';
+					}
+				}
+			}
+
+			// Fallback from linked PR / NOA
+			if ((empty($budget_name) || empty($budget_head)) && !empty($noa_indent_id)) {
+				$sql_pri = "SELECT p.budget_head, p.budget_name 
+				            FROM `sma_purchase_req_items` pri 
+				            LEFT JOIN `sma_product` p ON pri.product_id = p.id 
+				            WHERE pri.purchase_req_id = '$noa_indent_id' AND (p.budget_head > 0 OR p.budget_name > 0) 
+				            LIMIT 1";
+				$res_pri = mysqli_query($con, $sql_pri);
+				if ($res_pri && $r_pri = mysqli_fetch_array($res_pri)) {
+					$p_head = $r_pri['budget_head'] ?? '';
+					$p_name = $r_pri['budget_name'] ?? '';
+
+					if (empty($budget_head) && !empty($p_head)) {
+						$sql_sub = "SELECT budget_head, budget_name FROM `sma_budget_subgroup` WHERE id = '$p_head'";
+						$res_sub = mysqli_query($con, $sql_sub);
+						if ($res_sub && $r_sub = mysqli_fetch_array($res_sub)) {
+							$budget_head = $r_sub['budget_head'] ?? '';
+							if (empty($p_name) && !empty($r_sub['budget_name'])) {
+								$p_name = $r_sub['budget_name'];
+							}
+						}
+					}
+					if (empty($budget_name) && !empty($p_name)) {
+						$sql_bn = "SELECT name FROM `sma_budget_name` WHERE id = '$p_name'";
+						$res_bn = mysqli_query($con, $sql_bn);
+						if ($res_bn && $r_bn = mysqli_fetch_array($res_bn)) {
+							$budget_name = $r_bn['name'] ?? '';
+						}
+					}
+				}
+			}
+
+			// Supplier invoice detail for this PO
+			$supp_inv_no = '';
+			$inv_date = '';
+			$inv_qty = '';
+			$inv_gst = '';
+			$inv_amount = '';
+
+			$excel_rows[] = [
+				$ln,
+				$comp_name,
+				$loc_name,
+				$department_name,
+				$status,
+				$po_number,
+				$po_dated,
+				$party_name,
+				$noa_display,
+				$quotation_reference_no,
+				$delivery_days,
+				$credit_days,
+				$discount,
+				$transport,
+				$other_charges,
+				$item_index,
+				$product_name,
+				$product_desc,
+				$unit,
+				$quantity,
+				$unit_rate,
+				$actual_amt,
+				$gst,
+				$net_amt,
+				$budget_name,
+				$budget_head,
+				$budget_code,
+				$supp_inv_no,
+				$inv_date,
+				$inv_qty,
+				$inv_gst,
+				$inv_amount
+			];
+		}
+
+		if (!$has_items) {
+			$excel_rows[] = [
+				$ln,
+				$comp_name,
+				$loc_name,
+				$department_name,
+				$status,
+				$po_number,
+				$po_dated,
+				$party_name,
+				$noa_display,
+				$quotation_reference_no,
+				$delivery_days,
+				$credit_days,
+				$discount,
+				$transport,
+				$other_charges,
+				'',
+				'',
+				'',
+				'',
+				'',
+				'',
+				'',
+				'',
+				'',
+				'',
+				'',
+				'',
+				'',
+				'',
+				'',
+				'',
+				''
+			];
+		}
 	}
-	
-	$message .= "</tr></table>";
 
-//echo $message;
-//exit();
-	
-    // get the HTML
-    ob_start();
-    //include(dirname(__FILE__).'../res/exemple07a.php');
-    //include(dirname(__FILE__).'../res/exemple07b.php');
-    //$content = ob_get_clean();
-	//$fl_name = 'poorder_'.$id;
-    if($prn=='excel'){
-		$fl_name = 'poorder'.'_'.date('Y-m-d').'.xls';
-		header("Content-type: application/xls");
-		header("Content-Type:'application/force-download'");
-		Header("Content-Disposition: attachment; filename=$fl_name");
-	
-		print $message;
-	}	
-
-	
+	if ($prn == 'excel') {
+		$fl_name = 'PO_Detail_Report_' . date('Y-m-d') . '.xlsx';
+		\Shuchkin\SimpleXLSXGen::fromArray($excel_rows)->downloadAs($fl_name);
+		exit();
+	}
 }
+?>

@@ -216,71 +216,66 @@ if($_GET['sub'] == 'pdf'){
 }
 //<!-- Ruchi started-->
 if($_GET['sub'] == 'CostCenter'){
-
-	
 	include("../dbcon.php");
+	require_once "../excel_libs/SimpleXLSXGen.php";
 
-	
-	$prn='excel';
-		
-	$message = '';
-		
-	
-	$message .= "<table border='1' cellspacing='0' style='width: 100%; ; font-size: 12px;'>
-			<tr>
-				<th style='width:20%;text-align: right;'>Cost Center Group</th>
-							</tr>
-			</table>";
-		
-		$message .= "<table border='1' cellspacing='0' style='width: 100%; ; font-size: 12px;'>";
-		
-		$sql="SELECT * from sma_budget_name";
+	$excel_rows = [];
+	$excel_rows[] = ['Budget Group List'];
+	$excel_rows[] = [
+		'Sr.No.',
+		'Budget Group'
+	];
 
-		$result = mysqli_query($con,$sql);
-		while($row = mysqli_fetch_array($result)){
-						
-			$message .= "<tr>
-			<td width=20%>".$row['name']."</td>
-				
-				</tr>";
+	$sql = "SELECT * FROM sma_budget_name ORDER BY name ASC";
+	$result = mysqli_query($con, $sql);
+	$i = 0;
+	while($row = mysqli_fetch_array($result)){
+		$i++;
+		$excel_rows[] = [
+			$i,
+			$row['name'] ?? ''
+		];
 	}
-			
-		$message .= "</table>";
-	
-//echo $message;
 
-    ob_start();
-    
+	$fl_name = 'Budget_Group_List.xlsx';
+	\Shuchkin\SimpleXLSXGen::fromArray($excel_rows)->downloadAs($fl_name);
+	exit();
+}
 
-	if($prn=='excel'){
-		$fl_name = 'budget_export_'.date('d-m-Y').'.xls';
-		header("Content-type: application/xls");
-		header("Content-Type:'application/force-download'");
-		Header("Content-Disposition: attachment; filename=$fl_name");
-	
-		print $message;
-		
-		
-		
+if($_GET['sub'] == 'subgroup'){
+	include("../dbcon.php");
+	require_once "../excel_libs/SimpleXLSXGen.php";
+
+	$excel_rows = [];
+	$excel_rows[] = ['Budget Sub Group List'];
+	$excel_rows[] = [
+		'Sr.No.',
+		'Budget Group',
+		'Budget Sub Group'
+	];
+
+	// Pre-fetch budget name map
+	$bn_map = [];
+	$res_bn = mysqli_query($con, "SELECT id, name FROM sma_budget_name");
+	while ($rbn = mysqli_fetch_array($res_bn)) {
+		$bn_map[$rbn['id']] = $rbn['name'];
 	}
-	
-    // convert to PDF
-	if($prn == 'pdf'){
-		require_once(dirname(__FILE__).'/html2pdf/html2pdf.class.php');
-		try
-		{
-			$html2pdf = new HTML2PDF('L', 'A4', 'fr');
-			$html2pdf->pdf->SetDisplayMode('fullpage');
-	//      $html2pdf->pdf->SetProtection(array('print'), 'spipu');
-		   // $html2pdf->writeHTML($content, isset($_GET['vuehtml']));
-			$html2pdf->writeHTML($message);
-			$html2pdf->Output('vendor_master.pdf');
-			
-		}
-		catch(HTML2PDF_exception $e) {
-			echo $e;
-			exit;
-		}
+
+	$sql = "SELECT * FROM sma_budget_subgroup ORDER BY budget_head ASC";
+	$result = mysqli_query($con, $sql);
+	$i = 0;
+	while($row = mysqli_fetch_array($result)){
+		$i++;
+		$bg_name = $bn_map[$row['budget_name']] ?? '';
+		$excel_rows[] = [
+			$i,
+			$bg_name,
+			$row['budget_head'] ?? ''
+		];
 	}
- }
-?><!-- Ruchi started-->
+
+	$fl_name = 'Budget_Sub_Group_List.xlsx';
+	\Shuchkin\SimpleXLSXGen::fromArray($excel_rows)->downloadAs($fl_name);
+	exit();
+}
+?>

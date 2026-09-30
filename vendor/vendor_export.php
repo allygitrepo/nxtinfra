@@ -1,341 +1,194 @@
-<?php if($_GET['sub'] == 'list'){
+<?php
+session_start();
+ini_set('max_execution_time', 0);
 
-	
+if($_GET['sub'] == 'list'){
 	include("../dbcon.php");
+	require_once "../excel_libs/SimpleXLSXGen.php";
 
-	
-	$prn='excel';
-		
-	$message = '';
-	$message .= "<table border='0' cellspacing='0' style='width: 100%; text-align: center; font-size: 12px;'>
-			<tr><td style='width: 80%;;'>Vendor Master  </td><td> Date:" . date('d-m-Y') ."</td></tr></table>";	
-	
-	$message .= "<table border='1' cellspacing='0' style='width: 100%; ; font-size: 12px;'>
-			<tr>
-				<th style='width: 5%;text-align: right;'>Sr.No.</th>
-				<th style='width: 8%;'>Registered By</th>
-				<th style='width: 8%;'>Supplier Type</th>
-				<th style='width: 8%;'>Supplier Name</th>
-				<th style='width: 10%;text-align: left;'>Type</th>
-				<th style='width: 10%;text-align: left;'>Category</th>
-				<th style='width: 5%;'>Contact Person </th>
-				<th style='width: 5%;text-align: left;'>Address</th>
-				<th style='width: 8%;'>City</th>
-				<th style='width: 10%;'>State</th>
-				<th style='width: 10%;text-align:left'>Pincode</th>
-				<th style='width: 10%;text-align:left'>Area</th>
-				<th style='width: 10%;text-align:left'>Country</th>
-				<th style='width: 10%;text-align:left'>Phone-1</th>
-				<th style='width: 10%;text-align:left'>Phone-2</th>
-				<th style='width: 10%;text-align:left'>Phone-3</th>
-				
-				<th style='width: 10%;text-align:left'>Mobile-1</th>
-				<th style='width: 10%;text-align:left'>Mobile-2</th>
-				<th style='width: 10%;text-align:left'>Mobile-3</th>
-				<th style='width: 10%;text-align:left'>Email Id</th>
-				<th style='width: 10%;text-align:left'>PAN No.</th>
-				<th style='width: 10%;text-align:left'>GST No.</th>
-				<th style='width: 10%;text-align:left'>MSME No.</th>
-				
-				<th style='width: 10%;text-align:left'>Name in A/c Software</th>
-				<th style='width: 10%;text-align:left'>Bank Name</th>
-				<th style='width: 10%;text-align:left'>Bank Account Type</th>
-				<th style='width: 10%;text-align:left'>Beneficiary Name</th>
-				<th style='width: 10%;text-align:left'>Address</th>
-				<th style='width: 10%;text-align:left'>Account No.</th>
-				<th style='width: 10%;text-align:left'>IFSC Code</th>
-				<th style='width: 10%;text-align:left'>KYC</th>
-				<th style='width: 10%;text-align:left'>Created Date</th>
-				
-			</tr>
-			</table>";
-		
-		$message .= "<table border='1' cellspacing='0' style='width: 100%; ; font-size: 12px;'>";
-		$i =0;
-		$sql ='';
-		$sql   = "SELECT * FROM `sma_party_mst` order by party_name";
-		
-		$result = mysqli_query($con,$sql);
-		while($row = mysqli_fetch_array($result)){
-						
-			$party_id						= $row['id'];
-			$party_kyc						= $row['party_kyc'];
-			$party_name						= $row['party_name'];
-			$company_id						= $row['company_id'];
-			$party_nature_business			= $row['party_nature_business'];
-			
-			$sql 	= "select * from company where comp_id = '$company_id' ";
-			$q2 	= mysqli_query($con, $sql);
-			$r2 	= mysqli_fetch_array($q2);
-			$comp_name 				= $r2['comp_name'];
-			
-			$party_type						= $row['party_type'];
-			$sql 	= "select * from sma_type where id = '$party_type' ";
-			$q2 	= mysqli_query($con, $sql);
-			$r2 	= mysqli_fetch_array($q2);
-			$party_type 				= $r2['type'];
-			
-			$party_category 				= $row['party_category'];
-			$sql = "select * from sma_categories where id = '$party_category' ";
-			$q2  = mysqli_query($con, $sql);
-			$r2 = mysqli_fetch_array($q2);					
-			$party_category 				= $r2['name'];
-			
-			$party_contact_person_name 		= $row['party_contact_person_name'];
-			$party_address_1 				= $row['party_address_1'];
-			$party_city 					= $row['party_city'];
-				$sql = "select * from cities where id = '$party_city' ";
-				$q2  = mysqli_query($con, $sql);
-				$r2 = mysqli_fetch_array($q2);
-				$party_city = $r2['city_name'];
+	$excel_rows = [];
+	$excel_rows[] = ['Supplier Master'];
+	$excel_rows[] = [
+		'Sr.No.',
+		'Registered By',
+		'Supplier Type',
+		'Supplier Name',
+		'Type',
+		'Category',
+		'Contact Person',
+		'Address',
+		'City',
+		'State',
+		'Pincode',
+		'Area',
+		'Country',
+		'Phone-1',
+		'Phone-2',
+		'Phone-3',
+		'Mobile-1',
+		'Mobile-2',
+		'Mobile-3',
+		'Email Id',
+		'PAN No.',
+		'GST No.',
+		'MSME No.',
+		'Name in A/c Software',
+		'Bank Name',
+		'Bank Account Type',
+		'Beneficiary Name',
+		'Bank Address',
+		'Account No.',
+		'IFSC Code',
+		'KYC',
+		'Created Date'
+	];
 
-	
-			$party_state 					= $row['party_state'];
-			$sql = "select * from states where id = '$party_state' ";
-				$q2  = mysqli_query($con, $sql);
-				$r2 = mysqli_fetch_array($q2);
-				$party_state = $r2['state_name'];
-			$party_pincode 					= $row['party_pincode'];
-			$party_area 					= $row['party_area'];
-			$party_country 					= $row['party_country'];
-			$party_phone 					= $row['party_phone'];
-			$party_phone1 					= $row['party_phone1'];
-			$party_phone2 					= $row['party_phone2'];
-			$party_mobile 					= $row['party_mobile'];
-			$party_mobile1 					= $row['party_mobile1'];
-			$party_mobile2 					= $row['party_mobile2'];			
-			$party_email 					= $row['party_email'];
-			$party_pan_number 				= $row['party_pan_number'];
-			$party_gst_number 				= $row['party_gst_number'];
-			$party_msme_number 				= $row['party_msme_number'];
-			
-			$tally_account_name				= $row['tally_account_name'];
-			$party_beneficiary_name			= $row['party_beneficiary_name'];
-			$party_bank_name				= $row['party_bank_name'];
-			$party_bank_account_type		= $row['party_bank_account_type'];
-			$party_bank_address				= $row['party_bank_address'];
-			$party_bank_account_no			= $row['party_bank_account_no'];
-			$party_bank_ifsc_code			= $row['party_bank_ifsc_code'];
-			
-			$sql = "SELECT * FROM `kyc_upd_log` where party_id = '$party_id'  order by id asc";
-			$q2  = mysqli_query($con, $sql);
-			$r2 = mysqli_fetch_array($q2);
-			$created_on = $r2['created_on'];
-			$created_on = date('d-m-Y', strtotime($created_on));
-			if($created_on == '01-01-1970'){
-				$created_on = '';
-			}
-										
-			$i = $i +1;	
-			$message .= "<tr>
-				<td style='width: 5%;text-align: right;'>".$i."</td>
-				<td style='width: 8%'>".$comp_name."</td>
-				<td style='width: 8%'>".$party_nature_business."</td>
-				<td style='width: 8%'>".$party_name."</td>
-				<td style='width: 8%'>".$party_type."</td>
-				
-				<td style='width: 10%'>". $party_category."</td>
-				<td style='width:5%' >". $party_contact_person_name."</td>
-				<td style='width:5%;text-align:left'>". $party_address_1."</td>
-				<td style='width:8%' >". $party_city."</td>
-				<td style='width:10%'; text-align:left'>". $party_state."</td>
-				<td style='width:10%'>". $party_pincode."</td>
-				<td style='width:10%'; '>". $party_area."</td>
-				<td style='width:10%'>". $party_country."</td>
-				<td style='width:10%' >". $party_phone."</td>
-				<td style='width:10%' >". $party_phone1."</td>
-				<td style='width:10%' >". $party_phone2."</td>
-				<td style='width:10%' >". $party_mobile."</td>
-				<td style='width:10%' >". $party_mobile1."</td>
-				<td style='width:10%' >". $party_mobile2."</td>
-				<td style='width:10%' >". $party_email."</td>
-				<td style='width:10%' >". $party_pan_number."</td>
-				<td style='width:10%' >". $party_gst_number."</td>
-				<td style='width:10%' >". $party_msme_number."</td>
-				
-				<td style='width:10%' >". $tally_account_name."</td>
-				
-				<td style='width:10%' >". $party_bank_name."</td>
-				<td style='width:10%' >". $party_bank_account_type."</td>
-				<td style='width:10%' >". $party_beneficiary_name."</td>
-				<td style='width:10%' >". $party_bank_address."</td>
-				<td style='width:10%;ext-align:left'  >'". $party_bank_account_no."</td>
-				<td style='width:10%' >". $party_bank_ifsc_code."</td>
-				<td style='width:10%' >". $party_kyc."</td>
-				<td style='width:10%' >". $created_on."</td>
-				
-				</tr>";
-	
+	// Pre-fetch maps
+	$comp_map = [];
+	$res_c = mysqli_query($con, "SELECT comp_id, comp_name FROM company");
+	while ($rc = mysqli_fetch_array($res_c)) {
+		$comp_map[$rc['comp_id']] = $rc['comp_name'];
 	}
-			
-			
-		$message .= "</table>";
 
-//echo $message;
-//exit();	
-	
-    // get the HTML
-    ob_start();
-    //include(dirname(__FILE__).'../res/exemple07a.php');
-    //include(dirname(__FILE__).'../res/exemple07b.php');
-    //$content = ob_get_clean();
-
-	if($prn=='excel'){
-		header("Content-type: application/xls");
-		Header("Content-Disposition: attachment; filename=vendor_master.xls");
-		print $message;
+	$type_map = [];
+	$res_t = mysqli_query($con, "SELECT id, type FROM sma_type");
+	while ($rt = mysqli_fetch_array($res_t)) {
+		$type_map[$rt['id']] = $rt['type'];
 	}
-	
-    // convert to PDF
-	if($prn == 'pdf'){
-		require_once(dirname(__FILE__).'/html2pdf/html2pdf.class.php');
-		try
-		{
-			$html2pdf = new HTML2PDF('L', 'A4', 'fr');
-			$html2pdf->pdf->SetDisplayMode('fullpage');
-	//      $html2pdf->pdf->SetProtection(array('print'), 'spipu');
-		   // $html2pdf->writeHTML($content, isset($_GET['vuehtml']));
-			$html2pdf->writeHTML($message);
-			$html2pdf->Output('vendor_master.pdf');
-			
+
+	$cat_map = [];
+	$res_cat = mysqli_query($con, "SELECT id, name FROM sma_categories");
+	while ($rcat = mysqli_fetch_array($res_cat)) {
+		$cat_map[$rcat['id']] = $rcat['name'];
+	}
+
+	$city_map = [];
+	$res_ct = mysqli_query($con, "SELECT id, city_name FROM cities");
+	while ($rct = mysqli_fetch_array($res_ct)) {
+		$city_map[$rct['id']] = $rct['city_name'];
+	}
+
+	$state_map = [];
+	$res_st = mysqli_query($con, "SELECT id, state_name FROM states");
+	while ($rst = mysqli_fetch_array($res_st)) {
+		$state_map[$rst['id']] = $rst['state_name'];
+	}
+
+	$search = $_SESSION['search'] ?? ($_POST['search'] ?? '');
+
+	$sql = "SELECT * FROM `sma_party_mst` WHERE 1";
+	if (!empty($search)) {
+		$sql .= " AND (party_name LIKE '%$search%' OR party_gst_number LIKE '%$search%' OR party_pan_number LIKE '%$search%' OR party_email LIKE '%$search%')";
+	}
+	$sql .= " ORDER BY party_name ASC";
+
+	$result = mysqli_query($con, $sql);
+	$i = 0;
+	while($row = mysqli_fetch_array($result)){
+		$i++;
+		$comp_name     = $comp_map[$row['company_id']] ?? '';
+		$party_type    = $type_map[$row['party_type']] ?? '';
+		$category_name = $cat_map[$row['party_category']] ?? '';
+		$city_name     = $city_map[$row['party_city']] ?? $row['party_city'];
+		$state_name    = $state_map[$row['party_state']] ?? $row['party_state'];
+
+		$created_dt = '';
+		if (!empty($row['created_dated']) && $row['created_dated'] != '1970-01-01' && $row['created_dated'] != '0000-00-00') {
+			$created_dt = date('d-m-Y', strtotime($row['created_dated']));
 		}
-		catch(HTML2PDF_exception $e) {
-			echo $e;
-			exit;
-		}
-	}
- }	
- //<!-- Ruchi started-->
- if($_GET['sub'] == 'cat'){
 
-	
+		$excel_rows[] = [
+			$i,
+			$comp_name,
+			$row['party_nature_business'] ?? '',
+			$row['party_name'] ?? '',
+			$party_type,
+			$category_name,
+			$row['party_contact_person_name'] ?? '',
+			$row['party_address_1'] ?? '',
+			$city_name,
+			$state_name,
+			$row['party_pincode'] ?? '',
+			$row['party_area'] ?? '',
+			$row['party_country'] ?? '',
+			$row['party_phone'] ?? '',
+			$row['party_phone1'] ?? '',
+			$row['party_phone2'] ?? '',
+			$row['party_mobile'] ?? '',
+			$row['party_mobile1'] ?? '',
+			$row['party_mobile2'] ?? '',
+			$row['party_email'] ?? '',
+			$row['party_pan_number'] ?? '',
+			$row['party_gst_number'] ?? '',
+			$row['party_msme_number'] ?? '',
+			$row['tally_account_name'] ?? '',
+			$row['party_bank_name'] ?? '',
+			$row['party_bank_account_type'] ?? '',
+			$row['party_beneficiary_name'] ?? '',
+			$row['party_bank_address'] ?? '',
+			$row['party_bank_account_no'] ?? '',
+			$row['party_bank_ifsc_code'] ?? '',
+			$row['party_kyc'] ?? '',
+			$created_dt
+		];
+	}
+
+	$fl_name = 'Supplier_Master.xlsx';
+	\Shuchkin\SimpleXLSXGen::fromArray($excel_rows)->downloadAs($fl_name);
+	exit();
+}
+
+if($_GET['sub'] == 'cat'){
 	include("../dbcon.php");
+	require_once "../excel_libs/SimpleXLSXGen.php";
 
-	
-	$prn='excel';
-		
-	$message = '';
-	
-	$message .= "<table border='1' cellspacing='0' style='width: 100%; ; font-size: 12px;'>
-			<tr>
-				<th style='width:20%;text-align: right;'>Category</th>
-							</tr>
-			</table>";
-		
-		$message .= "<table border='1' cellspacing='0' style='width: 100%; ; font-size: 12px;'>";
-		
-		$sql="SELECT * from sma_categories";
+	$excel_rows = [];
+	$excel_rows[] = ['Supplier Category List'];
+	$excel_rows[] = [
+		'Sr.No.',
+		'Category'
+	];
 
-		$result = mysqli_query($con,$sql);
-		while($row = mysqli_fetch_array($result)){
-						
-			$message .= "<tr>
-			<td width=20%>".$row['name']."</td>
-				
-				</tr>";
+	$sql = "SELECT * FROM sma_categories ORDER BY name ASC";
+	$result = mysqli_query($con, $sql);
+	$i = 0;
+	while($row = mysqli_fetch_array($result)){
+		$i++;
+		$excel_rows[] = [
+			$i,
+			$row['name'] ?? ''
+		];
 	}
-			
-		$message .= "</table>";
-	
-//echo $message;
 
-    ob_start();
-    
+	$fl_name = 'Supplier_Category_List.xlsx';
+	\Shuchkin\SimpleXLSXGen::fromArray($excel_rows)->downloadAs($fl_name);
+	exit();
+}
 
-	if($prn=='excel'){
-		header("Content-type: application/xls");
-		Header("Content-Disposition: attachment; filename=Category.xls");
-		print $message;
-		
-		
-		
-	}
-	
-    // convert to PDF
-	if($prn == 'pdf'){
-		require_once(dirname(__FILE__).'/html2pdf/html2pdf.class.php');
-		try
-		{
-			$html2pdf = new HTML2PDF('L', 'A4', 'fr');
-			$html2pdf->pdf->SetDisplayMode('fullpage');
-	//      $html2pdf->pdf->SetProtection(array('print'), 'spipu');
-		   // $html2pdf->writeHTML($content, isset($_GET['vuehtml']));
-			$html2pdf->writeHTML($message);
-			$html2pdf->Output('vendor_master.pdf');
-			
-		}
-		catch(HTML2PDF_exception $e) {
-			echo $e;
-			exit;
-		}
-	}
- }
- if($_GET['sub'] == 'Type'){
-
-	
+if($_GET['sub'] == 'Type'){
 	include("../dbcon.php");
+	require_once "../excel_libs/SimpleXLSXGen.php";
 
-	
-	$prn='excel';
-		
-	$message = '';
-	
-	$message .= "<table border='1' cellspacing='0' style='width: 100%; ; font-size: 12px;'>
-			<tr>
-				<th style='width:20%;text-align: right;'>Type</th>
-							</tr>
-			</table>";
-		
-		$message .= "<table border='1' cellspacing='0' style='width: 100%; ; font-size: 12px;'>";
-		
-		$sql="SELECT * from sma_type";
+	$excel_rows = [];
+	$excel_rows[] = ['Supplier Type List'];
+	$excel_rows[] = [
+		'Sr.No.',
+		'Type'
+	];
 
-		$result = mysqli_query($con,$sql);
-		while($row = mysqli_fetch_array($result)){
-						
-			$message .= "<tr>
-			<td width=20%>".$row['type']."</td>
-				
-				</tr>";
+	$sql = "SELECT * FROM sma_type ORDER BY type ASC";
+	$result = mysqli_query($con, $sql);
+	$i = 0;
+	while($row = mysqli_fetch_array($result)){
+		$i++;
+		$excel_rows[] = [
+			$i,
+			$row['type'] ?? ''
+		];
 	}
-			
-		$message .= "</table>";
-	
-//echo $message;
 
-    ob_start();
-    
-
-	if($prn=='excel'){
-		header("Content-type: application/xls");
-		Header("Content-Disposition: attachment; filename=Type.xls");
-		print $message;
-		
-		
-		
-	}
-	
-    // convert to PDF
-	if($prn == 'pdf'){
-		require_once(dirname(__FILE__).'/html2pdf/html2pdf.class.php');
-		try
-		{
-			$html2pdf = new HTML2PDF('L', 'A4', 'fr');
-			$html2pdf->pdf->SetDisplayMode('fullpage');
-	//      $html2pdf->pdf->SetProtection(array('print'), 'spipu');
-		   // $html2pdf->writeHTML($content, isset($_GET['vuehtml']));
-			$html2pdf->writeHTML($message);
-			$html2pdf->Output('vendor_master.pdf');
-			
-		}
-		catch(HTML2PDF_exception $e) {
-			echo $e;
-			exit;
-		}
-	}
- }
- 
- ?>
-<!-- Ruchi ended-->	
-
-
+	$fl_name = 'Supplier_Type_List.xlsx';
+	\Shuchkin\SimpleXLSXGen::fromArray($excel_rows)->downloadAs($fl_name);
+	exit();
+}
+?>

@@ -1,278 +1,167 @@
 <?php
+session_start();
+ini_set('max_execution_time', 0);
+
 if($_GET['sub'] == 'exp'){
-
 	include "../dbcon.php";
-	include "../baseurl.php";
+	require_once "../excel_libs/SimpleXLSXGen.php";
 
-//echo dirname(__FILE__);
-//exit();
+	$excel_rows = [];
+	$excel_rows[] = ['Account Master List'];
+	$excel_rows[] = [
+		'Sr.No.',
+		'Account Name',
+		'Account Group',
+		'Company',
+		'Account Type',
+		'Percentage',
+		'CC Code',
+		'Status'
+	];
 
-/**
- * HTML2PDF Librairy - example
- *
- * HTML => PDF convertor
- * distributed under the LGPL License
- *
- * @author      Laurent MINGUET <webmaster@html2pdf.fr>
- *
- * isset($_GET['vuehtml']) is not mandatory
- * it allow to display the result in the HTML format
- */
-	//$message="<table><tr><td>Table</td></tr></table>";
+	// Pre-fetch maps
+	$ag_map = [];
+	$res_ag = mysqli_query($con, "SELECT id, account_group FROM sma_account_group");
+	while ($rag = mysqli_fetch_array($res_ag)) {
+		$ag_map[$rag['id']] = $rag['account_group'];
+	}
 
-	$prn		= "excel";
-//	$from_date	= date('Y-m-d', strtotime($_POST['from_date']));
-//	$to_date	= date('Y-m-d', strtotime($_POST['to_date']));
-//	$department = $_POST['department'];	
-//	$supplier_id= $_POST['supplier_id'];	
-//	$company_id= $_POST['company_id'];	
-		
-	$message ='';
-	
-	$message .= "<table border='1' cellspacing='0' style='width: 100%; text-align: center; font-size: 12pt;'>
-			<tr><th style='width: 100%;' colspan='4'> Account Master List </th></tr></table>";		
-	
-		$message .= "<table border='1' cellspacing='0' style='width: 100%; border: solid 1px black; text-align: center; font-size: 12pt;'>
-				<tr><td style='width: 20%;'>Account</td>
-					<td style='width: 8%;'>Account Group</td>
-					<td style='width: 8%;'>Account Type</td>
-					<td style='width: 08%;text-align: left;'> Vertical Type</td>
-					
-				</tr></table>";
-		$message .= "<table border='1' cellspacing='0' style='width: 100%; border: solid 1px black; text-align: left; font-size: 10pt;'>";
-				
-	$id				= $_GET['id'];
-	
-	$tableName	= "account_mst";
-	
-	$sql 		= " SELECT * FROM $tableName order by account_name ";
-	
-	
-	$result = mysqli_query($con,$sql);
-    $error  = mysqli_error($con);
-	if(!empty($error)){ echo "ERROR : " . $error; exit();}
+	$comp_map = [];
+	$res_c = mysqli_query($con, "SELECT comp_id, comp_code, comp_name FROM company");
+	while ($rc = mysqli_fetch_array($res_c)) {
+		$comp_map[$rc['comp_id']] = !empty($rc['comp_code']) ? $rc['comp_code'] : $rc['comp_name'];
+	}
+
+	$type_map = [
+		'A' => 'Purchase',
+		'B' => 'Bank',
+		'C' => 'Cash',
+		'D' => 'Deduction',
+		'E' => 'Expense',
+		'I' => 'Income',
+		'L' => 'Liability',
+		'T' => 'Tax'
+	];
+
+	$account_type_filter = $_SESSION['account_type'] ?? '';
+	$search_filter       = $_SESSION['search'] ?? '';
+
+	$sql = "SELECT * FROM account_mst WHERE (del != 'Y' OR del IS NULL OR del = '')";
+	if (!empty($account_type_filter)) {
+		$sql .= " AND account_type = '$account_type_filter'";
+	}
+	if (!empty($search_filter)) {
+		$sql .= " AND (account_name LIKE '%$search_filter%' OR budget_code LIKE '%$search_filter%')";
+	}
+	$sql .= " ORDER BY account_name ASC";
+
+	$result = mysqli_query($con, $sql);
+	$i = 0;
 	while($row = mysqli_fetch_array($result)){
-	
-		$account_type = $row['account_type'];
-		if($account_type =='A'){
-			$account_type ='Purchase';
-		}
-		else if ($account_type =='B'){
-			$account_type ='Cash';		
-		}
-		else if ($account_type =='D'){
-			$account_type ='Deduction';		
-		}
-		else if ($account_type =='E'){
-			$account_type ='Expense';		
-		}
-		$account_group = $row['account_group'];
-		$sql = "SELECT * from sma_account_group where id = '$account_group' ";
-		$res = mysqli_query($con, $sql);
-		$r2  = mysqli_fetch_array($res);
-		$account_group = $r2['account_group'];
-		
-		$vertical_type = $row['vertical_type'];
-		$sql = "SELECT * from sma_vertical where id = '$vertical_type' ";
-		$res = mysqli_query($con, $sql);
-		$r2  = mysqli_fetch_array($res);
-		$vertical_type = $r2['vertical_name'];
-		
-		$message .= "<tr>
-						<td>".$row['account_name']."</td>
-						<td>".$account_group."</td>
-						<td>".$account_type."</td>
-						<td>".$vertical_type ."</td>
-					</tr>";
-		}
+		$i++;
+		$acc_name   = $row['account_name'] ?? '';
+		$acc_group  = $ag_map[$row['account_group']] ?? '';
+		$comp_name  = $comp_map[$row['company_id']] ?? '';
+		$raw_type   = $row['account_type'] ?? '';
+		$acc_type   = $type_map[$raw_type] ?? $raw_type;
+		$percentage = floatval($row['percentage'] ?? 0);
+		$cc_code    = $row['budget_code'] ?? '';
+		$st_raw     = $row['status'] ?? '';
+		$status_txt = ($st_raw == 'Y' || $st_raw == '1' || strtolower($st_raw) == 'active') ? 'Active' : 'Inactive';
 
-	$message .= "</table>";
-	
-//	echo $message;
-//	exit();
-	
-    // get the HTML
-    ob_start();
-    //include(dirname(__FILE__).'../res/exemple07a.php');
-    //include(dirname(__FILE__).'../res/exemple07b.php');
-    //$content = ob_get_clean();
-	//$fl_name = 'poorder_'.$id;
-    
-	if($prn=='excel'){
-		$fl_name = 'user_export.xls';
-		header("Content-type: application/xls");
-		header("Content-Type:'application/force-download'");
-		Header("Content-Disposition: attachment; filename=$fl_name");
-	
-		print $message;
+		$excel_rows[] = [
+			$i,
+			$acc_name,
+			$acc_group,
+			$comp_name,
+			$acc_type,
+			$percentage,
+			$cc_code,
+			$status_txt
+		];
 	}
 
-
+	$fl_name = 'Account_Master_List.xlsx';
+	\Shuchkin\SimpleXLSXGen::fromArray($excel_rows)->downloadAs($fl_name);
+	exit();
 }
-//Ruchi started
+
 if($_GET['sub'] == 'accgrp'){
+	include "../dbcon.php";
+	require_once "../excel_libs/SimpleXLSXGen.php";
 
-	
-	include("../dbcon.php");
+	$excel_rows = [];
+	$excel_rows[] = ['Account Group List'];
+	$excel_rows[] = [
+		'Sr.No.',
+		'Account Group'
+	];
 
-	
-	$prn='excel';
-		
-	$message = '';
-	
-	$message .= "<table border='1' cellspacing='0' style='width: 100%; ; font-size: 12px;'>
-			<tr>
-				<th style='width:20%;text-align: right;'>Account Group</th>
-							</tr>
-			</table>";
-		
-		$message .= "<table border='1' cellspacing='0' style='width: 100%; ; font-size: 12px;'>";
-		
-		$sql="SELECT * from sma_account_group";
-
-		$result = mysqli_query($con,$sql);
-		while($row = mysqli_fetch_array($result)){
-						
-			$message .= "<tr>
-			<td width=20%>".$row['account_group']."</td>
-				
-				</tr>";
+	$sql = "SELECT * FROM sma_account_group ORDER BY account_group ASC";
+	$result = mysqli_query($con, $sql);
+	$i = 0;
+	while($row = mysqli_fetch_array($result)){
+		$i++;
+		$excel_rows[] = [
+			$i,
+			$row['account_group'] ?? ''
+		];
 	}
-			
-		$message .= "</table>";
-	
-//echo $message;
 
-    ob_start();
-    
+	$fl_name = 'Account_Group_List.xlsx';
+	\Shuchkin\SimpleXLSXGen::fromArray($excel_rows)->downloadAs($fl_name);
+	exit();
+}
 
-	if($prn=='excel'){
-		header("Content-type: application/xls");
-		Header("Content-Disposition: attachment; filename=Account Group.xls");
-		print $message;
-		
-		
-		
+if($_GET['sub'] == 'gst'){
+	include "../dbcon.php";
+	require_once "../excel_libs/SimpleXLSXGen.php";
+
+	$excel_rows = [];
+	$excel_rows[] = ['GST Master List'];
+	$excel_rows[] = [
+		'Sr.No.',
+		'TAX Description',
+		'GST % Rate',
+		'SGST Account Name',
+		'CGST Account Name',
+		'IGST Account Name',
+		'Status'
+	];
+
+	// Pre-fetch account master map
+	$ac_map = [];
+	$res_ac = mysqli_query($con, "SELECT id, account_name FROM account_mst");
+	while ($rac = mysqli_fetch_array($res_ac)) {
+		$ac_map[$rac['id']] = $rac['account_name'];
 	}
-	
-    // convert to PDF
-	if($prn == 'pdf'){
-		require_once(dirname(__FILE__).'/html2pdf/html2pdf.class.php');
-		try
-		{
-			$html2pdf = new HTML2PDF('L', 'A4', 'fr');
-			$html2pdf->pdf->SetDisplayMode('fullpage');
-	//      $html2pdf->pdf->SetProtection(array('print'), 'spipu');
-		   // $html2pdf->writeHTML($content, isset($_GET['vuehtml']));
-			$html2pdf->writeHTML($message);
-			$html2pdf->Output('vendor_master.pdf');
-			
-		}
-		catch(HTML2PDF_exception $e) {
-			echo $e;
-			exit;
-		}
+
+	$sql = "SELECT * FROM gst_mst ORDER BY id ASC";
+	$result = mysqli_query($con, $sql);
+	$i = 0;
+	while($row = mysqli_fetch_array($result)){
+		$i++;
+		$gst_name  = $row['gst_name'] ?? '';
+		$igst_rate = $row['igst'] ?? '';
+		$sgst_name = $ac_map[$row['sgst_account_id']] ?? '';
+		$cgst_name = $ac_map[$row['cgst_account_id']] ?? '';
+		$igst_name = $ac_map[$row['igst_account_id']] ?? '';
+		$st_raw    = $row['status'] ?? '';
+		$status_txt= ($st_raw == 'Y' || $st_raw == '1' || strtolower($st_raw) == 'active') ? 'Active' : 'Inactive';
+
+		$excel_rows[] = [
+			$i,
+			$gst_name,
+			$igst_rate,
+			$sgst_name,
+			$cgst_name,
+			$igst_name,
+			$status_txt
+		];
 	}
- }
 
- if($_GET['sub'] == 'gst'){
-
-	
-	include("../dbcon.php");
-
-	
-	$prn='excel';
-		
-	$message = '';
-	
-	$message .= "<table border='1' cellspacing='0' style='width: 100%; ; font-size: 12px;'>
-			<tr>
-				<th style='width:20%;text-align: right;'>TAX Description</th>
-				<th style='width:20%;text-align: right;'>GST % Rate</th>
-				<th style='width:20%;text-align: right;'>SGST Account Name</th>
-				<th style='width:20%;text-align: right;'>CGST Account Name</th>
-				<th style='width:20%;text-align: right;'>IGST Account Name</th>
-				<th style='width:20%;text-align: right;'>Status</th>
-							</tr>
-			</table>";
-		
-		$message .= "<table border='1' cellspacing='0' style='width: 100%; ; font-size: 12px;'>";
-		
-		$sql="SELECT * from gst_mst";
-
-		$result = mysqli_query($con,$sql);
-		while($row = mysqli_fetch_array($result)){
-			$id = $row['id'];
-			$sql1="Select * from gst_mst where id ='$id'";
-		$query1 = mysqli_query($con, $sql1);
-        $row1 = mysqli_fetch_array($query1);
-			$sgst_account_id = $row1['sgst_account_id'];
-			$cgst_account_id = $row1['cgst_account_id'];
-			$igst_account_id = $row1['igst_account_id'];
-			$sql2 = "select * from account_mst where id ='$sgst_account_id'";
-			$query2 = mysqli_query($con, $sql2);
-        	$row2 = mysqli_fetch_array($query2);
-
-			$sql3 = "select * from account_mst where id ='$cgst_account_id'";
-			$query3 = mysqli_query($con, $sql3);
-        	$row3 = mysqli_fetch_array($query3);
-
-			$sql4 = "select * from account_mst where id ='$igst_account_id'";
-			$query4 = mysqli_query($con, $sql4);
-        	$row4 = mysqli_fetch_array($query4);
-			$status = $row1['status'];
-								if($status=='Y' ){
-									$selected = "Active";
-								}
-								else if($status=='N'){
-									$selected = "Inactive";
-								}			
-			$message .= "<tr>
-			<td width=20%>".$row['gst_name']."</td>
-			<td width=20%>".$row['igst']."</td>
-			<td width=20%>".$row2['account_name']."</td>
-			<td width=20%>".$row3['account_name']."</td>
-			<td width=20%>".$row4['account_name']."</td>
-			<td width=20%>".$selected."</td>
-
-				
-				</tr>";
-	}
-			
-		$message .= "</table>";
-	
-//echo $message;
-
-    ob_start();
-    
-
-	if($prn=='excel'){
-		header("Content-type: application/xls");
-		Header("Content-Disposition: attachment; filename=GST Master.xls");
-		print $message;
-		
-		
-		
-	}
-	
-    // convert to PDF
-	if($prn == 'pdf'){
-		require_once(dirname(__FILE__).'/html2pdf/html2pdf.class.php');
-		try
-		{
-			$html2pdf = new HTML2PDF('L', 'A4', 'fr');
-			$html2pdf->pdf->SetDisplayMode('fullpage');
-	//      $html2pdf->pdf->SetProtection(array('print'), 'spipu');
-		   // $html2pdf->writeHTML($content, isset($_GET['vuehtml']));
-			$html2pdf->writeHTML($message);
-			$html2pdf->Output('vendor_master.pdf');
-			
-		}
-		catch(HTML2PDF_exception $e) {
-			echo $e;
-			exit;
-		}
-	}
- }
- //ruchi ended
+	$fl_name = 'GST_Master_List.xlsx';
+	\Shuchkin\SimpleXLSXGen::fromArray($excel_rows)->downloadAs($fl_name);
+	exit();
+}
 ?>
