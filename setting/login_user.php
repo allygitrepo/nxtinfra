@@ -27,7 +27,7 @@ $modulePath = "setting/login_user.php?sub=list";
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">List of User Login</h3>
-                
+                <span class="pull-right">&nbsp;&nbsp;&nbsp;<a href="user_export_func.php?sub=user_login" class="btn btn-primary">Export</a></span>
             </div>
             <!-- /.box-header -->
             <div class="box-body">

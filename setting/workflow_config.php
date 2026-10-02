@@ -157,7 +157,7 @@ div.ex1 {
             <div class="pull-right">
 				<span class="sepV_c marginRight">
 					<a href="workflow_config.php?sub=add" name="btnAdd" class="btn btn-info"><i class="splashy-document_letter_add"></i>&nbsp;&nbsp;Add </a>
-					<a href="workflow_config_export.php?sub=list" target="_blank" name="btnAdd" class="btn btn-info"><i class="splashy-document_letter_add"></i>&nbsp;&nbsp;Report </a>
+					<a href="user_export_func.php?sub=workflow" target="_blank" name="btnAdd" class="btn btn-primary">&nbsp;&nbsp;Export </a>
 				</span>
 			</div>
 			</div>

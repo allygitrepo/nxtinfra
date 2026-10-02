@@ -27,6 +27,7 @@ $modulePath = "vendor/cities.php?sub=list";
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">List of Cities</h3>
+                <span class="pull-right">&nbsp;&nbsp;&nbsp;<a href="vendor_export.php?sub=cities" class="btn btn-primary">Export</a></span>
                 <span class="pull-right"><a href="cities.php?sub=add" name="btnAdd" class="btn btn-info"><i class="splashy-document_letter_add"></i>&nbsp;&nbsp;Create Cities </a></span>
             </div>
             <!-- /.box-header -->

@@ -27,6 +27,7 @@ $modulePath = "setting/project.php?sub=list";
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">List of Location</h3>
+                <span class="pull-right">&nbsp;&nbsp;&nbsp;<a href="user_export_func.php?sub=location" class="btn btn-primary">Export</a></span>
                 <span class="pull-right"><a href="project.php?sub=add" name="btnAdd" class="btn btn-info"><i class="splashy-document_letter_add"></i>&nbsp;&nbsp;Create Location </a></span>
             </div>
             <!-- /.box-header -->

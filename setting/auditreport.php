@@ -209,21 +209,14 @@ $usrid  = $_SESSION['usrid'];
 								</div>
 						
 								<centera>	
-									<div class="col-md-2" >
+									<div class="col-md-3" >
 										<label class="col-lg-1a control-label">&nbsp;</label><br>
 											
 										<input class="btn btn-success" type="submit" value="Search" name="Search" >&nbsp;&nbsp;&nbsp;
 										<input class="btn btn-danger" type="submit" value="Reset" name="reset" >&nbsp;&nbsp;&nbsp;
-										
+										<a href="user_export_func.php?sub=audit_log" class="btn btn-primary">Export</a>
 									</div>
 								</centera>
-							
-			<?php  if($user=='Admin'){ ?>
-					<div class="col-md-2" >
-						<label class="col-lg-1a control-labela">&nbsp;</label><br>
-						<span class="pull-right"><a href="audit_log_export.php?sub=pdf" class="btn btn-primary">Export</a></span>
-					</div>
-			<?php } ?>
 							</div>	
 						
 							

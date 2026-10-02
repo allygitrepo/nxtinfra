@@ -40,11 +40,10 @@ include("../viewonly.php");
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">List of Financial Year</h3>
+                <span class="pull-right">&nbsp;&nbsp;&nbsp;<a href="user_export_func.php?sub=financial_year" class="btn btn-primary">Export</a></span>
 			  <?php if ( $viewonly!='Y'){ ?>
                 <span class="pull-right"><a href="financial_year.php?sub=add" name="btnAdd" class="btn btn-info"><i class="splashy-document_letter_add"></i>&nbsp;&nbsp;Create  </a></span>
 			<?php } ?>	
-			
-            
             </div>
             <!-- /.box-header -->
             <div class="box-body">

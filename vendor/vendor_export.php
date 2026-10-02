@@ -191,4 +191,60 @@ if($_GET['sub'] == 'Type'){
 	\Shuchkin\SimpleXLSXGen::fromArray($excel_rows)->downloadAs($fl_name);
 	exit();
 }
+
+if($_GET['sub'] == 'states'){
+	include("../dbcon.php");
+	require_once "../excel_libs/SimpleXLSXGen.php";
+
+	$excel_rows = [];
+	$excel_rows[] = ['States List'];
+	$excel_rows[] = [
+		'Sr.No.',
+		'States'
+	];
+
+	$sql = "SELECT * FROM states ORDER BY state_name ASC";
+	$result = mysqli_query($con, $sql);
+	$i = 0;
+	while($row = mysqli_fetch_array($result)){
+		$i++;
+		$excel_rows[] = [
+			$i,
+			$row['state_name'] ?? ''
+		];
+	}
+
+	$fl_name = 'states_list.xlsx';
+	\Shuchkin\SimpleXLSXGen::fromArray($excel_rows)->downloadAs($fl_name);
+	exit();
+}
+
+if($_GET['sub'] == 'cities'){
+	include("../dbcon.php");
+	require_once "../excel_libs/SimpleXLSXGen.php";
+
+	$excel_rows = [];
+	$excel_rows[] = ['Cities List'];
+	$excel_rows[] = [
+		'Sr.No.',
+		'States',
+		'Cities'
+	];
+
+	$sql = "SELECT b.state_name, a.city_name FROM cities a INNER JOIN states b ON b.id = a.states_id ORDER BY b.state_name ASC, a.city_name ASC";
+	$result = mysqli_query($con, $sql);
+	$i = 0;
+	while($row = mysqli_fetch_array($result)){
+		$i++;
+		$excel_rows[] = [
+			$i,
+			$row['state_name'] ?? '',
+			$row['city_name'] ?? ''
+		];
+	}
+
+	$fl_name = 'cities_list.xlsx';
+	\Shuchkin\SimpleXLSXGen::fromArray($excel_rows)->downloadAs($fl_name);
+	exit();
+}
 ?>

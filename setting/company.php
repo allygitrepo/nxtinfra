@@ -26,6 +26,7 @@ $modulePath = "setting/company.php?sub=list";
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">List of Company</h3>
+                <span class="pull-right">&nbsp;&nbsp;&nbsp;<a href="user_export_func.php?sub=company" class="btn btn-primary">Export</a></span>
                 <span class="pull-right"><a href="company.php?sub=add" name="btnAdd" class="btn btn-info"><i class="splashy-document_letter_add"></i>&nbsp;&nbsp;Create Company </a></span>
             </div>
             <!-- /.box-header -->
