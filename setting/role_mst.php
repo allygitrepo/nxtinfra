@@ -27,6 +27,7 @@ $modulePath = "setting/role_mst.php?sub=list";
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">List of Role</h3>
+                <span class="pull-right">&nbsp;&nbsp;&nbsp;<a href="user_export_func.php?sub=role" class="btn btn-primary">Report</a></span>
                 <span class="pull-right"><a href="role_mst.php?sub=add" name="btnAdd" class="btn btn-info"><i class="splashy-document_letter_add"></i>&nbsp;&nbsp;Create Role </a></span>
             </div>
             <!-- /.box-header -->

@@ -27,6 +27,7 @@ $modulePath = "setting/department.php?sub=list";
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">List of Department</h3>
+                <span class="pull-right">&nbsp;&nbsp;&nbsp;<a href="user_export_func.php?sub=dept" class="btn btn-primary">Report</a></span>
                 <span class="pull-right"><a href="department.php?sub=add" name="btnAdd" class="btn btn-info"><i class="splashy-document_letter_add"></i>&nbsp;&nbsp;Create Department </a></span>
             </div>
             <!-- /.box-header -->

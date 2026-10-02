@@ -27,6 +27,7 @@ $modulePath = "setting/designation.php?sub=list";
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">List of Designation</h3>
+                <span class="pull-right">&nbsp;&nbsp;&nbsp;<a href="user_export_func.php?sub=desig" class="btn btn-primary">Report</a></span>
                 <span class="pull-right"><a href="designation.php?sub=add" name="btnAdd" class="btn btn-info"><i class="splashy-document_letter_add"></i>&nbsp;&nbsp;Create Designation </a></span>
             </div>
             <!-- /.box-header -->

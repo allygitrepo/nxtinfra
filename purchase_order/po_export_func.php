@@ -19,13 +19,13 @@ if(isset($_GET['sub']) && $_GET['sub'] == 'pdf'){
 	$to_date_dmy   = (!empty($to_date_raw) && $to_date_raw != '1970-01-01' && $to_date_raw != '0000-00-00') ? date('d-m-Y', strtotime($to_date_raw)) : '';
 
 	if (!empty($from_date_dmy) && !empty($to_date_dmy)) {
-		$title_banner = 'Purchase Order Detail Register from ' . $from_date_dmy . ' TO ' . $to_date_dmy;
+		$title_banner = 'PO Details Report from ' . $from_date_dmy . ' TO ' . $to_date_dmy;
 	} else if (!empty($from_date_dmy)) {
-		$title_banner = 'Purchase Order Detail Register from ' . $from_date_dmy;
+		$title_banner = 'PO Details Report from ' . $from_date_dmy;
 	} else if (!empty($to_date_dmy)) {
-		$title_banner = 'Purchase Order Detail Register up to ' . $to_date_dmy;
+		$title_banner = 'PO Details Report up to ' . $to_date_dmy;
 	} else {
-		$title_banner = 'Purchase Order Detail Register';
+		$title_banner = 'PO Details Report';
 	}
 
 	$excel_rows = [];
@@ -41,24 +41,17 @@ if(isset($_GET['sub']) && $_GET['sub'] == 'pdf'){
 		'Supplier',
 		'NOA No.',
 		'Supp. Quote Ref. No.',
-		'Delivery Days',
-		'Credit Days',
-		'Discount',
-		'Transport',
-		'Other Charges',
 		'Item Sr.No.',
+		'Budget Group',
+		'Budget Sub Group',
 		'Material',
-		'Description',
 		'Unit',
 		'Qty.',
 		'Rate',
 		'Total Amt.',
 		'GST%',
 		'Net Amt.',
-		'Budget Group',
-		'Budget Sub Group',
-		'Budget Code',
-		'Supp. Inv. No.',
+		'Invoice No.',
 		'Inv. Date',
 		'Inv. Qty.',
 		'Inv. GST',
@@ -289,84 +282,180 @@ if(isset($_GET['sub']) && $_GET['sub'] == 'pdf'){
 				}
 			}
 
-			// Supplier invoice detail for this PO
-			$supp_inv_no = '';
-			$inv_date = '';
-			$inv_qty = '';
-			$inv_gst = '';
-			$inv_amount = '';
+			// Fetch linked Supplier Invoices for this PO Item
+			$poi_id = $rw['id'] ?? 0;
+			$sql_inv_match = "";
+			if (!empty($poi_id) && !empty($prod_id)) {
+				$sql_inv_match = "(sid.po_item_id = '$poi_id' OR sid.material_id = '$prod_id')";
+			} else if (!empty($poi_id)) {
+				$sql_inv_match = "sid.po_item_id = '$poi_id'";
+			} else if (!empty($prod_id)) {
+				$sql_inv_match = "sid.material_id = '$prod_id'";
+			}
 
-			$excel_rows[] = [
-				$ln,
-				$comp_name,
-				$loc_name,
-				$department_name,
-				$status,
-				$po_number,
-				$po_dated,
-				$party_name,
-				$noa_display,
-				$quotation_reference_no,
-				$delivery_days,
-				$credit_days,
-				$discount,
-				$transport,
-				$other_charges,
-				$item_index,
-				$product_name,
-				$product_desc,
-				$unit,
-				$quantity,
-				$unit_rate,
-				$actual_amt,
-				$gst,
-				$net_amt,
-				$budget_name,
-				$budget_head,
-				$budget_code,
-				$supp_inv_no,
-				$inv_date,
-				$inv_qty,
-				$inv_gst,
-				$inv_amount
-			];
+			$item_invoices = [];
+			if (!empty($sql_inv_match)) {
+				$sql_inv = "SELECT si.supplier_invoice_no, si.invoice_date, sid.qty, sid.gst, sid.amount 
+				            FROM `sma_supplier_invoice` si 
+				            JOIN `sma_supplier_invoice_details` sid ON si.id = sid.si_hdr_id 
+				            WHERE (si.our_po_ref_no = '$pur_id' OR si.our_po_ref_no = '$po_number') 
+				              AND si.del != 'Y' 
+				              AND si.status != 'Draft'
+				              AND $sql_inv_match 
+				              AND sid.qty > 0";
+				$res_inv = mysqli_query($con, $sql_inv);
+				while ($res_inv && $r_inv = mysqli_fetch_array($res_inv)) {
+					$inv_d = (!empty($r_inv['invoice_date']) && $r_inv['invoice_date'] != '1970-01-01' && $r_inv['invoice_date'] != '0000-00-00') ? date('d-m-Y', strtotime($r_inv['invoice_date'])) : '';
+					$item_invoices[] = [
+						'invoice_no' => $r_inv['supplier_invoice_no'] ?? '',
+						'inv_date'   => $inv_d,
+						'inv_qty'    => isset($r_inv['qty']) ? floatval($r_inv['qty']) : '',
+						'inv_gst'    => isset($r_inv['gst']) ? floatval($r_inv['gst']) : '',
+						'inv_amount' => isset($r_inv['amount']) ? floatval($r_inv['amount']) : ''
+					];
+				}
+			}
+
+			if (!empty($item_invoices)) {
+				foreach ($item_invoices as $inv_row) {
+					$excel_rows[] = [
+						$ln,
+						$comp_name,
+						$loc_name,
+						$department_name,
+						$status,
+						$po_number,
+						$po_dated,
+						$party_name,
+						$noa_display,
+						$quotation_reference_no,
+						$item_index,
+						$budget_name,
+						$budget_head,
+						$product_name,
+						$unit,
+						$quantity,
+						$unit_rate,
+						$actual_amt,
+						$gst,
+						$net_amt,
+						$inv_row['invoice_no'],
+						$inv_row['inv_date'],
+						$inv_row['inv_qty'],
+						$inv_row['inv_gst'],
+						$inv_row['inv_amount']
+					];
+				}
+			} else {
+				$excel_rows[] = [
+					$ln,
+					$comp_name,
+					$loc_name,
+					$department_name,
+					$status,
+					$po_number,
+					$po_dated,
+					$party_name,
+					$noa_display,
+					$quotation_reference_no,
+					$item_index,
+					$budget_name,
+					$budget_head,
+					$product_name,
+					$unit,
+					$quantity,
+					$unit_rate,
+					$actual_amt,
+					$gst,
+					$net_amt,
+					'',
+					'',
+					'',
+					'',
+					''
+				];
+			}
 		}
 
 		if (!$has_items) {
-			$excel_rows[] = [
-				$ln,
-				$comp_name,
-				$loc_name,
-				$department_name,
-				$status,
-				$po_number,
-				$po_dated,
-				$party_name,
-				$noa_display,
-				$quotation_reference_no,
-				$delivery_days,
-				$credit_days,
-				$discount,
-				$transport,
-				$other_charges,
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				''
-			];
+			$po_invoices = [];
+			$sql_inv = "SELECT si.supplier_invoice_no, si.invoice_date, sid.qty, sid.gst, sid.amount 
+			            FROM `sma_supplier_invoice` si 
+			            LEFT JOIN `sma_supplier_invoice_details` sid ON si.id = sid.si_hdr_id 
+			            WHERE (si.our_po_ref_no = '$pur_id' OR si.our_po_ref_no = '$po_number') 
+			              AND si.del != 'Y' 
+			              AND si.status != 'Draft'";
+			$res_inv = mysqli_query($con, $sql_inv);
+			while ($res_inv && $r_inv = mysqli_fetch_array($res_inv)) {
+				$inv_d = (!empty($r_inv['invoice_date']) && $r_inv['invoice_date'] != '1970-01-01' && $r_inv['invoice_date'] != '0000-00-00') ? date('d-m-Y', strtotime($r_inv['invoice_date'])) : '';
+				$po_invoices[] = [
+					'invoice_no' => $r_inv['supplier_invoice_no'] ?? '',
+					'inv_date'   => $inv_d,
+					'inv_qty'    => (isset($r_inv['qty']) && floatval($r_inv['qty']) > 0) ? floatval($r_inv['qty']) : '',
+					'inv_gst'    => (isset($r_inv['gst']) && floatval($r_inv['gst']) > 0) ? floatval($r_inv['gst']) : '',
+					'inv_amount' => (isset($r_inv['amount']) && floatval($r_inv['amount']) > 0) ? floatval($r_inv['amount']) : ''
+				];
+			}
+
+			if (!empty($po_invoices)) {
+				foreach ($po_invoices as $inv_row) {
+					$excel_rows[] = [
+						$ln,
+						$comp_name,
+						$loc_name,
+						$department_name,
+						$status,
+						$po_number,
+						$po_dated,
+						$party_name,
+						$noa_display,
+						$quotation_reference_no,
+						'',
+						'',
+						'',
+						'',
+						'',
+						'',
+						'',
+						'',
+						'',
+						'',
+						$inv_row['invoice_no'],
+						$inv_row['inv_date'],
+						$inv_row['inv_qty'],
+						$inv_row['inv_gst'],
+						$inv_row['inv_amount']
+					];
+				}
+			} else {
+				$excel_rows[] = [
+					$ln,
+					$comp_name,
+					$loc_name,
+					$department_name,
+					$status,
+					$po_number,
+					$po_dated,
+					$party_name,
+					$noa_display,
+					$quotation_reference_no,
+					'',
+					'',
+					'',
+					'',
+					'',
+					'',
+					'',
+					'',
+					'',
+					'',
+					'',
+					'',
+					'',
+					'',
+					''
+				];
+			}
 		}
 	}
 

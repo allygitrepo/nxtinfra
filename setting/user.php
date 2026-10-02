@@ -76,10 +76,7 @@ function pass(){
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">List of User</h3>
-			 <?php  if($user=='Admin'){ ?>
-				<span class="pull-right">&nbsp;&nbsp;&nbsp;<a href="user_export_func.php?sub=pdf" class="btn btn-primary">Report</a></span>
-					&nbsp;&nbsp;&nbsp;
-			  <?php } ?>		
+				<span class="pull-right">&nbsp;&nbsp;&nbsp;<a href="user_export_func.php?sub=user" class="btn btn-primary">Report</a></span>		
                 <span class="pull-right"><a href="user.php?sub=add" name="btnAdd" class="btn btn-info"><i class="splashy-document_letter_add"></i>&nbsp;&nbsp;Create User </a></span>
             </div>
             <!-- /.box-header -->

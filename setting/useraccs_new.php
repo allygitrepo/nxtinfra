@@ -29,7 +29,7 @@ $modulePath = "setting/useraccs_new.php?sub=list";
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">List of Role based Access</h3>
-               <!--<span class="pull-right"><a href="useraccess_export.php?sub=list" name="btnAdd" target="blank" class="btn btn-info"><i class="splashy-document_letter_add"></i>&nbsp;&nbsp;Export </a></span>-->
+                <span class="pull-right">&nbsp;&nbsp;&nbsp;<a href="user_export_func.php?sub=role_access" class="btn btn-primary">Report</a></span>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
