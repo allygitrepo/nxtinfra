@@ -215,7 +215,6 @@
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">Move Ownership</h3>
-                <span class="pull-right">&nbsp;&nbsp;&nbsp;<a href="user_export_func.php?sub=move_ownership" class="btn btn-primary">Export</a></span>
             </div>
             <!-- /.box-header -->
             <div class="box-body">

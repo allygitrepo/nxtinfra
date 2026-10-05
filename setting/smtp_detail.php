@@ -27,7 +27,6 @@ $modulePath = "setting/smtp_detail.php?sub=list";
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">SMTP Detail</h3>
-                <span class="pull-right">&nbsp;&nbsp;&nbsp;<a href="user_export_func.php?sub=smtp" class="btn btn-primary">Export</a></span>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
